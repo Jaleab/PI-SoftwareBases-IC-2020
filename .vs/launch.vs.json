@@ -1,0 +1,12 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "dll",
+      "exe": "",
+      "project": "ComunidadDePractica\\Pages\\About.cshtml.cs",
+      "name": "About.cshtml.cs"
+    }
+  ]
+}
