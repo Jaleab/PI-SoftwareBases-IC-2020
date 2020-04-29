@@ -26,5 +26,19 @@ namespace ComunidadDePracticaMVC.Controllers
 
             return View();
         }
+
+        public ActionResult Busqueda()
+        {
+            ViewBag.Message = "Your Busqueda page.";
+
+            return View();
+        }
+
+        public ActionResult ControlarForma()
+        {
+            ViewBag.Message = "Your ControlarForma page.";
+
+            return View();
+        }
     }
 }
