@@ -172,6 +172,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\ControlarForma.cshtml" />
     <Content Include="Views\Home\Busqueda.cshtml" />
+    <Content Include="Views\Home\ConsultarArticulos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
