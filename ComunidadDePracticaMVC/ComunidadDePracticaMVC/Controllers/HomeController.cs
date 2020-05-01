@@ -40,5 +40,11 @@ namespace ComunidadDePracticaMVC.Controllers
 
             return View();
         }
+
+        public ActionResult ConsultarArticulos()
+        {
+            ViewBag.Message = "Usted está observando el resumen un artículo";
+            return View();
+        }
     }
 }

@@ -24,17 +24,65 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="~/Content/editor.css">
 
+    <div class="container">
+        <input class="form-control mb-4" id="tableSearch" type="text"
+               placeholder="Type something to search list items">
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                </tr>
+                <tr>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                    <td>mary@mail.com</td>
+                </tr>
+                <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@greatstuff.com</td>
+                </tr>
+                <tr>
+                    <td>Anja</td>
+                    <td>Ravendale</td>
+                    <td>a_r@test.com</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <script type="text/javascript">
-        (function ($) {
-            $(document).ready(function () {
-                $('#txt-content').Editor();
-                $('#btn-subir-res').click(function (e) {
-                    e.preventDefault();
-                    var texto = $('#txt-content').Editor('getText');
-                    $('#texto').html(texto);
+        // Filter table
+        $(document).ready(function () {
+            $("#tableSearch").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
-        })(jQuery);
+        });
+    </script>
+
+        <script type="text/javascript">
+            (function ($) {
+                $(document).ready(function () {
+                    $('#txt-content').Editor();
+                    $('#btn-subir-res').click(function (e) {
+                        e.preventDefault();
+                        var texto = $('#txt-content').Editor('getText');
+                        $('#texto').html(texto);
+                    });
+                });
+            })(jQuery);
     </script>
     <!-- la función Editor es la que hace la conversión al editor de texto-->
     <!-- texto = $('#txt-content').Editor('getText') recupera lo escrito y lo despliega en la pantalla de abajo -->
