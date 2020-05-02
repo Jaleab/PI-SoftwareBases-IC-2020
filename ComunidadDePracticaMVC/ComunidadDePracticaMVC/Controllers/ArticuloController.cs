@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using ComunidadDePracticaMVC.Models;
+using ComunidadDePracticaMVC.Services;
 
 namespace ComunidadDePracticaMVC.Controllers
 {
@@ -13,7 +14,9 @@ namespace ComunidadDePracticaMVC.Controllers
         // GET: Articulo
         public ActionResult Index()
         {
-            return View();
+            ArticuloService dbArticulo = new ArticuloService();
+            ModelState.Clear();
+            return View(dbArticulo.GetArticulos());
         }
 
         // GET: Articulo/Details/5

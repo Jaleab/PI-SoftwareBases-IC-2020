@@ -15,7 +15,7 @@ namespace ComunidadDePracticaMVC.Services
         private void connection()
         {
             string constring =
-                                   ConfigurationManager.ConnectionStrings["articuloconn"].ToString();
+                                   ConfigurationManager.ConnectionStrings["Grupo3Conn"].ToString();
             con = new SqlConnection(constring);
         }
 
@@ -44,7 +44,7 @@ namespace ComunidadDePracticaMVC.Services
             connection();
             List<ArticuloModel> Articulolist = new List<ArticuloModel>();
 
-            SqlCommand cmd = new SqlCommand("GetArticuloDetails", con);
+            SqlCommand cmd = new SqlCommand("GetArticulos   ", con);
             cmd.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
