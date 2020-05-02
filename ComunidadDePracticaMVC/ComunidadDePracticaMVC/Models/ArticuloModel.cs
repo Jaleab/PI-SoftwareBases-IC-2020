@@ -21,5 +21,6 @@ namespace ComunidadDePracticaMVC.Models
         [Required(ErrorMessage = "Ingrese el resumen del articulo.")]
         public string Resumen { get; set; }
 
+
     }
 }
