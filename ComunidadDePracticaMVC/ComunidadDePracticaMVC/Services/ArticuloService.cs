@@ -35,7 +35,10 @@ namespace ComunidadDePracticaMVC.Services
             int i = cmd.ExecuteNonQuery();
             con.Close();
 
-            return i >= 1;
+            if (i >= 1)
+                return true;
+            else
+                return false;
 
         }
 
@@ -58,11 +61,11 @@ namespace ComunidadDePracticaMVC.Services
                 Articulolist.Add(
                     new ArticuloModel
                     {
-                        ArticuloId = Convert.ToInt32(dr["Id"]),
-                        Autor = Convert.ToString(dr["Autor"]),
-                        Pais = Convert.ToString(dr["Pais"]),
-                        Contenido = Convert.ToString(dr["Contenid"]),
-                        Resumen = Convert.ToString(dr["Resumen"])
+                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Autor = Convert.ToString(dr["autor"]),
+                        Pais = Convert.ToString(dr["pais"]),
+                        Contenido = Convert.ToString(dr["contenido"]),
+                        Resumen = Convert.ToString(dr["resumen"])
                     });
             }
             return Articulolist;

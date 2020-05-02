@@ -38,7 +38,14 @@ namespace ComunidadDePracticaMVC.Controllers
             try
             {
                 // TODO: Add insert logic here
-
+                if( ModelState.IsValid)
+                {
+                    ArticuloService dbArticulo = new ArticuloService();
+                    if( dbArticulo.AddArticulo(articulo))
+                    {
+                        ViewBag.Message = "Articulo added successfully"; 
+                    }
+                }
                 return RedirectToAction("Index");
             }
             catch
