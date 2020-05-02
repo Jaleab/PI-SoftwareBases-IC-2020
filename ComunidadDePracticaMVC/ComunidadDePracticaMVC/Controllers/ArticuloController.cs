@@ -55,9 +55,11 @@ namespace ComunidadDePracticaMVC.Controllers
         }
 
         // GET: Articulo/Edit/5
+        [Route("/Edit/{id}")]
         public ActionResult Edit(int id)
         {
-            return View();
+            ArticuloService dbArticulo = new ArticuloService();
+            return View(dbArticulo.GetArticulos().Find(articulo => articulo.ArticuloId == id));
         }
 
         // POST: Articulo/Edit/5
@@ -66,7 +68,8 @@ namespace ComunidadDePracticaMVC.Controllers
         {
             try
             {
-                // TODO: Add update logic here
+                ArticuloService dbArticulo = new ArticuloService();
+                dbArticulo.CambiarArticuloContenido(articulo); 
 
                 return RedirectToAction("Index");
             }

@@ -71,6 +71,24 @@ namespace ComunidadDePracticaMVC.Services
             return Articulolist;
         }
 
+        public bool CambiarArticuloContenido(ArticuloModel articuloModel)
+        {
+            connection();
+            SqlCommand cmd = new SqlCommand("CambiarContenidoArticulo", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@Id", articuloModel.ArticuloId);
+            cmd.Parameters.AddWithValue("@contenido", articuloModel.Contenido);
+
+            int i = cmd.ExecuteNonQuery();
+            con.Close();
+
+            if (i >= 1)
+                return true;
+            else
+                return false;
+        }
+
 
     }
 }
