@@ -1,10 +1,13 @@
 ﻿@model ComunidadDePracticaMVC.Models.ArticuloModel
 
+<script type="text/javascript" src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="~/Scripts/tinyMCEConfig.js"></script>
 
-@using (Html.BeginForm()) 
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>ArticuloModel</h4>
         <hr />
@@ -36,7 +39,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Contenido, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Contenido, new { htmlAttributes = new { @class = "form-control" , @style = "height: 100px"} })
+                @Html.TextAreaFor(model => model.Contenido, new { htmlAttributes = new { @class = "form-control editorHtml" } })
                 @Html.ValidationMessageFor(model => model.Contenido, "", new { @class = "text-danger" })
             </div>
         </div>
