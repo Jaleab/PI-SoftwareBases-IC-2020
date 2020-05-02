@@ -61,7 +61,7 @@ namespace ComunidadDePracticaMVC.Services
                 Articulolist.Add(
                     new ArticuloModel
                     {
-                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        ArticuloId = Convert.ToInt32(dr["id"]),
                         Autor = Convert.ToString(dr["autor"]),
                         Pais = Convert.ToString(dr["pais"]),
                         Contenido = Convert.ToString(dr["contenido"]),
