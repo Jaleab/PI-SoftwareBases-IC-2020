@@ -61,7 +61,7 @@ namespace ComunidadDePracticaMVC.Services
                         ArticuloId = Convert.ToInt32(dr["Id"]),
                         Autor = Convert.ToString(dr["Autor"]),
                         Pais = Convert.ToString(dr["Pais"]),
-                        Contenido = Convert.ToString(dr["Contenid"]),
+                        Contenido = Convert.ToString(dr["Contenido"]),
                         Resumen = Convert.ToString(dr["Resumen"])
                     });
             }
@@ -75,7 +75,7 @@ namespace ComunidadDePracticaMVC.Services
             //Ejecutar la consulta de un articulo segun su id
             SqlCommand cmd = new SqlCommand("ConsultaUnitaria", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@StdId", id);
+            cmd.Parameters.AddWithValue("@ArtId", id);
 
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -84,14 +84,13 @@ namespace ComunidadDePracticaMVC.Services
             con.Open();
             sd.Fill(dt);
             con.Close();
-
             //Crear un articulo con los datos obtenidos de la consulta
             ArticuloModel articulo = new ArticuloModel();
             foreach (DataRow dr in dt.Rows){
                 articulo.ArticuloId = Convert.ToInt32(dr["Id"]);
                 articulo.Autor = Convert.ToString(dr["Autor"]);
                 articulo.Pais = Convert.ToString(dr["Pais"]);
-                articulo.Contenido = Convert.ToString(dr["Contenid"]);
+                articulo.Contenido = Convert.ToString(dr["Contenido"]);
                 articulo.Resumen = Convert.ToString(dr["Resumen"]);
             }
 
