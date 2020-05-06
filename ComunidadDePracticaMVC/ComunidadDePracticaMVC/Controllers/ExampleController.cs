@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ComunidadDePracticaMVC.Models;
 
 namespace ComunidadDePracticaMVC.Controllers
 {
@@ -11,7 +12,9 @@ namespace ComunidadDePracticaMVC.Controllers
         // GET: Example
         public ActionResult Index()
         {
-            return View();
+            StudentDBHandle dbhandle = new StudentDBHandle();
+            ModelState.Clear();
+            return View(dbhandle.GetStudent());
         }
 
         // GET: Example/Details/5

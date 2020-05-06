@@ -180,10 +180,10 @@
     <Content Include="Views\Home\Busqueda.cshtml" />
     <Content Include="Views\Articulo\ConsultarArticulos.cshtml" />
     <Content Include="Views\Articulo\InicioArticulos.cshtml" />
+    <Content Include="Views\Example\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Example\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
