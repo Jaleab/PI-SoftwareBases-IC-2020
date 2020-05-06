@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using ComunidadDePracticaMVC.Models;
 
 namespace ComunidadDePracticaMVC.Controllers
@@ -12,10 +13,22 @@ namespace ComunidadDePracticaMVC.Controllers
         // GET: Example
         public ActionResult Index()
         {
+
             StudentDBHandle dbhandle = new StudentDBHandle();
             ModelState.Clear();
             return View(dbhandle.GetStudent());
         }
+
+        public JsonResult getStudentInfo(int pageNumber, int pageSize)
+        {
+
+            StudentDBHandle dbhandle = new StudentDBHandle();
+            List<StudentExample> studentList = dbhandle.GetStudentConditional(pageNumber, pageSize);
+            
+            return Json(studentList, JsonRequestBehavior.AllowGet); 
+
+        }
+
 
         // GET: Example/Details/5
         public ActionResult Details(int id)

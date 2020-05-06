@@ -65,6 +65,47 @@ namespace ComunidadDePracticaMVC.Models
             return studentlist;
         }
 
+        public List<StudentExample> GetStudentConditional(int pageNumber, int pageSize)
+        {
+            connection();
+            List<StudentExample> studentlist = new List<StudentExample>();
+
+            SqlCommand cmd = new SqlCommand("spGetStudents", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@PageNumber",
+                Value = pageNumber
+            });
+
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@PageSize",
+                Value = pageSize
+            });
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                studentlist.Add(
+                    new StudentExample
+                    {
+                        Id = Convert.ToInt32(dr["Id"]),
+                        Name = Convert.ToString(dr["Name"]),
+                        City = Convert.ToString(dr["City"]),
+                        Address = Convert.ToString(dr["Address"])
+                    });
+            }
+            return studentlist;
+        }
+
+
+
         // ***************** UPDATE STUDENT DETAILS *********************
         public bool UpdateDetails(StudentExample smodel)
         {
