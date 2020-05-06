@@ -34,7 +34,7 @@
                 // Looping over emloyee list and display it
                 $.each(response, function (index, student) {
                     tblExample.append('<tr><td>' + student.Id + '</td><td>'
-                        + student.Name + '</td><td>' + student.City + '</td><td>' + student.Address +  '</td><td>' + '@Html.ActionLink("Edit", "Delete")' +'</td></tr>');
+                        + student.Name + '</td><td>' + student.City + '</td><td>' + student.Address +  '</td><td>' + '@Html.ActionLink("Home", "Index", "Home")' +'</td></tr>');
                 });
             },
             error: function (err) {
@@ -53,7 +53,7 @@
 
 
 
-<table id="tblExample" border="1"
+<table class="table" id="tblExample" border="1"
        style="border-collapse:collapse; font-size:xx-large">
     <thead>
         <tr>

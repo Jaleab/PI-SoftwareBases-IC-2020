@@ -21,6 +21,9 @@ namespace ComunidadDePracticaMVC.Models
         [Required(ErrorMessage = "Ingrese el resumen del articulo.")]
         public string Resumen { get; set; }
 
+        [Required(ErrorMessage = "Un autor es requerido.")]
+        public string Titulo { get; set; }
+
 
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ComunidadDePracticaMVC.Services;
+using ComunidadDePracticaMVC.Models;
 
 namespace PassParameter.Controllers
 
@@ -11,16 +12,22 @@ namespace PassParameter.Controllers
     public class ArticuloController : Controller
     {
         // GET: Articulo
+
+        public ActionResult InicioArticulos()
+        {
+            return View();
+        }
+
         public ActionResult Index(int id)
         {
             return View();
         }
-        public ActionResult ConsultarArticulos()
+        public ActionResult ConsultarArticulos(int id)
         {
             ViewBag.Message = "Usted está observando el resumen un artículo";
-            ArticuloService servicioArticulo = new ArticuloService();
-            ArticuloModel modeloArticulo = servicioArticulo.Prueba(); // consulta el articulo con id=1 (debe ser un id generico)
-            return View(/*modeloArticulo*/);
+            ArticuloService servicioParaverResumen = new ArticuloService();
+            ModelState.Clear();
+            return View(servicioParaverResumen.GetInfoArticulo(id)); // 
         }
 
         // GET: Buscar por id Articulo
@@ -113,6 +120,14 @@ namespace PassParameter.Controllers
             return View(dbhandle.GetInfoArticulo(id));
         }
 
+        public JsonResult getArticulosInfo(int pageNumber, int pageSize)
+        {
+
+            ArticuloService serviceArt = new ArticuloService();
+            List<ArticuloModel> articuloList = serviceArt.GetArticuloConditional(pageNumber, pageSize);
+            return Json(articuloList, JsonRequestBehavior.AllowGet);
+
+        }
 
 
     }

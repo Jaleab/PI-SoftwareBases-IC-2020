@@ -45,8 +45,9 @@ namespace ComunidadDePracticaMVC.Services
                         Autor = Convert.ToString(dr["Autor"]),
                         Pais = Convert.ToString(dr["Pais"]),
                         Contenido = Convert.ToString(dr["Contenido"]),
-                        Resumen = Convert.ToString(dr["Resumen"])
-                    });
+                        Resumen = Convert.ToString(dr["Resumen"]),
+                        Titulo = Convert.ToString(dr["titulo"])
+            });
             }
             return Articulolist;
         }
@@ -74,42 +75,55 @@ namespace ComunidadDePracticaMVC.Services
             articulo.Pais = Convert.ToString(dr["pais"]);
             articulo.Contenido = Convert.ToString(dr["contenido"]);
             articulo.Resumen = Convert.ToString(dr["resumen"]);
+            articulo.Titulo = Convert.ToString(dr["titulo"]);
 
             Console.WriteLine(articulo.ArticuloId);
             return articulo;
         }
 
-        public ArticuloModel Prueba()
-        {
-            //establecer la conexion con la base de datos
-            connection();
-            //Ejecutar la consulta de un articulo segun su id
-            SqlCommand cmd = new SqlCommand("ConsultaUnitaria", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@ArtId", 1);
 
+        public List<ArticuloModel> GetArticuloConditional(int pageNumber, int pageSize)
+        {
+            connection();
+            List<ArticuloModel> articulolist = new List<ArticuloModel>();
+
+            SqlCommand cmd = new SqlCommand("getArticuloByPage", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@PageNumber",
+                Value = pageNumber
+            });
+
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@PageSize",
+                Value = pageSize
+            });
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
 
-            //Llenar un tabla de datos c# con los valores de la consulta
             con.Open();
             sd.Fill(dt);
             con.Close();
-            //Crear un articulo con los datos obtenidos de la consulta
-            ArticuloModel articulo = new ArticuloModel();
+
             foreach (DataRow dr in dt.Rows)
             {
-                articulo.ArticuloId = Convert.ToInt32(dr["Id"]);
-                articulo.Autor = Convert.ToString(dr["Autor"]);
-                articulo.Pais = Convert.ToString(dr["Pais"]);
-                articulo.Contenido = Convert.ToString(dr["Contenido"]);
-                articulo.Resumen = Convert.ToString(dr["Resumen"]);
+                articulolist.Add(
+                    new ArticuloModel
+                    {
+                        ArticuloId = Convert.ToInt32(dr["id"]),
+                        Autor = Convert.ToString(dr["autor"]),
+                        Pais = Convert.ToString(dr["pais"]),
+                        Titulo = Convert.ToString(dr["titulo"]),
+                        Resumen = Convert.ToString(dr["resumen"]),
+            });
             }
 
-            return articulo;
+
+            return articulolist;
         }
 
     }
-
 
 }
