@@ -97,5 +97,37 @@ namespace ComunidadDePracticaMVC.Services
             return articulo;
         }
 
+        public ArticuloModel Prueba()
+        {
+            //establecer la conexion con la base de datos
+            connection();
+            //Ejecutar la consulta de un articulo segun su id
+            SqlCommand cmd = new SqlCommand("ConsultaUnitaria", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@ArtId", 1);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            //Llenar un tabla de datos c# con los valores de la consulta
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+            //Crear un articulo con los datos obtenidos de la consulta
+            ArticuloModel articulo = new ArticuloModel();
+            foreach (DataRow dr in dt.Rows)
+            {
+                articulo.ArticuloId = Convert.ToInt32(dr["Id"]);
+                articulo.Autor = Convert.ToString(dr["Autor"]);
+                articulo.Pais = Convert.ToString(dr["Pais"]);
+                articulo.Contenido = Convert.ToString(dr["Contenido"]);
+                articulo.Resumen = Convert.ToString(dr["Resumen"]);
+            }
+
+            return articulo;
+        }
+
     }
+
+
 }
