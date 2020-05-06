@@ -1,4 +1,6 @@
 ﻿<!DOCTYPE html>
+
+
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,7 +8,10 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" type="text/css" href="~/Content/style.css">
 </head>
+
+
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -18,14 +23,42 @@
                 </button>
                 @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="topnav">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("ControlarForma", "ControlarForma", "Home")</li>
-                    <li>@Html.ActionLink("Busqueda", "Busqueda", "Home")</li>
+                    <li>@Html.ActionLink("Busqueda", "Busqueda", "Articulo")</li>
                     <li>@Html.ActionLink("Consultar Artículos", "ConsultarArticulos", "Home")</li>
+
+                    <input id="tableSearch" type="text" placeholder="Busque aqui.">
+                    <script type="text/javascript">
+                        var input = document.getElementById("tableSearch");
+                        input.addEventListener("keyup", function (event) {
+                            if (event.keyCode === 13) {
+                                var url = '@Url.Action("Busqueda", "Articulo", new { id="VAL"})';
+                                url = url.replace("VAL", document.getElementById("tableSearch").value);
+                                
+                                //alert(url);
+                                window.location = url;
+                            }
+                        });
+                    </script>
+
+                    <!--<form class="form-inline md-form mr-auto mb-6">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" id="tableSearch">
+    </form>
+
+
+    <script type="text/javascript">
+        var input = document.getElementById("tableSearch");
+        input.addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                console.log(document.getElementById("tableSearch").value);
+            }
+        });
+    </script>-->
                 </ul>
             </div>
         </div>

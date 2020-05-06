@@ -3,19 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ComunidadDePracticaMVC.Services;
 
-namespace ComunidadDePracticaMVC.Controllers
+namespace PassParameter.Controllers
+
 {
     public class ArticuloController : Controller
     {
         // GET: Articulo
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
             return View();
         }
 
+
+        // GET: Buscar por id Articulo
+        public ActionResult BuscarArticuloID(int id)
+        {
+            ArticuloService dbhandle = new ArticuloService();
+            ModelState.Clear();
+            return View(dbhandle.GetInfoArticulo(id));
+        }
+
+
         // GET: Articulo/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details()
         {
             return View();
         }
@@ -85,5 +97,17 @@ namespace ComunidadDePracticaMVC.Controllers
                 return View();
             }
         }
+
+        // GET: Articulo/Busqueda/1
+        //public ContentResult Busqueda(int id)
+        public ActionResult Busqueda(int id)
+        {
+            ArticuloService dbhandle = new ArticuloService();
+            ModelState.Clear();
+            return View(dbhandle.GetInfoArticulo(id));
+        }
+        
+
+        
     }
 }
