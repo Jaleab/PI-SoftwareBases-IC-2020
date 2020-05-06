@@ -3,48 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using ComunidadDePracticaMVC.Services;
+using System.Web.Script.Serialization;
+using ComunidadDePracticaMVC.Models;
 
-namespace PassParameter.Controllers
-
+namespace ComunidadDePracticaMVC.Controllers
 {
-    public class ArticuloController : Controller
+    public class ExampleController : Controller
     {
-        // GET: Articulo
-        public ActionResult Index(int id)
+        // GET: Example
+        public ActionResult Index()
         {
-            return View();
-        }
-        public ActionResult ConsultarArticulos()
-        {
-            ViewBag.Message = "Usted está observando el resumen un artículo";
-            ArticuloService servicioArticulo = new ArticuloService();
-            ArticuloModel modeloArticulo = servicioArticulo.Prueba(); // consulta el articulo con id=1 (debe ser un id generico)
-            return View(/*modeloArticulo*/);
-        }
 
-        // GET: Buscar por id Articulo
-        public ActionResult BuscarArticuloID(int id)
-        {
-            ArticuloService dbhandle = new ArticuloService();
+            StudentDBHandle dbhandle = new StudentDBHandle();
             ModelState.Clear();
-            return View(dbhandle.GetInfoArticulo(id));
+            return View(dbhandle.GetStudent());
+        }
+
+        public JsonResult getStudentInfo(int pageNumber, int pageSize)
+        {
+
+            StudentDBHandle dbhandle = new StudentDBHandle();
+            List<StudentExample> studentList = dbhandle.GetStudentConditional(pageNumber, pageSize);
+            
+            return Json(studentList, JsonRequestBehavior.AllowGet); 
+
         }
 
 
-        // GET: Articulo/Details/5
-        public ActionResult Details()
+        // GET: Example/Details/5
+        public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: Articulo/Create
+        // GET: Example/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Articulo/Create
+        // POST: Example/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -60,13 +58,13 @@ namespace PassParameter.Controllers
             }
         }
 
-        // GET: Articulo/Edit/5
+        // GET: Example/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Articulo/Edit/5
+        // POST: Example/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -82,13 +80,13 @@ namespace PassParameter.Controllers
             }
         }
 
-        // GET: Articulo/Delete/5
+        // GET: Example/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Articulo/Delete/5
+        // POST: Example/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -103,17 +101,5 @@ namespace PassParameter.Controllers
                 return View();
             }
         }
-
-        // GET: Articulo/Busqueda/1
-        //public ContentResult Busqueda(int id)
-        public ActionResult Busqueda(int id)
-        {
-            ArticuloService dbhandle = new ArticuloService();
-            ModelState.Clear();
-            return View(dbhandle.GetInfoArticulo(id));
-        }
-
-
-
     }
 }

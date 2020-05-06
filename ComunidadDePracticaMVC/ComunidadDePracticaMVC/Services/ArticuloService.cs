@@ -9,42 +9,25 @@ using ComunidadDePracticaMVC.Models;
 
 namespace ComunidadDePracticaMVC.Services
 {
+    
     public class ArticuloService
     {
         private SqlConnection con;
         private void connection()
         {
-            string constring =
-                                   ConfigurationManager.ConnectionStrings["articuloconn"].ToString();
+            string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn"].ToString();
             con = new SqlConnection(constring);
         }
 
+
+        
         // ******************** ADD NEW ARTICULO ********************
-        public bool AddArticulo(ArticuloModel artmodel)
-        {
-            connection();
-            SqlCommand cmd = new SqlCommand("AgregarNuevoArticulo", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@Autor", artmodel.Autor);
-            cmd.Parameters.AddWithValue("@Pais", artmodel.Pais);
-            cmd.Parameters.AddWithValue("Contenido", artmodel.Contenido);
-            cmd.Parameters.AddWithValue("Resumen", artmodel.Resumen);
-
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-            con.Close();
-
-            return i >= 1;
-            
-        }
-
-        public List<ArticuloModel> GetArticulos()
+        public List<ArticuloModel> GetArticulos(string keyword)
         {
             connection();
             List<ArticuloModel> Articulolist = new List<ArticuloModel>();
 
-            SqlCommand cmd = new SqlCommand("GetArticuloDetails", con);
+            SqlCommand cmd = new SqlCommand("GetArticulos", con);
             cmd.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -76,24 +59,23 @@ namespace ComunidadDePracticaMVC.Services
             SqlCommand cmd = new SqlCommand("ConsultaUnitaria", con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@ArtId", id);
-
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
 
-            //Llenar un tabla de datos c# con los valores de la consulta
             con.Open();
             sd.Fill(dt);
             con.Close();
-            //Crear un articulo con los datos obtenidos de la consulta
-            ArticuloModel articulo = new ArticuloModel();
-            foreach (DataRow dr in dt.Rows){
-                articulo.ArticuloId = Convert.ToInt32(dr["Id"]);
-                articulo.Autor = Convert.ToString(dr["Autor"]);
-                articulo.Pais = Convert.ToString(dr["Pais"]);
-                articulo.Contenido = Convert.ToString(dr["Contenido"]);
-                articulo.Resumen = Convert.ToString(dr["Resumen"]);
-            }
 
+            DataRow dr = dt.Rows[0];
+            ArticuloModel articulo = new ArticuloModel();
+
+            articulo.ArticuloId = Convert.ToInt32(dr["id"]);
+            articulo.Autor = Convert.ToString(dr["autor"]);
+            articulo.Pais = Convert.ToString(dr["pais"]);
+            articulo.Contenido = Convert.ToString(dr["contenido"]);
+            articulo.Resumen = Convert.ToString(dr["resumen"]);
+
+            Console.WriteLine(articulo.ArticuloId);
             return articulo;
         }
 
