@@ -15,6 +15,7 @@ namespace ComunidadDePracticaMVC.Controllers
 
         public ActionResult About()
         {
+
             ViewBag.Message = "Your application description page.";
 
             return View();
@@ -27,23 +28,12 @@ namespace ComunidadDePracticaMVC.Controllers
             return View();
         }
 
-        public ActionResult Busqueda()
-        {
-            ViewBag.Message = "Your Busqueda page.";
-
-            return View();
-        }
+        
 
         public ActionResult ControlarForma()
         {
             ViewBag.Message = "Your ControlarForma page.";
 
-            return View();
-        }
-
-        public ActionResult ConsultarArticulos()
-        {
-            ViewBag.Message = "Usted está observando el resumen un artículo";
             return View();
         }
     }

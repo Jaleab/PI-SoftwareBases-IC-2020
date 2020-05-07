@@ -1,0 +1,82 @@
+﻿@{
+
+ }
+
+<html>
+
+<head>
+    <script type="text/javascript">
+
+            function enviarResumen(mensaje) {
+                alert(mensaje);
+            }
+
+            $(document).ready(function () {
+                var currentPage = 1;
+                loadPageData(currentPage);
+                $(window).scroll(function () {
+                    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                        currentPage += 1;
+                        loadPageData(currentPage);
+                    }
+
+                });
+
+
+            });
+            function loadPageData(currentPageNumber) {
+                $.ajax({
+                    type: "GET",
+                    url: 'getArticulosInfo',
+                    data: {},
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: { pageNumber: currentPageNumber, pageSize: 5 },
+                    success: function (response) {
+                        var tblExample = $('#tblArticulos tbody');
+                        // Looping over emloyee list and display it
+                        $.each(response, function (index, articulo) {
+                            var idS = new String(articulo.ArticuloId);
+                            var actionLink = '@Html.ActionLink("Resumen", "ConsultarArticulos", "Articulo",new { id= "VAL"},null)';
+                            actionLink = actionLink.replace("VAL", idS);
+                            tblExample.append('<tr> <td>' + articulo.ArticuloId + '</td> <td>'
+                                + articulo.Autor + '</td><td>' + articulo.Titulo + '</td><td>'
+                                + '<span>' + actionLink + '</span>'+'</td></tr>');
+                        });
+                    },
+                    error: function (err) {
+                        var tblExample = $('#tblArticulos tbody');
+                        tblExample.append('<tr><td>' + 'NO_CARGA' + '</td><td>' +
+                            'NO_CARGA' + '</td><td>' + 'NO_CARGA' + '</td></tr>');
+                    }
+
+                });
+            }
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="~/Content/estilos.css">
+</head>
+
+    <body>
+
+        <h1>Lista de artículos publicados</h1>
+
+        <hr />
+
+        <table class="table" id="tblArticulos" border="1" style="border-collapse:collapse; font-size:x-large">
+            <tr>
+                <td><b>Número</b></td>
+                <td><b>Autor</b></td>
+                <td><b>Título</b></td>
+                <td><b>Consulta</b></td>
+            </tr>
+        </table>
+    </body>
+
+</html>
+
+
+
+
+
+
