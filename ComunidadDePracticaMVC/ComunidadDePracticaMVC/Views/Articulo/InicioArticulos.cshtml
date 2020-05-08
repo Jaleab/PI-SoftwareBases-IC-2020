@@ -38,10 +38,14 @@
                         $.each(response, function (index, articulo) {
                             var idS = new String(articulo.ArticuloId);
                             var actionLink = '@Html.ActionLink("Resumen", "ConsultarArticulos", "Articulo",new { id= "VAL"},null)';
+                            var actionLink2 = '@Html.ActionLink("Editar", "EditarArticulo", "Articulo",new { id= "VAL"},null)';
                             actionLink = actionLink.replace("VAL", idS);
+                            actionLink2 = actionLink2.replace("VAL", idS); 
                             tblExample.append('<tr> <td>' + articulo.ArticuloId + '</td> <td>'
                                 + articulo.Autor + '</td><td>' + articulo.Titulo + '</td><td>'
-                                + '<span>' + actionLink + '</span>'+'</td></tr>');
+                                + '<span>' + actionLink + ' </span>'
+                                + '<span>' + actionLink2 + '</span>' +
+                                '</td></tr>');
                         });
                     },
                     error: function (err) {

@@ -68,9 +68,11 @@ namespace PassParameter.Controllers
         }
 
         // GET: Articulo/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult EditarArticulo(int id)
         {
-            return View();
+            ArticuloService dbArticulo = new ArticuloService();
+            return View(dbArticulo.GetInfoArticulo(id));
+            //return View(dbArticulo.GetArticulos().Find(articulo => articulo.ArticuloId == id));
         }
 
         // POST: Articulo/Edit/5

@@ -183,6 +183,7 @@
     <Content Include="Views\Example\Index.cshtml" />
     <Content Include="Views\Articulo\ConsultarArticulos.cshtml" />
     <Content Include="Views\Articulo\InicioArticulos.cshtml" />
+    <Content Include="Views\Articulo\EditarArticulo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
