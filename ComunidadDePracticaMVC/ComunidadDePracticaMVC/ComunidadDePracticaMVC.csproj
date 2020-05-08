@@ -179,7 +179,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\ControlarForma.cshtml" />
     <Content Include="Views\Articulo\Busqueda.cshtml" />
     <Content Include="Views\Example\Index.cshtml" />
     <Content Include="Views\Articulo\ConsultarArticulos.cshtml" />
