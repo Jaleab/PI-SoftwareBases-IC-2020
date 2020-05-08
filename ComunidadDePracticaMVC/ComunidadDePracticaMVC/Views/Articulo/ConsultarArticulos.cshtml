@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Consulta de Artículo";
+    @model ComunidadDePracticaMVC.Models.ArticuloModel
+    string autor = Model.Autor;
+    string pais = Model.Pais;
+    string resumen = Model.Resumen;
+    string titulo = Model.Titulo;
+}
+<div>
+    <h3>@ViewBag.Title </h3>
+</div>
+
+<hr />
+
+<div>
+    <h4>@ViewBag.Message</h4>
+</div>
+
+<hr />
+
+<div>
+
+    <table class="table table-bordered table-striped" ">
+        <tr>
+            <td><strong> Autor </strong></td>
+            <td>   @autor </td>
+        </tr>
+
+        <tr>
+            <td> <strong> País </strong> </td>
+            <td> @pais </td>
+        </tr>
+
+        <tr>
+            <td> <strong> Título </strong> </td>
+            <td> @titulo </td>
+        </tr>
+
+        <tr>
+            <td> <strong> Resumen </strong> </td>
+            <td>
+                <p>
+                    @resumen
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td> <strong> Key-words </strong> </td>
+            <td> matethematics, modeling,  eliciting-activities</td>
+        </tr>
+
+    </table>
+</div>
+
+

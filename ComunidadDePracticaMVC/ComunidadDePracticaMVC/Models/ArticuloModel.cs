@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 
 namespace ComunidadDePracticaMVC.Models
 {
@@ -17,11 +16,13 @@ namespace ComunidadDePracticaMVC.Models
         public string Pais { get; set; }
 
         [Required(ErrorMessage = "Ingrese el contenido del articulo.")]
-        [AllowHtml]
         public string Contenido { get; set; }
 
         [Required(ErrorMessage = "Ingrese el resumen del articulo.")]
         public string Resumen { get; set; }
+
+        [Required(ErrorMessage = "Un autor es requerido.")]
+        public string Titulo { get; set; }
 
 
     }

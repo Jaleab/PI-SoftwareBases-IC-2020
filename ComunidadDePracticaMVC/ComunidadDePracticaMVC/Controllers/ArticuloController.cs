@@ -3,24 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
-using ComunidadDePracticaMVC.Models;
 using ComunidadDePracticaMVC.Services;
+using ComunidadDePracticaMVC.Models;
 
-namespace ComunidadDePracticaMVC.Controllers
+namespace PassParameter.Controllers
+
 {
     public class ArticuloController : Controller
     {
         // GET: Articulo
-        public ActionResult Index()
+
+        public ActionResult InicioArticulos()
         {
-            ArticuloService dbArticulo = new ArticuloService();
-            ModelState.Clear();
-            return View(dbArticulo.GetArticulos());
+            return View();
         }
 
+        public ActionResult Index(int id)
+        {
+            return View();
+        }
+        public ActionResult ConsultarArticulos(int id)
+        {
+            ViewBag.Message = "Usted está observando el resumen un artículo";
+            ArticuloService servicioParaverResumen = new ArticuloService();
+            ModelState.Clear();
+            return View(servicioParaverResumen.GetInfoArticulo(id)); // 
+        }
+
+        // GET: Buscar por id Articulo
+        public ActionResult BuscarArticuloID(int id)
+        {
+            ArticuloService dbhandle = new ArticuloService();
+            ModelState.Clear();
+            return View(dbhandle.GetInfoArticulo(id));
+        }
+
+
         // GET: Articulo/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details()
         {
             return View();
         }
@@ -33,19 +53,12 @@ namespace ComunidadDePracticaMVC.Controllers
 
         // POST: Articulo/Create
         [HttpPost]
-        public ActionResult Create(ArticuloModel articulo)
+        public ActionResult Create(FormCollection collection)
         {
             try
             {
                 // TODO: Add insert logic here
-                if( ModelState.IsValid)
-                {
-                    ArticuloService dbArticulo = new ArticuloService();
-                    if( dbArticulo.AddArticulo(articulo))
-                    {
-                        ViewBag.Message = "Articulo added successfully"; 
-                    }
-                }
+
                 return RedirectToAction("Index");
             }
             catch
@@ -55,21 +68,18 @@ namespace ComunidadDePracticaMVC.Controllers
         }
 
         // GET: Articulo/Edit/5
-        [Route("/Edit/{id}")]
         public ActionResult Edit(int id)
         {
-            ArticuloService dbArticulo = new ArticuloService();
-            return View(dbArticulo.GetArticulos().Find(articulo => articulo.ArticuloId == id));
+            return View();
         }
 
         // POST: Articulo/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, ArticuloModel articulo)
+        public ActionResult Edit(int id, FormCollection collection)
         {
             try
             {
-                ArticuloService dbArticulo = new ArticuloService();
-                dbArticulo.CambiarArticuloContenido(articulo); 
+                // TODO: Add update logic here
 
                 return RedirectToAction("Index");
             }
@@ -87,7 +97,7 @@ namespace ComunidadDePracticaMVC.Controllers
 
         // POST: Articulo/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, ArticuloModel articulo)
+        public ActionResult Delete(int id, FormCollection collection)
         {
             try
             {
@@ -100,5 +110,25 @@ namespace ComunidadDePracticaMVC.Controllers
                 return View();
             }
         }
+
+        // GET: Articulo/Busqueda/1
+        //public ContentResult Busqueda(int id)
+        public ActionResult Busqueda(int id)
+        {
+            ArticuloService dbhandle = new ArticuloService();
+            ModelState.Clear();
+            return View(dbhandle.GetInfoArticulo(id));
+        }
+
+        public JsonResult getArticulosInfo(int pageNumber, int pageSize)
+        {
+
+            ArticuloService serviceArt = new ArticuloService();
+            List<ArticuloModel> articuloList = serviceArt.GetArticuloConditional(pageNumber, pageSize);
+            return Json(articuloList, JsonRequestBehavior.AllowGet);
+
+        }
+
+
     }
 }
