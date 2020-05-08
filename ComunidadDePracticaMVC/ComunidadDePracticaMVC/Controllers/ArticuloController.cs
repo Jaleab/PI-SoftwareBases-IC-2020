@@ -72,18 +72,21 @@ namespace PassParameter.Controllers
         {
             ArticuloService dbArticulo = new ArticuloService();
             return View(dbArticulo.GetInfoArticulo(id));
-            //return View(dbArticulo.GetArticulos().Find(articulo => articulo.ArticuloId == id));
         }
 
         // POST: Articulo/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult EditarArticulo(int id, ArticuloModel articulo)
         {
             try
             {
                 // TODO: Add update logic here
 
-                return RedirectToAction("Index");
+                ArticuloService dbhandle = new ArticuloService();
+                Console.Write(articulo);
+                dbhandle.EditarArticulo(id, articulo);
+
+                return View(); 
             }
             catch
             {

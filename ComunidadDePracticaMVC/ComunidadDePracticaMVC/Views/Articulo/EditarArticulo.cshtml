@@ -1,7 +1,29 @@
 ﻿@model ComunidadDePracticaMVC.Models.ArticuloModel
 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var id = $("#ArtId").val();
+        alert(id);
+            $("#btnSave").click(function () {
+                $.ajax(
+                    {
+                        idS: $("ArtId").val(),
+                        type: "POST", //HTTP POST Method
+                        url: "Articulo/EditarArticulo/",
+                        data: { //Passing data 
+                            Id: $("#ArtId").val(), 
+                            Autor: $("#AutorId").val(), //Reading text box values using Jquery
+                            Pais: $("#PaisId").val(),
+                            Contenido: $("#ContenidoId").val(),
+                            Resumen: $("#ResumenId").val(), 
+                        }
 
+                    });
 
+            });
+        });
+</script>
 
 @using (Html.BeginForm())
 {
@@ -14,7 +36,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ArticuloId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ArticuloId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ArticuloId, new { htmlAttributes = new { @class = "form-control", @id="ArtId"} })
                 @Html.ValidationMessageFor(model => model.ArticuloId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -22,7 +44,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Autor, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Autor, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Autor, new { htmlAttributes = new { @class = "form-control", @id = "AutorId" } })
                 @Html.ValidationMessageFor(model => model.Autor, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -30,7 +52,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Pais, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Pais, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Pais, new { htmlAttributes = new { @class = "form-control", @id = "PaisId" } })
                 @Html.ValidationMessageFor(model => model.Pais, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -39,7 +61,7 @@
             @Html.LabelFor(model => model.Contenido, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Contenido, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Contenido, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Contenido, "", new { @class = "text-danger", @id = "ContenidoId" })
             </div>
         </div>
 
@@ -47,29 +69,19 @@
             @Html.LabelFor(model => model.Resumen, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Resumen, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Resumen, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Resumen, "", new { @class = "text-danger", @id = "ResumenId" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Titulo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" id="btnSave"/>
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

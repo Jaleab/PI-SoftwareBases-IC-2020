@@ -124,6 +124,29 @@ namespace ComunidadDePracticaMVC.Services
             return articulolist;
         }
 
+        public void EditarArticulo(int id, ArticuloModel articulo)
+        {
+            //establecer la conexion con la base de datos
+            connection();
+            //Ejecutar la consulta de un articulo segun su id
+
+            SqlCommand cmd = new SqlCommand("EditarArticulo", con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
+            cmd.Parameters.AddWithValue("@Pais", articulo.Pais);
+            cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
+            cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen); 
+
+            con.Open();
+            cmd.ExecuteNonQuery();
+            
+            con.Close();
+
+            
+        }
+
     }
 
 }
