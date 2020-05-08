@@ -185,9 +185,11 @@
     font-weight: 700;
 }
 
-.nav.navbar-nav li a:hover{
-    color:white;
-} 
+    .nav.navbar-nav li a:hover {
+        color: #0c377f;
+        background-color: #eeeeee;
+        border-radius: 50px;
+    } 
 
 
 /* Style the links inside the navigation bar */
