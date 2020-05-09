@@ -23,16 +23,13 @@
             <div class="container">
 
                 <div id="navbar " class="navbar-collapse collapse">
-                    
+
                     <ul class="nav navbar-nav navbar-left">
                         <li><a><i class="fa fa-home"></i></a></li>
-                        <li>@Html.ActionLink("Comunidad De Practica",    "Index", "Home")</li>
+                        <li>@Html.ActionLink("Comunidad De Practica", "Index", "Home")</li>
                     </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Login", "Login", "Home")</li>
-                        <li>@Html.ActionLink("Sign in", "Sign in", "Home")</li>
-                    </ul>
+                    <!--diferentes vistas dependiendo de si hay usuario logeado -->
+                    @Html.Partial("_LayoutTopNav")
                 </div><!--/.nav-collapse -->
             </div>
             
@@ -46,15 +43,13 @@
                 <div id="sidebar-wrapper" class="shadow">
 
                     <ul class="sidebar-nav">
-                        <li class="sidebar-title"> <a href="#"> Mi perfil </a> </li>
-                        <li> <a href="#"> Crear Articulo </a> </li>
-                        <li> <a href="#"> Mis Articulos </a> </li>
-                        <li class="sidebar-divider"></li>
-                        <li style ="color: #999999; padding: 1rem;"> Busqueda  </li>
+                        <!--diferentes vistas dependiendo de si hay usuario logeado -->
+                        @Html.Partial("_LayoutSideBar")
+                        <li style="color: #999999; padding: 1rem;"> Busqueda  </li>
                         <li>
 
-                            <div style="padding-left: 10px; padding-right: 10px;" >
-                                <div class="search-bar" >
+                            <div style="padding-left: 10px; padding-right: 10px;">
+                                <div class="search-bar">
                                     <input id="tableSearch" class="search-text" type="text" style="font-size: 1.3rem;" placeholder="Busque aqui.">
                                 </div>
 
