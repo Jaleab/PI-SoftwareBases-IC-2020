@@ -83,10 +83,9 @@ namespace PassParameter.Controllers
                 // TODO: Add update logic here
 
                 ArticuloService dbhandle = new ArticuloService();
-                Console.Write(articulo);
                 dbhandle.EditarArticulo(id, articulo);
 
-                return View(); 
+                return RedirectToAction("InicioArticulos"); 
             }
             catch
             {
