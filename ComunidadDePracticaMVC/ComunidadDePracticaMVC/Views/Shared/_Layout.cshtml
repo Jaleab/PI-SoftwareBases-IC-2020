@@ -9,44 +9,121 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="~/Content/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+
 </head>
 
 
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="topnav">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
 
-                    <li><input id="tableSearch" type="text" placeholder="Busque aqui."></li>
-                    <script type="text/javascript">
+    <nav class="topnav navbar navbar-fixed-top main-font">
+        <div class="container-fluid">
+            <div class="container">
+
+                <div id="navbar " class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a><i class="fa fa-home"></i></a></li>
+                        <li>@Html.ActionLink("Comunidad De Practica", "Index", "Home")</li>
+                    </ul>
+                    <!--diferentes vistas dependiendo de si hay usuario logeado -->
+                    @Html.Partial("_LayoutTopNav")
+                </div><!--/.nav-collapse -->
+            </div>
+            
+        </div><!--/.container-fluid -->
+    </nav>
+
+    <div class="container my-body-content main-font ">
+        <div class="row my-row">
+            <div class="col-md-3 my-col">
+                <!-- Sidebar -->
+                <div id="sidebar-wrapper" class="shadow">
+
+                    <ul class="sidebar-nav">
+                        <!--diferentes vistas dependiendo de si hay usuario logeado -->
+                        @Html.Partial("_LayoutSideBar")
+                        <li style="color: #999999; padding: 1rem;"> Busqueda  </li>
+                        <li>
+
+                            <div style="padding-left: 10px; padding-right: 10px;">
+                                <div class="search-bar">
+                                    <input id="tableSearch" class="search-text" type="text" style="font-size: 1.3rem;" placeholder="Busque aqui.">
+                                </div>
+
+                            </div>
+                            <script type="text/javascript">
+                                var input = document.getElementById("tableSearch");
+                                input.addEventListener("keyup", function (event) {
+                                    if (event.keyCode === 13) {
+                                        var url = '@Url.Action("Busqueda", "Articulo", new { id="VAL"})';
+                                        url = url.replace("VAL", document.getElementById("tableSearch").value);
+
+                                        //alert(url);
+                                        window.location = url;
+                                    }
+                                });
+                            </script>
+
+                        </li>
+
+                        <li class="sidebar-divider"></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categorías <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-header">Nav header</li>
+                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-divider"></li>
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("FAQ", "FAQ", "Home")</li>
+                    </ul>
+
+
+
+                </div>
+                <!-- /#sidebar-wrapper -->
+            </div>
+            <div class="col-md-9 my-col">
+
+                <!-- old body with class container body  -->
+                @RenderBody()
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--<div class="nav navbar-nav">
+
+        <script type="text/javascript">
                         var input = document.getElementById("tableSearch");
                         input.addEventListener("keyup", function (event) {
                             if (event.keyCode === 13) {
                                 var url = '@Url.Action("Busqueda", "Articulo", new { id="VAL"})';
                                 url = url.replace("VAL", document.getElementById("tableSearch").value);
-                                
+
                                 //alert(url);
                                 window.location = url;
                             }
                         });
-                    </script>
+        </script>
 
-                    <!--<form class="form-inline md-form mr-auto mb-6">
+        <div><input id="tableSearch" type="text" placeholder="Busque aqui."></div>
+
+        <form class="form-inline md-form mr-auto mb-6">
         <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" id="tableSearch">
     </form>
 
@@ -58,45 +135,9 @@
                 console.log(document.getElementById("tableSearch").value);
             }
         });
-    </script>-->
-                </ul>
-            </div>
-        </div>
-    </div>
+    </script>
+    </div>-->
 
-    <div class="container my-container">
-        <div class="row my-row">
-            <div class="col-md-3 my-col">
-                <!-- Sidebar -->
-                <div id="sidebar-wrapper">
-                    <ul class="sidebar-nav">
-                        <li class="sidebar-brand">
-                            <a href="#">
-                                Start Bootstrap
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">Dashboard</a>
-                        </li>
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        <li>@Html.ActionLink("Busqueda", "Busqueda", "Home")</li>
-                    </ul>
-                </div>
-                <!-- /#sidebar-wrapper -->
-            </div>
-            <div class="col-md-9 my-col">
-                <div class="container body-content">
-                    @RenderBody()
-                    <hr />
-                    <footer>
-                        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-                    </footer>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </body>
 </html>

@@ -1,0 +1,23 @@
+﻿
+@if (Request.Cookies["userInfo"] != null)
+{
+    <ul class="nav navbar-nav navbar-right">
+        <!--
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account" , routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        -->
+        <li>@Html.ActionLink("Sign out", "Sign out", "Account")</li>
+    </ul>
+}
+else
+{
+ 
+    <ul class="nav navbar-nav navbar-right">
+        <!--
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account" , routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        -->
+        <li>@Html.ActionLink("Register", "Register", "Account")</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account")</li>
+    </ul>
+}
