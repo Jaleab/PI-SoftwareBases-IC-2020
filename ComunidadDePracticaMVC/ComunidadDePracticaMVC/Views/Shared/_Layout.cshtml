@@ -48,6 +48,10 @@
                     <ul class="sidebar-nav">
                         <!--diferentes vistas dependiendo de si hay usuario logeado -->
                         @Html.Partial("_LayoutSideBar")
+                        <!-- Por ahora ya que no hay usuarios-->
+                        <li> @Html.ActionLink("Crear Articulo", "Create", "Articulo") </li>
+                        <li class="sidebar-divider"></li>
+                        <!-- Por ahora  ya que no hay usuarios-->
                         <li style="color: #999999; padding: 1rem;"> Busqueda  </li>
                         <li>
 
