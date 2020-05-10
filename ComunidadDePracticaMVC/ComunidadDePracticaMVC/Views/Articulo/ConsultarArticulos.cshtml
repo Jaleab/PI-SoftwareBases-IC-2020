@@ -2,9 +2,10 @@
     ViewBag.Title = "Consulta de Artículo";
     @model ComunidadDePracticaMVC.Models.ArticuloModel
     string autor = Model.Autor;
-    string pais = Model.Pais;
     string resumen = Model.Resumen;
     string titulo = Model.Titulo;
+    string topico = Model.Topico;
+    string contenido = Model.Contenido;
 }
 <div>
     <h3>@ViewBag.Title </h3>
@@ -20,20 +21,20 @@
 
 <div>
 
-    <table class="table table-bordered table-striped" >
+    <table class="table table-bordered table-striped">
         <tr>
             <td><strong> Autor </strong></td>
             <td>   @autor </td>
         </tr>
 
         <tr>
-            <td> <strong> País </strong> </td>
-            <td> @pais </td>
+            <td> <strong> Título</strong> </td>
+            <td> @titulo </td>
         </tr>
 
         <tr>
-            <td> <strong> Título </strong> </td>
-            <td> @titulo </td>
+            <td> <strong> Tópico </strong> </td>
+            <td> @topico </td>
         </tr>
 
         <tr>
@@ -46,8 +47,12 @@
         </tr>
 
         <tr>
-            <td> <strong> Key-words </strong> </td>
-            <td> matethematics, modeling,  eliciting-activities</td>
+            <td> <strong> Contenido </strong> </td>
+            <td>
+                <p>
+                    @contenido
+                </p>
+            </td>
         </tr>
 
     </table>

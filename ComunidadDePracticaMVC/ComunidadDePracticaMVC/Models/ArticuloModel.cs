@@ -24,6 +24,7 @@ namespace ComunidadDePracticaMVC.Models
         [Required(ErrorMessage = "Un autor es requerido.")]
         public string Titulo { get; set; }
 
-
+        [Required(ErrorMessage = "Un autor es requerido.")]
+        public string Topico { get; set; }
     }
 }

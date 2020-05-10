@@ -39,24 +39,35 @@
 
                     // Looping over emloyee list and display it
                     $.each(response, function (index, articulo) {
-
                         var idS = new String(articulo.ArticuloId);
-                        var actionLink = '@Html.ActionLink("Resumen", "ConsultarArticulos", "Articulo",new { id= "VAL"},null)';
-                        actionLink = actionLink.replace("VAL", idS);
+                        //url para ver
+                        var lookUrl = '@Url.Action("ConsultarArticulos", "Articulo",new { id= "VAL"},null)';
+                        lookUrl = lookUrl.replace("VAL", idS);
+                        //url para editar
+                        var editUrl = '@Url.Action("EditarArticulo", "Articulo",new { id= "VAL"},null)';
+                        editUrl = editUrl.replace("VAL", idS);
+                        //url para borrar
+                        var deleteUrl = '@Url.Action("BorrarArticulo", "Articulo",new { id= "VAL"},null)';
+                        deleteUrl = deleteUrl.replace("VAL", idS);
+
                         var articleInstance = document.importNode(artTemp, true);
-                        
-                        var title, author, info, link;
-                    
+
+                        var title, author, info, lookLink, editLink, deleteLink;
+
                         //get the DIV element from the template Instance:
                         title = articleInstance.querySelector(".title_template");
                         author = articleInstance.querySelector(".author_template");
                         //info = articleInstance.querySelector("#info");
-                        //link = articleInstance.querySelector("#link");
+                        lookLink = articleInstance.querySelector(".look-template");
+                        editLink = articleInstance.querySelector(".edit-template");
+                        deleteLink = articleInstance.querySelector(".delete-template");
 
                         title.textContent = articulo.Titulo;
                         author.textContent = articulo.Autor;
                         //info.textContent = articulo.Autor;
-                        //link.textContent = actionLink;
+                        lookLink.href = lookUrl;
+                        editLink.href = editUrl;
+                        deleteLink.href = deleteUrl;
 
                         articleList.append(articleInstance);
 
@@ -69,7 +80,7 @@
                     });
                 },
                 error: function (err) {
-                    
+
                 }
 
             });
@@ -111,8 +122,10 @@
             <div class="row main-font article-h2">300 Likes</div>
             <div class="row main-font article-h2">14 Descargas</div>
         </div>
-        <div class="col-md-3 mr-2">
-            @Html.ActionLink("Resumen", "ConsultarArticulos", "Articulo", new { id = "VAL" }, null)
+        <div col-md-3 mr-2">
+            <a class="look-template" href="">ver</a>
+            <a class="edit-template" href="">editar</a>
+            <a class="delete-template" href="">eliminar</a>
         </div>
     </div>
 

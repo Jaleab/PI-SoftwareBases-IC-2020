@@ -94,15 +94,15 @@ namespace PassParameter.Controllers
             }
         }
 
-        // GET: Articulo/Delete/5
-        public ActionResult Delete(int id)
+        // GET: Articulo/BorrarArticulo/5
+        public ActionResult BorrarArticulo(int id)
         {
             return View();
         }
 
-        // POST: Articulo/Delete/5
+        // POST: Articulo/BorrarArticulo/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult BorrarArticulo(int id, FormCollection collection)
         {
             try
             {

@@ -70,12 +70,13 @@ namespace ComunidadDePracticaMVC.Services
             DataRow dr = dt.Rows[0];
             ArticuloModel articulo = new ArticuloModel();
 
-            articulo.ArticuloId = Convert.ToInt32(dr["id"]);
+            articulo.ArticuloId = Convert.ToInt32(dr["articuloId"]);
             articulo.Autor = Convert.ToString(dr["autor"]);
-            articulo.Pais = Convert.ToString(dr["pais"]);
             articulo.Contenido = Convert.ToString(dr["contenido"]);
             articulo.Resumen = Convert.ToString(dr["resumen"]);
             articulo.Titulo = Convert.ToString(dr["titulo"]);
+            articulo.Topico = Convert.ToString(dr["topico"]);
+
 
             Console.WriteLine(articulo.ArticuloId);
             return articulo;
@@ -112,12 +113,13 @@ namespace ComunidadDePracticaMVC.Services
                 articulolist.Add(
                     new ArticuloModel
                     {
-                        ArticuloId = Convert.ToInt32(dr["id"]),
+                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
                         Autor = Convert.ToString(dr["autor"]),
-                        Pais = Convert.ToString(dr["pais"]),
                         Titulo = Convert.ToString(dr["titulo"]),
                         Resumen = Convert.ToString(dr["resumen"]),
-            });
+                        Topico = Convert.ToString(dr["topico"]),
+                        Contenido = Convert.ToString(dr["contenido"]),
+                    });
             }
 
 
