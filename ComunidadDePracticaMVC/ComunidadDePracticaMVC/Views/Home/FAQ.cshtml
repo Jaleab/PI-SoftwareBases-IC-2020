@@ -1,0 +1,85 @@
+﻿<html>
+
+<head>
+    <title> Preguntas y Respuestas </title>
+
+    <link rel="stylesheet" type="text/css" href="~/Content/estilos.css">
+
+    <script>
+        function editarContenido(botonClick) {
+            var idBoton = botonClick.id;
+            var nombreVentana = "myModal" + idBoton.charAt(idBoton.length - 1);
+            modal = document.getElementById(nombreVentana);
+            modal.style.display = "block";
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+        }
+
+        function actualizar(botonClick) {
+            var idBoton = botonClick.id;
+            var nombreTxtAreaPreg = "textAreaPregunta" + idBoton.charAt(idBoton.length - 1);
+            var nombreTxtAreaResp = "textAreaRespuesta" + idBoton.charAt(idBoton.length - 1);
+            var sectionPreguntaMod = "PREG" + idBoton.charAt(idBoton.length - 1);
+            var sectionRespuestataMod = "RESP" + idBoton.charAt(idBoton.length - 1);
+            var preguntaString = document.getElementById(nombreTxtAreaPreg).value;
+            var respuestaString = document.getElementById(nombreTxtAreaResp).value;
+            document.getElementById(sectionPreguntaMod).textContent = preguntaString;
+            document.getElementById(sectionRespuestataMod).textContent = respuestaString;
+
+            var nombreVentana = "myModal" + idBoton.charAt(idBoton.length - 1);
+            modal = document.getElementById(nombreVentana);
+            modal.style.display = "none";
+
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+    <h1>Sección de preguntas frecuentes</h1>
+
+    <!-- Ventana modal para modificar contenido -->
+    <div id="myModal1" class="modal">
+
+        <!-- Contenido modal -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+
+            <h2>Pregunta</h2>
+            <textarea class="miPreguntaArea" placeholder="Escriba la pregunta" id="textAreaPregunta1"> </textarea>
+
+            <h2>Respuesta</h2>
+            <textarea class="miRespuestaArea" placeholder="Escriba la respuesta" id="textAreaRespuesta1"> </textarea>
+
+            <input type="button" value="Actualizar" id="BG1" onclick="actualizar(this)">
+        </div>
+
+    </div>
+
+    <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
+
+        <div class="col-md-9 mr-2">
+            <div class=" title_template row main-font article-h1">
+                
+                <textConten id="PREG1"> Escriba la pregunta </textConten>
+
+            </div>
+
+            <div class=" author_template row main-font article-h2">
+                
+                <textConten id="RESP1"> Escriba la respuesta </textConten>
+                
+            </div>
+        </div>
+        <div class="col-md-3 mr-2">
+            <input type="button" class="btn-group" value="Modificar" id="B1" onclick="editarContenido(this)">
+        </div>
+    </div>
+
+</body>
+
+</html>
