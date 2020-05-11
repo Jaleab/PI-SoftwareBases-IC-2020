@@ -22,8 +22,8 @@ namespace ComunidadDePracticaMVC
 
             routes.MapRoute(
                 "Articulo",
-                "Articulo/{action}/{keyword}",
-                new { controller = "Articulo", action = "Index", keyword = UrlParameter.Optional }
+                "Articulo/{action}/{hilera}",
+                new { controller = "Articulo", action = "Index", hilera = UrlParameter.Optional }
             );
         }
     }

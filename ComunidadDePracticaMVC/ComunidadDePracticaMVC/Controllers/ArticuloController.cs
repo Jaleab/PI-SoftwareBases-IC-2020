@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -124,11 +125,38 @@ namespace PassParameter.Controllers
 
         // GET: Articulo/Busqueda/1
         //public ContentResult Busqueda(int id)
-        public ActionResult Busqueda(int id)
+        public ActionResult Busqueda(string hilera)
         {
             ArticuloService dbhandle = new ArticuloService();
+
+
+            /* Funciones para busquedas calidad, pero no para iteracion 1
+             * 
+             * List<ArticuloModel> articulosList = new List<ArticuloModel>();
+            char[] delimitadores = { ',', ' ' };
+            string[] strList = hilera.Split(delimitadores, System.StringSplitOptions.RemoveEmptyEntries);
+            //for (int i = 0; i < strList.Length; ++i)
+            //{
+
+            articulosList = dbhandle.GetArticulos();
+            List<ArticuloModel> listaEncontrados = new List<ArticuloModel>();
+            string[] hileras = hilera.Split();
+            foreach (string palabra in hileras) { 
+                listaEncontrados.AddRange(articulosList.FindAll(smodel => smodel.Topico == hilera));
+                listaEncontrados.AddRange(articulosList.FindAll(smodel => smodel.Autor == hilera));
+            }
+
+            //articulosList = articulosList.Find(smodel => smodel.ArticuloId.ToString() == hileraBusqueda);
+            //articulosList.Add(dbhandle.GetArticulos().Find(smodel => smodel.Topico == hileraBusqueda));
+            //articulosList.Add(dbhandle.GetArticulos().Find(smodel => smodel.Autor == hileraBusqueda));
+            //articulosList.Add(dbhandle.GetArticulos().Find(smodel => smodel.Titulo == hileraBusqueda));
+            //}*/
+            //var noDupsList = new HashSet<ArticuloModel>(listaEncontrados).ToList();
+
+            //char[] hilera = hileraBusqueda.ToCharArray();
             ModelState.Clear();
-            return View(dbhandle.GetInfoArticulo(id));
+            //return View(noDupsList);
+            return View(dbhandle.GetArticulosTopico(hilera));
         }
 
         public JsonResult getArticulosInfo(int pageNumber, int pageSize)

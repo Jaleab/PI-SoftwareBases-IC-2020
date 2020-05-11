@@ -1,5 +1,5 @@
 ﻿
-@model ComunidadDePracticaMVC.Models.ArticuloModel
+@model IEnumerable<ComunidadDePracticaMVC.Models.ArticuloModel>
 
 
 
@@ -10,92 +10,29 @@
     <script type="text/javascript" src="~/Scripts/editor.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <link rel="stylesheet" href="~/Content/bootstrap.min.css">
-    <!--<link rel="stylesheet" href="~/Content/fontawesome.css">
-    <link rel="stylesheet" href="~/Content/font-awesome.min.css">-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="~/Content/editor.css">
 </head>
 
-
-<!--
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody id="myTable">
-        <tr>
-            <td>John</td>
-            <td>Doe</td>
-            <td>john@example.com</td>
-        </tr>
-        <tr>
-            <td>Mary</td>
-            <td>Moe</td>
-            <td>mary@mail.com</td>
-        </tr>
-        <tr>
-            <td>July</td>
-            <td>Dooley</td>
-            <td>july@greatstuff.com</td>
-        </tr>
-        <tr>
-            <td>Anja</td>
-            <td>Ravendale</td>
-            <td>a_r@test.com</td>
-        </tr>
-    </tbody>
-</table>-->
-
-
-
-
 <body>
-    <!--<div class="container">
-        <input class="form-control mb-4" id="tableSearch" type="text"
-               placeholder="Type something to search list items">
-    </div>
-
-    <script type="text/javascript">
-        var input = document.getElementById("tableSearch");
-        input.addEventListener("keyup", function (event) {
-            if (event.keyCode === 13) {
-                console.log(document.getElementById("tableSearch").value);
-            }
-        });
-    </script>-->
-
-    <script type="text/javascript">
-
-                // Filter table
-                /*$(document).ready(function () {
-                    $("#tableSearch").on("keyup", function () {
-                        var value = $(this).val().toLowerCase();
-                        $("#myTable tr").filter(function () {
-                            $(this).toggle($(this).text().toLowerCase().indexOf() > -1)
-                        });
-                    });
-                });*/
-    </script>
-
-    @{
+    @*@{
         string autor = Model.Autor;
         string resumen = Model.Resumen;
         string titulo = Model.Titulo;
         string topico = Model.Topico;
         string contenido = Model.Contenido;
-    }
+    }*@
 
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ArticuloId)
+                @Html.DisplayNameFor(model => model.Titulo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Autor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Topico)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Contenido)
@@ -107,21 +44,27 @@
         </tr>
 
         <tbody id="myTable">
+            @foreach (var item in Model)
+            { 
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ArticuloId)
+                    @Html.DisplayFor(modelItem => item.Titulo)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.Autor)
+                    @Html.DisplayFor(modelItem => item.Autor)
                 </td>
                 <td>
-                    @Html.Raw(HttpUtility.HtmlDecode(contenido))
+                    @Html.DisplayFor(modelItem => item.Topico)
                 </td>
                 <td>
-                    @Html.Raw(HttpUtility.HtmlDecode(resumen))
+                    @Html.Raw(HttpUtility.HtmlDecode(item.Contenido))
+                </td>
+                <td>
+                    @Html.Raw(HttpUtility.HtmlDecode(item.Resumen))
                 </td>
             </tr>
-        </tbody>
+            }
+            </tbody>
 
     </table>
 </body>
