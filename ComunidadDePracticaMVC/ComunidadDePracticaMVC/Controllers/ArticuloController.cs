@@ -53,13 +53,15 @@ namespace PassParameter.Controllers
 
         // POST: Articulo/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
+        public ActionResult Create(ArticuloModel articulo)
+            {
             try
             {
                 // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                ArticuloService dbhandle = new ArticuloService();
+                dbhandle.CrearArticulo(articulo);
+                Console.Write(articulo); 
+                return RedirectToAction("InicioArticulos");
             }
             catch
             {
@@ -84,7 +86,6 @@ namespace PassParameter.Controllers
 
                 ArticuloService dbhandle = new ArticuloService();
                 dbhandle.EditarArticulo(id, articulo);
-
                 return RedirectToAction("InicioArticulos"); 
             }
             catch
@@ -96,22 +97,28 @@ namespace PassParameter.Controllers
         // GET: Articulo/BorrarArticulo/5
         public ActionResult BorrarArticulo(int id)
         {
-            return View();
+            ArticuloService dbArticulo = new ArticuloService();
+            return View(dbArticulo.GetInfoArticulo(id));
         }
 
         // POST: Articulo/BorrarArticulo/5
         [HttpPost]
-        public ActionResult BorrarArticulo(int id, FormCollection collection)
+        public ActionResult BorrarArticulo(int id, ArticuloModel articulo)
         {
             try
             {
                 // TODO: Add delete logic here
+                ArticuloService dbhandle = new ArticuloService();
 
-                return RedirectToAction("Index");
+                if (dbhandle.BorrarArticulo(id))
+                {
+                    ViewBag.AlertMsg = "Articulo Deleted Successfully";
+                }
+                return RedirectToAction("InicioArticulos");
             }
             catch
             {
-                return View();
+                return RedirectToAction("InicioArticulos");
             }
         }
 

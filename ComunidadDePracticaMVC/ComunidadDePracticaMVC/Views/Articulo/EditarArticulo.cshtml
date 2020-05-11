@@ -7,7 +7,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var id = $("#ArtId").val();
-        alert(id);
         $("#btnSave").click(function () {
             $.ajax(
                 {
@@ -17,7 +16,6 @@
                     data: { //Passing data
                         Id: $("#ArtId").val(),
                         Autor: $("#AutorId").val(), //Reading text box values using Jquery
-                        Pais: $("#PaisId").val(),
                         Contenido: $("#ContenidoId").val(),
                         Resumen: $("#ResumenId").val(),
                     }
@@ -39,7 +37,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ArticuloId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ArticuloId, new { htmlAttributes = new { @class = "form-control", @id = "ArtId" } })
+                @Html.DisplayFor(model => model.ArticuloId, new { htmlAttributes = new { @class = "form-control", @id = "ArtId" } })
                 @Html.ValidationMessageFor(model => model.ArticuloId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -52,13 +50,6 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Pais, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Pais, new { htmlAttributes = new { @class = "form-control", @id = "PaisId" } })
-                @Html.ValidationMessageFor(model => model.Pais, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Contenido, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -85,6 +76,9 @@
     </div>
 }
 
+<div>
+    @Html.ActionLink("Back to List", "InicioArticulos")
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

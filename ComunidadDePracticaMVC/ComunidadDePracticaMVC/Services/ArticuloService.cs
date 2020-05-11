@@ -43,13 +43,34 @@ namespace ComunidadDePracticaMVC.Services
                     {
                         ArticuloId = Convert.ToInt32(dr["Id"]),
                         Autor = Convert.ToString(dr["Autor"]),
-                        Pais = Convert.ToString(dr["Pais"]),
                         Contenido = Convert.ToString(dr["Contenido"]),
                         Resumen = Convert.ToString(dr["Resumen"]),
                         Titulo = Convert.ToString(dr["titulo"])
             });
             }
             return Articulolist;
+        }
+
+        public void CrearArticulo(ArticuloModel articulo)
+        {
+            //establecer la conexion con la base de datos
+            connection();
+
+
+            SqlCommand cmd = new SqlCommand("AgregarNuevoArticulo", con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
+            cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
+            cmd.Parameters.AddWithValue("@Topico", articulo.Topico); 
+            cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
+            cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
+
+            con.Open();
+            cmd.ExecuteNonQuery();
+
+            con.Close();
+            
         }
 
         public ArticuloModel GetInfoArticulo(int id)
@@ -137,7 +158,6 @@ namespace ComunidadDePracticaMVC.Services
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Id", id);
             cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
-            cmd.Parameters.AddWithValue("@Pais", articulo.Pais);
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen); 
 
@@ -147,6 +167,27 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
 
             
+        }
+
+        public bool BorrarArticulo(int id)
+        {
+            //establecer la conexion con la base de datos
+            connection();
+            //Ejecutar la consulta de un articulo segun su id
+
+            SqlCommand cmd = new SqlCommand("BorrarArticulo", con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@ArtId", id);
+
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            con.Close();
+
+            if (i >= 1)
+                return true;
+            else
+                return false;
         }
 
     }
