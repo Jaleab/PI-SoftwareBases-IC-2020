@@ -25,12 +25,12 @@
             }
         }
 
-        function editarContenido(botonClick) {
+        function editarContenido(botonClick, id) {
             var idBoton = botonClick.id;
-            var nombreVentana = "myModal" + idBoton.charAt(idBoton.length - 1);
+            var nombreVentana = "myModal" + id;
             var modal = document.getElementById(nombreVentana);
             modal.style.display = "block";
-            var span = document.getElementById("close" + idBoton.charAt(idBoton.length - 1));
+            var span = document.getElementById("close" + id);
             span.onclick = function () {
                 modal.style.display = "none";
             }
@@ -96,7 +96,7 @@
                 success: function (response) {
                     location.reload();
                 }
-                
+
             });
 
         }
@@ -179,7 +179,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 mr-2">
-                    <input type="button" class="btn-group" value="Modificar" id=@botonId onclick="editarContenido(this)">
+                    <input type="button" class="btn-group" value="Modificar" id=@botonId onclick="editarContenido(this, @item.id)">
                     <input type="button" class="btn-group" value="Borrar" id=@botonId onclick="ajaxBorrar(@item.id)">
                 </div>
             </div>
