@@ -22,7 +22,7 @@ namespace ComunidadDePracticaMVC.Services
 
         
         // ******************** ADD NEW ARTICULO ********************
-        public List<ArticuloModel> GetArticulos(string keyword)
+        public List<ArticuloModel> GetArticulos()
         {
             connection();
             List<ArticuloModel> Articulolist = new List<ArticuloModel>();
@@ -41,11 +41,12 @@ namespace ComunidadDePracticaMVC.Services
                 Articulolist.Add(
                     new ArticuloModel
                     {
-                        ArticuloId = Convert.ToInt32(dr["Id"]),
+                        ArticuloId = Convert.ToInt32(dr["ArticuloId"]),
                         Autor = Convert.ToString(dr["Autor"]),
-                        Contenido = Convert.ToString(dr["Contenido"]),
+                        Titulo = Convert.ToString(dr["Titulo"]),
                         Resumen = Convert.ToString(dr["Resumen"]),
-                        Titulo = Convert.ToString(dr["titulo"])
+                        Topico = Convert.ToString(dr["Topico"]),
+                        Contenido = Convert.ToString(dr["Contenido"])                        
             });
             }
             return Articulolist;
@@ -188,6 +189,43 @@ namespace ComunidadDePracticaMVC.Services
                 return true;
             else
                 return false;
+        }
+
+        public List<ArticuloModel> GetArticulosTopico(string hilera)
+        {
+            //establecer la conexion con la base de datos
+            connection();
+            //Ejecutar la consulta de un articulo segun su id
+            SqlCommand cmd = new SqlCommand("BusquedaTopico", con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Palabra", hilera);
+            DataTable dt = new DataTable();
+
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            List<ArticuloModel> articuloList = new List<ArticuloModel>();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                articuloList.Add(
+                    new ArticuloModel
+                    {
+                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Autor = Convert.ToString(dr["autor"]),
+                        Titulo = Convert.ToString(dr["titulo"]),
+                        Resumen = Convert.ToString(dr["resumen"]),
+                        Topico = Convert.ToString(dr["topico"]),
+                        Contenido = Convert.ToString(dr["contenido"]),
+                    });
+            }
+
+
+           
+            return articuloList;
         }
 
     }

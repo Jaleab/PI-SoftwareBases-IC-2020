@@ -26,6 +26,5 @@ namespace ComunidadDePracticaMVC.Models
 
         [Required(ErrorMessage = "Un topico es requerido.")]
         public string Topico { get; set; }
->>>>>>> master
     }
 }

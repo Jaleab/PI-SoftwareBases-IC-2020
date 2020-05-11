@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="~/Content/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/Content/estilos.css">
 
 
 
@@ -65,7 +66,7 @@
                                 var input = document.getElementById("tableSearch");
                                 input.addEventListener("keyup", function (event) {
                                     if (event.keyCode === 13) {
-                                        var url = '@Url.Action("Busqueda", "Articulo", new { id="VAL"})';
+                                        var url = '@Url.Action("Busqueda", "Articulo", new { hilera ="VAL"})';
                                         url = url.replace("VAL", document.getElementById("tableSearch").value);
 
                                         //alert(url);
@@ -79,14 +80,12 @@
                         <li class="sidebar-divider"></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categorías <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">Nav header</li>
-                                <li><a href="#">Separated link</a></li>
-                                <li><a href="#">One more separated link</a></li>
+                            <ul class="dropdown-content">
+                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="carros"})">Carros</a></li>
+                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="Comida"})">Comida</a></li>
+                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="Estudios"})">Estudios</a></li>
+                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="Kung Fu"})">Kung Fu</a></li>
+                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="fisica"})">Fisica</a></li>
                             </ul>
                         </li>
                         <li class="sidebar-divider"></li>
