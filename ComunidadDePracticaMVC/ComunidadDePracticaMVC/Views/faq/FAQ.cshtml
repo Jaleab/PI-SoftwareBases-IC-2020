@@ -1,0 +1,237 @@
+﻿@model IEnumerable<ComunidadDePracticaMVC.Models.faqModel>
+
+<html>
+
+<head>
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <title> Preguntas y Respuestas </title>
+
+    <link rel="stylesheet" type="text/css" href="~/Content/estilos.css">
+
+    <script>
+
+        function crearPregunta() {
+            var windowCreate = document.getElementById("create");
+            var createPregunta = document.getElementById("textPreguntaCreate");
+            var createRespuesta = document.getElementById("textRespuestaCreate");
+
+            windowCreate.style.display = "block";
+            var span = document.getElementById("closeCreate");
+            span.onclick = function () {
+                createPregunta.textContent = "";
+                createRespuesta.textContent = "";
+                windowCreate.style.display = "none";
+            }
+        }
+
+        function editarContenido(botonClick) {
+            var idBoton = botonClick.id;
+            var nombreVentana = "myModal" + idBoton.charAt(idBoton.length - 1);
+            var modal = document.getElementById(nombreVentana);
+            modal.style.display = "block";
+            var span = document.getElementById("close" + idBoton.charAt(idBoton.length - 1));
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+        }
+
+        function actualizar(botonClick) {
+            var idBoton = botonClick.id;
+            var nombreTxtAreaPreg = "textAreaPregunta" + idBoton.charAt(idBoton.length - 1);
+            var nombreTxtAreaResp = "textAreaRespuesta" + idBoton.charAt(idBoton.length - 1);
+            var sectionPreguntaMod = "PREG" + idBoton.charAt(idBoton.length - 1);
+            var sectionRespuestataMod = "RESP" + idBoton.charAt(idBoton.length - 1);
+            var preguntaString = document.getElementById(nombreTxtAreaPreg).value;
+            var respuestaString = document.getElementById(nombreTxtAreaResp).value;
+            document.getElementById(sectionPreguntaMod).textContent = preguntaString;
+            document.getElementById(sectionRespuestataMod).textContent = respuestaString;
+
+            var nombreVentana = "myModal" + idBoton.charAt(idBoton.length - 1);
+            modal = document.getElementById(nombreVentana);
+            modal.style.display = "none";
+
+        }
+
+        function ajaxEditar(id) {
+            var createPregunta = document.getElementById("textAreaPregunta" + id);
+            var createRespuesta = document.getElementById("textAreaRespuesta" + id);
+            var ids = id ;
+            $.ajax({
+                type: "POST",
+                url: "Edit",
+                data: { id: ids, preguntaStr: createPregunta.value, respuestaStr: createRespuesta.value },
+                traditional: true,
+                success: function (response) {
+                    location.reload();
+                }
+
+            });
+        }
+
+
+        function ajaxBorrar(id) {
+            var ids = id;
+            $.ajax({
+                type: "POST",
+                url: "Delete",
+                data: { id: ids},
+                traditional: true,
+                success: function (response) {
+                    location.reload();
+                }
+
+            });
+        }
+
+        function ajaxCrear() {
+            var createPregunta = document.getElementById("textPreguntaCreate");
+            var createRespuesta = document.getElementById("textRespuestaCreate");
+
+            $.ajax({
+                type: "POST",
+                url: "Create",
+                data: { preguntaStr: createPregunta.value, respuestaStr: createRespuesta.value },
+                traditional: true,
+                success: function (response) {
+                    location.reload();
+                }
+                
+            });
+
+        }
+
+
+
+    </script>
+
+</head>
+
+<body>
+
+    <h1>Sección de preguntas frecuentes</h1>
+
+    <div>
+        <input type="button" class="btn-group" value="Crear pregunta" onclick="crearPregunta()">
+    </div>
+
+    <!-- Ventana modal para modificar contenido -->
+    <div id="create" class="modal">
+
+        <!-- Contenido modal -->
+        <div class="modal-content">
+            <span id ="closeCreate" class="close">&times;</span>
+
+            <h2>Pregunta</h2>
+            <textarea class="miPreguntaArea" placeholder="Escriba la pregunta" id="textPreguntaCreate"> </textarea>
+
+            <h2>Respuesta</h2>
+            <textarea class="miRespuestaArea" placeholder="Escriba la respuesta" id="textRespuestaCreate"> </textarea>
+
+            <input type="button" value="Crear" onclick="ajaxCrear()">
+        </div>
+
+    </div>
+    @foreach (var item in Model)
+    {
+        var preguntaId = "PREG" + @Html.DisplayFor(modelItem => item.id);
+        var respuestaId = "RESP" + @Html.DisplayFor(modelItem => item.id);
+        var botonId = "B" + @Html.DisplayFor(modelItem => item.id);
+        var modalId = "myModal" + @Html.DisplayFor(modelItem => item.id);
+        var textAreaPreguntaId = "textAreaPregunta" + @Html.DisplayFor(modelItem => item.id);
+        var textAreaRespuestaId = "textAreaRespuesta" + @Html.DisplayFor(modelItem => item.id);
+        var actualizarBotonId = "BG" + @Html.DisplayFor(modelItem => item.id);
+        var closeId = "close" + @Html.DisplayFor(modelItem => item.id);
+
+        <div>
+            <!-- Ventana modal para modificar contenido -->
+
+            <div id=@modalId class="modal">
+
+                <!-- Contenido modal -->
+                <div class="modal-content">
+                    <span id=@closeId class="close">&times;</span>
+
+                    <h2>Pregunta</h2>
+                    <textarea class="miPreguntaArea" placeholder="Escriba la pregunta" id=@textAreaPreguntaId> </textarea>
+
+                    <h2>Respuesta</h2>
+                    <textarea class="miRespuestaArea" placeholder="Escriba la respuesta" id=@textAreaRespuestaId> </textarea>
+
+                    <input type="button" value="Actualizar" id=@actualizarBotonId onclick="ajaxEditar(@item.id)">
+                </div>
+
+            </div>
+
+            <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
+
+                <div class="col-md-9 mr-2">
+                    <div class=" title_template row main-font article-h1">
+
+                        <textConten id=@preguntaId> @Html.DisplayFor(modelItem => item.pregunta) </textConten>
+
+                    </div>
+
+                    <div class=" author_template row main-font article-h2">
+
+                        <textConten id=@respuestaId> @Html.DisplayFor(modelItem => item.respuesta) </textConten>
+
+                    </div>
+                </div>
+                <div class="col-md-3 mr-2">
+                    <input type="button" class="btn-group" value="Modificar" id=@botonId onclick="editarContenido(this)">
+                    <input type="button" class="btn-group" value="Borrar" id=@botonId onclick="ajaxBorrar(@item.id)">
+                </div>
+            </div>
+
+        </div>
+    }
+
+</body>
+
+</html>
+
+
+<template>
+
+    <div>
+        <!-- Ventana modal para modificar contenido -->
+        <div id="myModal" class="modal">
+
+            <!-- Contenido modal -->
+            <div class="modal-content">
+                <span id ="close"class="close">&times;</span>
+
+                <h2>Pregunta</h2>
+                <textarea class="miPreguntaArea" placeholder="Escriba la pregunta" id="textAreaPregunta"> </textarea>
+
+                <h2>Respuesta</h2>
+                <textarea class="miRespuestaArea" placeholder="Escriba la respuesta" id="textAreaRespuesta"> </textarea>
+
+                <input type="button" value="Actualizar" id="BG" onclick="actualizar(this)">
+            </div>
+
+        </div>
+
+        <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
+
+            <div class="col-md-9 mr-2">
+                <div class=" title_template row main-font article-h1">
+
+                    <textConten id="PREG"> Escriba la pregunta </textConten>
+
+                </div>
+
+                <div class=" author_template row main-font article-h2">
+
+                    <textConten id="RESP"> Escriba la respuesta </textConten>
+
+                </div>
+            </div>
+            <div class="col-md-3 mr-2">
+                <input type="button" class="btn-group" value="Modificar" id="B" onclick="editarContenido(this)">
+            </div>
+        </div>
+
+    </div>
+</template>

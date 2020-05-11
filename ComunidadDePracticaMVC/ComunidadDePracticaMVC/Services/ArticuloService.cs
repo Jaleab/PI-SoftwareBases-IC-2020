@@ -192,4 +192,105 @@ namespace ComunidadDePracticaMVC.Services
 
     }
 
+    public class questionService 
+    {
+        private SqlConnection con;
+        private void connection()
+        {
+            string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn"].ToString();
+            con = new SqlConnection(constring);
+        }
+
+
+        // **************** ADD NEW QUESTIOn *********************
+        public bool AddQuestion(faqModel preg)
+        {
+            connection();
+            SqlCommand cmd = new SqlCommand("AddNewQuestion", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@pregunta", preg.pregunta);
+            cmd.Parameters.AddWithValue("@respuesta", preg.respuesta);
+
+
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            con.Close();
+
+            if (i >= 1)
+                return true;
+            else
+                return false;
+        }
+
+        // ********** VIEW QUESTIOn ********************
+        public List<faqModel> GetQuestions()
+        {
+            connection();
+            List<faqModel> studentlist = new List<faqModel>();
+
+            SqlCommand cmd = new SqlCommand("GetQuestions", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                studentlist.Add(
+                    new faqModel
+                    {
+                        id = Convert.ToInt32(dr["id"]),
+                        pregunta = Convert.ToString(dr["pregunta"]),
+                        respuesta = Convert.ToString(dr["respuesta"]),
+
+                    });
+            }
+            return studentlist;
+        }
+
+        // ***************** UPDATE QUESTIOn *********************
+        public bool UpdateQuestion(faqModel preg)
+        {
+            connection();
+            SqlCommand cmd = new SqlCommand("UpdateQuestion", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@id", preg.id);
+            cmd.Parameters.AddWithValue("@pregunta", preg.pregunta);
+            cmd.Parameters.AddWithValue("@respuesta", preg.respuesta);
+
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            con.Close();
+
+            if (i >= 1)
+                return true;
+            else
+                return false;
+        }
+
+        // ********************** DELETE QUESTIOn *******************
+        public bool DeleteQuestion(int id)
+        {
+            connection();
+            SqlCommand cmd = new SqlCommand("DeleteQuestion", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@id", id);
+
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            con.Close();
+
+            if (i >= 1)
+                return true;
+            else
+                return false;
+        }
+    }
+
 }

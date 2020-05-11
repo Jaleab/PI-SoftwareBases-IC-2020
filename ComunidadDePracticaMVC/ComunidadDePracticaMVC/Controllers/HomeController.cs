@@ -1,8 +1,10 @@
-﻿using System;
+﻿using ComunidadDePracticaMVC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 
 namespace ComunidadDePracticaMVC.Controllers
 {
@@ -37,9 +39,7 @@ namespace ComunidadDePracticaMVC.Controllers
             return View();
         }
 
-        public ActionResult FAQ()
-        {
-            return View();
-        }
+        
+
     }
 }
