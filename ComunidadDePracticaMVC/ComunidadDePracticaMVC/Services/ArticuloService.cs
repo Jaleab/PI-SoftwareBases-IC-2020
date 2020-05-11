@@ -159,8 +159,10 @@ namespace ComunidadDePracticaMVC.Services
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Id", id);
             cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
+            cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
+            cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
-            cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen); 
+            cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
 
             con.Open();
             cmd.ExecuteNonQuery();
