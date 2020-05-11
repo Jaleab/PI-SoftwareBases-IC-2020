@@ -97,7 +97,8 @@ namespace PassParameter.Controllers
         // GET: Articulo/BorrarArticulo/5
         public ActionResult BorrarArticulo(int id)
         {
-            return View();
+            ArticuloService dbArticulo = new ArticuloService();
+            return View(dbArticulo.GetInfoArticulo(id));
         }
 
         // POST: Articulo/BorrarArticulo/5
@@ -108,12 +109,16 @@ namespace PassParameter.Controllers
             {
                 // TODO: Add delete logic here
                 ArticuloService dbhandle = new ArticuloService();
-                dbhandle.BorrarArticulo(id);
+
+                if (dbhandle.BorrarArticulo(id))
+                {
+                    ViewBag.AlertMsg = "Articulo Deleted Successfully";
+                }
                 return RedirectToAction("InicioArticulos");
             }
             catch
             {
-                return View();
+                return RedirectToAction("InicioArticulos");
             }
         }
 

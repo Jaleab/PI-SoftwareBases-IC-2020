@@ -169,17 +169,25 @@ namespace ComunidadDePracticaMVC.Services
             
         }
 
-        public void BorrarArticulo(int id)
+        public bool BorrarArticulo(int id)
         {
+            //establecer la conexion con la base de datos
             connection();
-            SqlCommand cmd = new SqlCommand("BorrarArticulo", con);
-            cmd.CommandType = CommandType.StoredProcedure;
+            //Ejecutar la consulta de un articulo segun su id
 
-            cmd.Parameters.AddWithValue("@Id", id);
+            SqlCommand cmd = new SqlCommand("BorrarArticulo", con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@ArtId", id);
 
             con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close(); 
+            int i = cmd.ExecuteNonQuery();
+            con.Close();
+
+            if (i >= 1)
+                return true;
+            else
+                return false;
         }
 
     }
