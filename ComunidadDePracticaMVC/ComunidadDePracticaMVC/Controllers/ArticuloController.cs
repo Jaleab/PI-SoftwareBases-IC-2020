@@ -48,19 +48,20 @@ namespace PassParameter.Controllers
         // GET: Articulo/Create
         public ActionResult Create()
         {
-
             return View();
         }
 
         // POST: Articulo/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
+        public ActionResult Create(ArticuloModel articulo)
+            {
             try
             {
                 // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                ArticuloService dbhandle = new ArticuloService();
+                dbhandle.CrearArticulo(articulo);
+                Console.Write(articulo); 
+                return RedirectToAction("InicioArticulos");
             }
             catch
             {

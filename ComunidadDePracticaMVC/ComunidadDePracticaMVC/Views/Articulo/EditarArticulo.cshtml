@@ -21,7 +21,7 @@
                     }
 
                 });
-
+            alert($("#ContenidoId".val())); 
         });
     });
 </script>
@@ -37,7 +37,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ArticuloId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ArticuloId, new { htmlAttributes = new { @class = "form-control", @id = "ArtId" } })
+                @Html.DisplayFor(model => model.ArticuloId, new { htmlAttributes = new { @class = "form-control", @id = "ArtId" } })
                 @Html.ValidationMessageFor(model => model.ArticuloId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -76,6 +76,9 @@
     </div>
 }
 
+<div>
+    @Html.ActionLink("Back to List", "InicioArticulos")
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

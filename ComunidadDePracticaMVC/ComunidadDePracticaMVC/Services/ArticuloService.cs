@@ -51,6 +51,26 @@ namespace ComunidadDePracticaMVC.Services
             return Articulolist;
         }
 
+        public void CrearArticulo(ArticuloModel articulo)
+        {
+            //establecer la conexion con la base de datos
+            connection();
+
+
+            SqlCommand cmd = new SqlCommand("AgregarNuevoArticulo", con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
+            cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
+            cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
+
+            con.Open();
+            cmd.ExecuteNonQuery();
+
+            con.Close();
+            
+        }
+
         public ArticuloModel GetInfoArticulo(int id)
         {
             //establecer la conexion con la base de datos

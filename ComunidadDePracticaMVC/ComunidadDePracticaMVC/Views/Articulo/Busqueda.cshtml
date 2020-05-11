@@ -70,17 +70,24 @@
 
     <script type="text/javascript">
 
-        // Filter table
-        /*$(document).ready(function () {
-            $("#tableSearch").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#myTable tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf() > -1)
-                });
-            });
-        });*/
+                // Filter table
+                /*$(document).ready(function () {
+                    $("#tableSearch").on("keyup", function () {
+                        var value = $(this).val().toLowerCase();
+                        $("#myTable tr").filter(function () {
+                            $(this).toggle($(this).text().toLowerCase().indexOf() > -1)
+                        });
+                    });
+                });*/
     </script>
 
+    @{
+        string autor = Model.Autor;
+        string resumen = Model.Resumen;
+        string titulo = Model.Titulo;
+        string topico = Model.Topico;
+        string contenido = Model.Contenido;
+    }
 
     <table class="table">
         <tr>
@@ -100,20 +107,20 @@
         </tr>
 
         <tbody id="myTable">
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.ArticuloId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.Autor)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.Contenido)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.Resumen)
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.ArticuloId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Autor)
+                </td>
+                <td>
+                    @Html.Raw(HttpUtility.HtmlDecode(contenido))
+                </td>
+                <td>
+                    @Html.Raw(HttpUtility.HtmlDecode(resumen))
+                </td>
+            </tr>
         </tbody>
 
     </table>
