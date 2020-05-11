@@ -61,6 +61,8 @@ namespace ComunidadDePracticaMVC.Services
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
+            cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
+            cmd.Parameters.AddWithValue("@Topico", articulo.Topico); 
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
 
@@ -165,6 +167,19 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
 
             
+        }
+
+        public void BorrarArticulo(int id)
+        {
+            connection();
+            SqlCommand cmd = new SqlCommand("BorrarArticulo", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close(); 
         }
 
     }

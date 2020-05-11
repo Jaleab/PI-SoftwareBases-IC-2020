@@ -21,10 +21,10 @@ namespace ComunidadDePracticaMVC.Models
         [AllowHtml]
         public string Resumen { get; set; }
 
-        [Required(ErrorMessage = "Un autor es requerido.")]
+        [Required(ErrorMessage = "Un titulo es requerido.")]
         public string Titulo { get; set; }
 
-        [Required(ErrorMessage = "Un autor es requerido.")]
+        [Required(ErrorMessage = "Un topico es requerido.")]
         public string Topico { get; set; }
     }
 }

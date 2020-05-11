@@ -102,13 +102,14 @@ namespace PassParameter.Controllers
 
         // POST: Articulo/BorrarArticulo/5
         [HttpPost]
-        public ActionResult BorrarArticulo(int id, FormCollection collection)
+        public ActionResult BorrarArticulo(int id, ArticuloModel articulo)
         {
             try
             {
                 // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                ArticuloService dbhandle = new ArticuloService();
+                dbhandle.BorrarArticulo(id);
+                return RedirectToAction("InicioArticulos");
             }
             catch
             {
