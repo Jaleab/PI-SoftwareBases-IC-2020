@@ -43,7 +43,6 @@ namespace ComunidadDePracticaMVC.Services
                     {
                         ArticuloId = Convert.ToInt32(dr["Id"]),
                         Autor = Convert.ToString(dr["Autor"]),
-                        Pais = Convert.ToString(dr["Pais"]),
                         Contenido = Convert.ToString(dr["Contenido"]),
                         Resumen = Convert.ToString(dr["Resumen"]),
                         Titulo = Convert.ToString(dr["titulo"])
@@ -137,7 +136,6 @@ namespace ComunidadDePracticaMVC.Services
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Id", id);
             cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
-            cmd.Parameters.AddWithValue("@Pais", articulo.Pais);
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen); 
 

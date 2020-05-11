@@ -48,6 +48,7 @@ namespace PassParameter.Controllers
         // GET: Articulo/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
@@ -84,7 +85,6 @@ namespace PassParameter.Controllers
 
                 ArticuloService dbhandle = new ArticuloService();
                 dbhandle.EditarArticulo(id, articulo);
-
                 return RedirectToAction("InicioArticulos"); 
             }
             catch
