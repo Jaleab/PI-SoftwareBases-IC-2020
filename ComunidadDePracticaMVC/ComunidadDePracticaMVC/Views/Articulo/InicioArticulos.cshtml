@@ -14,8 +14,10 @@
         $(document).ready(function () {
             var currentPage = 1;
             loadArticlesData(currentPage);
+           
             $(window).scroll(function () {
-                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                var windowComparison = ($(document).height() - $(window).height()) - $(window).scrollTop();
+                if (Math.abs(windowComparison) <= 1) {
                     currentPage += 1;
                     loadArticlesData(currentPage);
                 }
@@ -24,6 +26,11 @@
 
 
         });
+
+        function verVara() {
+            var windowComparison = ($(document).height() - $(window).height()) - $(window).scrollTop();
+            alert(windowComparison);
+        }
         function loadArticlesData(currentPageNumber) {
             $.ajax({
                 type: "GET",
@@ -99,13 +106,15 @@
             <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
         </div>
     </div>
-
+    <div>
+        <input type="button" class="btn-group" value="Crear pregunta" onclick="verVara()">
+    </div>
     <div>
         <div id="articleList">
 
         </div>
     </div>
-    
+
 </body>
 
 </html>
