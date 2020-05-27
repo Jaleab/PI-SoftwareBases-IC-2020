@@ -70,6 +70,11 @@ namespace PassParameter.Controllers
             }
         }
 
+        public ActionResult CrearArticulo()
+        {
+            return View(); 
+        }
+
         // GET: Articulo/Edit/5
         public ActionResult EditarArticulo(int id)
         {
