@@ -7,7 +7,7 @@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Crear artículo corto"  onclick="@("window.location.href='" + @Url.Action("CrearArticulo", "Articulo") + "'");" class="btn btn-default" id="artCorto" />
-            <input type="submit" value="Subir artículo largo" class="btn btn-default" id="artLargo" />
+            <input type="submit" value="Subir artículo largo" onclick="@("window.location.href='" + @Url.Action("Index", "File") + "'");" class="btn btn-default" id="artLargo" />
         </div>
     </div>
 </div>

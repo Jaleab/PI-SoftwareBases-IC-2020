@@ -1,0 +1,73 @@
+﻿@model  IEnumerable<ComunidadDePracticaMVC.Models.FileModel>
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style src="~/Content/bootstrap.min.css"></style>
+
+    <style>
+        .rounded{
+            border-radius:12px; 
+        }
+    </style>
+</head>
+<body>
+    @using (Html.BeginForm("Index", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="container-fluid">
+            <input type="file" name="postedFile" />
+            <input type="submit" id="btnUpload" class="rounded" value="Upload" />
+
+        </div>
+
+
+    }
+    @using (Html.BeginForm("DownloadFile", "File", FormMethod.Post))
+    {
+        <input type="hidden" id="hfFileId" name="FileId" />
+        <input type="submit" id="btnDownload" class="rounded" value="Download" style="display:none" />
+    }
+    <hr />
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <th style="width:50px">File ID</th>
+            <th style="width:120px">File Name</th>
+            <th style="width:80px">Download</th>
+        </tr>
+        @if (Model.Count() > 0)
+        {
+            foreach (var file in Model)
+            {
+                <tr>
+                    <td>@file.Id</td>
+                    <td>@file.Name</td>
+                    <td><a href="javascript:;" onclick="DownloadFile(@file.Id)">Download</a></td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">&nbsp;</td>
+            </tr>
+        }
+    </table>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Enviar a revisión" class="btn btn-default" id="revision" />
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        function DownloadFile(fileId) {
+            $("#hfFileId").val(fileId);
+            $("#btnDownload")[0].click();
+        };
+    </script>
+</body>
+</html>
