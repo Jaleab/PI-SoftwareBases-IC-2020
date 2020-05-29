@@ -3,19 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ComunidadDePracticaMVC.Models;
 
 namespace ComunidadDePracticaMVC.Controllers
 {
     public class AccountController : Controller
     {
 
+        public ActionResult Login()
+        {
+            return View();
+        }
+
         //
         // GET: /Account/Login
         //[AllowAnonymous]
-        public ActionResult Login(/*string returnUrl*/)
+
+
+        public ActionResult LoginAction(LoginViewModel model)
         {
+            //Default result
+            ActionResult result = View();
+            AccountDBHandle accountDbHandle = new AccountDBHandle();
+            if (accountDbHandle.loginUser(model) != -1)
+            {
+                //Genera cookie de autenticacion
+
+                result = RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.Text = "Invalid Username or Password";
+                result = View(model);
+            }
             //ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return result;
         }
 
         public ActionResult loginPRUEBA(/*string returnUrl*/)
@@ -33,7 +55,10 @@ namespace ComunidadDePracticaMVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        public ActionResult Register()
+        {
+            return View();
+        }
         //
         // POST: /Account/Login
 
@@ -41,9 +66,23 @@ namespace ComunidadDePracticaMVC.Controllers
         //
         // GET: /Account/Register
         //[AllowAnonymous]
-        public ActionResult Register()
+        [HttpPost]
+        public ActionResult RegisterAction(RegisterViewModel model)
         {
-            return View();
+            //Default result
+            ActionResult result = View();
+            AccountDBHandle accountDbHandle = new AccountDBHandle();
+            if (accountDbHandle.registerUser(model) != -1)
+            {
+                //TODO hacer que diga que pudo completar la accion
+                result = RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.Text = "Username already exist!";
+                result = View(model);
+            }
+            return result;
         }
 
         //

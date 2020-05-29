@@ -135,6 +135,7 @@
     <Compile Include="Models\faqModel.cs" />
     <Compile Include="Models\StudentDBHandle.cs" />
     <Compile Include="Models\StudentExample.cs" />
+    <Compile Include="Models\AccountDBHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ArticuloService.cs" />
   </ItemGroup>
