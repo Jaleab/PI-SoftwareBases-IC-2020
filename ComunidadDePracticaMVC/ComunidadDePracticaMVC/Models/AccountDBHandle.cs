@@ -24,10 +24,10 @@ namespace ComunidadDePracticaMVC.Models
             SqlCommand cmd = new SqlCommand("InsertUser", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-           // string encryp = GetHash(model.Password, "SHA1");
+            string encryp = GetHash(model.Password, "SHA1");
 
             cmd.Parameters.AddWithValue("@Username", model.Username);
-            cmd.Parameters.AddWithValue("@Password", model.Password);
+            cmd.Parameters.AddWithValue("@Password", encryp);
             cmd.Parameters.AddWithValue("@Email", model.Email);
 
             con.Open();
@@ -56,10 +56,10 @@ namespace ComunidadDePracticaMVC.Models
             SqlCommand cmd = new SqlCommand("SelectUser", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            //string encryp = GetHash(Password, "SHA1");
+            string encryp = GetHash(Password, "SHA1");
 
             cmd.Parameters.AddWithValue("@Username",  Username);
-            cmd.Parameters.AddWithValue("@Password", Password);
+            cmd.Parameters.AddWithValue("@Password", encryp);
             con.Open();
             int codereturn = (int)cmd.ExecuteScalar();
             return codereturn == 1;

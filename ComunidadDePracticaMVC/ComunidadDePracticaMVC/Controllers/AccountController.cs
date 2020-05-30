@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using ComunidadDePracticaMVC.Models;
 
 namespace ComunidadDePracticaMVC.Controllers
@@ -19,22 +20,35 @@ namespace ComunidadDePracticaMVC.Controllers
         // GET: /Account/Login
         //[AllowAnonymous]
 
-
-        public ActionResult LoginAction(LoginViewModel model)
+        [HttpPost]
+        public JsonResult LoginAction(LoginViewModel model)
         {
             //Default result
-            ActionResult result = View();
+            JsonResult result;
             AccountDBHandle accountDbHandle = new AccountDBHandle();
             if (accountDbHandle.loginUser(model) != -1)
             {
-                //Genera cookie de autenticacion
-
-                result = RedirectToAction("Index", "Home");
+                //TODO get ROL de USUARIO
+                FormsAuthentication.SetAuthCookie(model.Username,true);
+                //TODO hacer que diga que pudo completar la accion
+                result = Json(new
+                {
+                    
+                    responseStatus = 1,
+                    responseMessage = "Bienvenido " + model.Username + "!",
+                    newUrl = Url.Action("Index", "Home") 
+                }
+                );
             }
             else
             {
-                ViewBag.Text = "Invalid Username or Password";
-                result = View(model);
+                result = Json(new
+                {
+                    responseStatus = -1,
+                    responseMessage = "Usuario o contraseña incorrecta.",
+                    newUrl = "" 
+                }
+                );
             }
             //ViewBag.ReturnUrl = returnUrl;
             return result;
@@ -67,26 +81,52 @@ namespace ComunidadDePracticaMVC.Controllers
         // GET: /Account/Register
         //[AllowAnonymous]
         [HttpPost]
-        public ActionResult RegisterAction(RegisterViewModel model)
+        public JsonResult RegisterAction(RegisterViewModel model)
         {
-            //Default result
-            ActionResult result = View();
+            JsonResult result;
             AccountDBHandle accountDbHandle = new AccountDBHandle();
             if (accountDbHandle.registerUser(model) != -1)
             {
+                //TODO get ROL de USUARIO
+                FormsAuthentication.SetAuthCookie(model.Username, true);
                 //TODO hacer que diga que pudo completar la accion
-                result = RedirectToAction("Index", "Home");
+                result = Json(new
+                    {
+                        responseStatus = 1,
+                        responseMessage = "Cuenta Registrada.",
+                        newUrl = Url.Action("Index", "Home") 
+                    }
+                );
             }
             else
             {
-                ViewBag.Text = "Username already exist!";
-                result = View(model);
+                result = Json(new
+                    {
+                        responseStatus = -1,
+                        responseMessage = "No se pudo registrar la cuenta, nombre de usuario ya existe.",
+                        newUrl = "" 
+                    }
+                );
             }
+
+            
             return result;
         }
 
         //
         // POST: /Account/Register
-        
+        [Authorize]
+        public ActionResult MyProfile(String Name)
+        {
+            ViewBag.title = Name;
+            return View();
+        }
+
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

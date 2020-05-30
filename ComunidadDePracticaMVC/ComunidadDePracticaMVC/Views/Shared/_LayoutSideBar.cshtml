@@ -1,7 +1,7 @@
 ﻿
-@if (Request.Cookies["userInfo"] != null)
+@if (User.Identity.IsAuthenticated)
 {
-    <li class="sidebar-title"> <a href="#"> Mi perfil </a> </li>
+    <li class="sidebar-title"> @Html.ActionLink("Mi perfil", "MyProfile", "Account", new { Name = "JAOSDJJOSAD" }, null) </li>
     <!--<li> <a href="#"> Crear Articulo </a> </li>-->
     <li> <a href="#"> Mis Articulos </a> </li>
     <!--<li class="sidebar-divider"></li>-->

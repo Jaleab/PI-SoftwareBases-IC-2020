@@ -1,12 +1,13 @@
 ﻿
-@if (Request.Cookies["userInfo"] != null)
+@if (User.Identity.IsAuthenticated)
 {
     <ul class="nav navbar-nav navbar-right">
         <!--
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account" , routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-        -->
-        <li>@Html.ActionLink("Sign out", "Sign out", "Account")</li>
+    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+    <li>@Html.ActionLink("Log in", "Login", "Account" , routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    -->
+        <li><a>@User.Identity.Name</a></li>
+        <li>@Html.ActionLink("Sign out", "LogOut", "Account")</li>
     </ul>
 }
 else

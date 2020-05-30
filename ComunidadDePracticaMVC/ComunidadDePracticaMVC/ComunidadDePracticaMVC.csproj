@@ -353,6 +353,7 @@
     <Content Include="Views\Articulo\Create.cshtml" />
     <Content Include="Views\faq\FAQ.cshtml" />
     <Content Include="Views\Articulo\BorrarArticulo.cshtml" />
+    <Content Include="Views\Account\MyProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
