@@ -37,10 +37,10 @@ namespace ComunidadDePracticaMVC.Services
         public List<FileModel> GetFiles()
         {
             List<FileModel> files = new List<FileModel>();
-            string constr = ConfigurationManager.ConnectionStrings["LocalConn"].ConnectionString;
+            string constr = ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ConnectionString;
             using (SqlConnection con = new SqlConnection(constr))
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT Id, Name FROM tblFiles"))
+                using (SqlCommand cmd = new SqlCommand("SELECT articuloId, Titulo FROM Articulo"))
                 {
                     cmd.Connection = con;
                     con.Open();
@@ -50,8 +50,8 @@ namespace ComunidadDePracticaMVC.Services
                         {
                             files.Add(new FileModel
                             {
-                                Id = Convert.ToInt32(sdr["Id"]),
-                                Name = sdr["Name"].ToString()
+                                Id = Convert.ToInt32(sdr["articuloId"]),
+                                Name = sdr["Titulo"].ToString()
                             });
                         }
                     }
@@ -69,16 +69,21 @@ namespace ComunidadDePracticaMVC.Services
             {
                 bytes = br.ReadBytes(postedFile.ContentLength);
             }
-            string constr = ConfigurationManager.ConnectionStrings["LocalConn"].ConnectionString;
+            string constr = ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ConnectionString;
             using (SqlConnection con = new SqlConnection(constr))
             {
-                string query = "INSERT INTO tblFiles VALUES (@Name, @ContentType, @Data)";
+                string query = "INSERT INTO Articulo(titulo, tipoArchivo, archivo, fechaPublicacion, topico, contenido, resumen) " +
+                    "           VALUES (@Titulo, @TipoArchivo, @Archivo, @FechaPublicacion, @Topico, @Contenido, @Resumen)";
                 using (SqlCommand cmd = new SqlCommand(query))
                 {
                     cmd.Connection = con;
-                    cmd.Parameters.AddWithValue("@Name", Path.GetFileName(postedFile.FileName));
-                    cmd.Parameters.AddWithValue("@ContentType", postedFile.ContentType);
-                    cmd.Parameters.AddWithValue("@Data", bytes);
+                    cmd.Parameters.AddWithValue("@Titulo", "Art largo");
+                    cmd.Parameters.AddWithValue("@FechaPublicacion", "2020");
+                    cmd.Parameters.AddWithValue("@Topico", "hola");
+                    cmd.Parameters.AddWithValue("@Contenido", "empty");
+                    cmd.Parameters.AddWithValue("@Resumen", "empty");
+                    cmd.Parameters.AddWithValue("@TipoArchivo", postedFile.ContentType);
+                    cmd.Parameters.AddWithValue("@Archivo", bytes);
                     con.Open();
                     cmd.ExecuteNonQuery();
                     con.Close();
@@ -87,33 +92,6 @@ namespace ComunidadDePracticaMVC.Services
         }
 
 
-        // Descargar archivo
-        public FileInfo DownloadFile(int? fileId)
-        {
-            byte[] bytes;
-            string fileName, contentType;
-            string constr = ConfigurationManager.ConnectionStrings["LocalConn"].ConnectionString;
-            using (SqlConnection con = new SqlConnection(constr))
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.CommandText = "SELECT Name, Data, ContentType FROM tblFiles WHERE Id=@Id";
-                    cmd.Parameters.AddWithValue("@Id", fileId);
-                    cmd.Connection = con;
-                    con.Open();
-                    using (SqlDataReader sdr = cmd.ExecuteReader())
-                    {
-                        sdr.Read();
-                        bytes = (byte[])sdr["Data"];
-                        contentType = sdr["ContentType"].ToString();
-                        fileName = sdr["Name"].ToString();
-                    }
-                    con.Close();
-                }
-            }
-
-            return new FileInfo(bytes, contentType, fileName);
-        }
-
+       
     }
 }

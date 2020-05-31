@@ -25,13 +25,6 @@ namespace ComunidadDePracticaMVC.Controllers
             return View(archivoService.GetFiles());
         }
 
-        [HttpPost]
-        public FileResult DownloadFile(int? fileId)
-        {
-            FileService.FileInfo info = archivoService.DownloadFile(fileId); 
-            byte[] bytes = info.bytes;
-            string fileName = info.filename, contentType = info.contentType;
-            return File(bytes, contentType, fileName);
-        }
+        
     }
 }
