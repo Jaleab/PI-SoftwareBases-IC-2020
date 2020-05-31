@@ -48,11 +48,12 @@ namespace ComunidadDePracticaMVC.Models
 
     public class LoginViewModel
     {
-        [Required]
-        [Display(Name = "Usuario")]
-        public string Username { get; set; }
+        [Required(ErrorMessage = "Una dirección de correo es requerida.")]
+        [EmailAddress]
+        [Display(Name = "Correo")]
+        public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Una contraseña es requerida.")]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
         public string Password { get; set; }
@@ -63,14 +64,24 @@ namespace ComunidadDePracticaMVC.Models
 
     public class RegisterViewModel
     {
-        [Required (ErrorMessage = "El nombre de usuario es requerido.")]
-        [Display(Name = "Usuario")]
-        public string Username { get; set;}
+        
 
         [Required(ErrorMessage = "Una dirección de correo es requerida.")]
         [EmailAddress]
         [Display(Name = "Correo")]
         public string Email{ get; set; }
+
+        [Required(ErrorMessage = "El nombre del usuario es requerido.")]
+        [Display(Name = "Nombre")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "El apellido del usuario es requerido.")]
+        [Display(Name = "Apellido")]
+        public string LastName { get; set; }
+
+        [Required(ErrorMessage = "El país del usuario es requerido.")]
+        [Display(Name = "País")]
+        public string Country { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "La contraseña debe ser al menos de {2} caracteres.", MinimumLength = 6)]

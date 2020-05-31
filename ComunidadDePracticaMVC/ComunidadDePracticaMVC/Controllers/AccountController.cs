@@ -29,13 +29,13 @@ namespace ComunidadDePracticaMVC.Controllers
             if (accountDbHandle.loginUser(model) != -1)
             {
                 //TODO get ROL de USUARIO
-                FormsAuthentication.SetAuthCookie(model.Username,true);
+                FormsAuthentication.SetAuthCookie(model.Email,true);
                 //TODO hacer que diga que pudo completar la accion
                 result = Json(new
                 {
                     
                     responseStatus = 1,
-                    responseMessage = "Bienvenido " + model.Username + "!",
+                    responseMessage = "Bienvenido " + model.Email +"!",
                     newUrl = Url.Action("Index", "Home") 
                 }
                 );
@@ -45,7 +45,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 result = Json(new
                 {
                     responseStatus = -1,
-                    responseMessage = "Usuario o contraseña incorrecta.",
+                    responseMessage = "Correo o contraseña incorrecta.",
                     newUrl = "" 
                 }
                 );
@@ -88,7 +88,7 @@ namespace ComunidadDePracticaMVC.Controllers
             if (accountDbHandle.registerUser(model) != -1)
             {
                 //TODO get ROL de USUARIO
-                FormsAuthentication.SetAuthCookie(model.Username, true);
+                FormsAuthentication.SetAuthCookie(model.Email, true);
                 //TODO hacer que diga que pudo completar la accion
                 result = Json(new
                     {
@@ -103,7 +103,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 result = Json(new
                     {
                         responseStatus = -1,
-                        responseMessage = "No se pudo registrar la cuenta, nombre de usuario ya existe.",
+                        responseMessage = "No se pudo registrar la cuenta, correo ya existe.",
                         newUrl = "" 
                     }
                 );
@@ -118,6 +118,7 @@ namespace ComunidadDePracticaMVC.Controllers
         [Authorize]
         public ActionResult MyProfile(String Name)
         {
+
             ViewBag.title = Name;
             return View();
         }
@@ -127,6 +128,7 @@ namespace ComunidadDePracticaMVC.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
+
 
     }
 }

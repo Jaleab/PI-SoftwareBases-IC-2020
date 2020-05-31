@@ -14,7 +14,7 @@ namespace ComunidadDePracticaMVC.Models
         private SqlConnection con;
         private void connection()
         {
-            string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn"].ToString();
+            string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString();
             con = new SqlConnection(constring);
 
         }
@@ -26,9 +26,11 @@ namespace ComunidadDePracticaMVC.Models
 
             string encryp = GetHash(model.Password, "SHA1");
 
-            cmd.Parameters.AddWithValue("@Username", model.Username);
-            cmd.Parameters.AddWithValue("@Password", encryp);
             cmd.Parameters.AddWithValue("@Email", model.Email);
+            cmd.Parameters.AddWithValue("@Name", model.Name);
+            cmd.Parameters.AddWithValue("@LastName", model.LastName);
+            cmd.Parameters.AddWithValue("@Country", model.Country);
+            cmd.Parameters.AddWithValue("@Password", encryp);
 
             con.Open();
             int codereturn = (int)cmd.ExecuteScalar();
@@ -38,7 +40,7 @@ namespace ComunidadDePracticaMVC.Models
         public int loginUser(LoginViewModel model)
         {
             int codereturn = 0;
-            if (authenticate(model.Username, model.Password))
+            if (authenticate(model.Email, model.Password))
             {
                 codereturn = 1;
             }
@@ -58,7 +60,7 @@ namespace ComunidadDePracticaMVC.Models
 
             string encryp = GetHash(Password, "SHA1");
 
-            cmd.Parameters.AddWithValue("@Username",  Username);
+            cmd.Parameters.AddWithValue("@Email",  Username);
             cmd.Parameters.AddWithValue("@Password", encryp);
             con.Open();
             int codereturn = (int)cmd.ExecuteScalar();

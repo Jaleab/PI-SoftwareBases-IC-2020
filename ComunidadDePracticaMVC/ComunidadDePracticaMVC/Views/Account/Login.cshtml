@@ -9,6 +9,7 @@
         $("#form").on('submit',function (e) {
             //Previene el verdadero submit de la b
             e.preventDefault();
+
             //valida el form
             $('#form').validate();
             var isFormValid = $('#form').valid();
@@ -28,7 +29,7 @@
                         url: "LoginAction/",
                         dataType: "json",
                         data: { //Passing data
-                            Username: $("#UsernameId").val(),
+                            Email: $("#EmailId").val(),
                             Password: $("#PasswordId").val()
                         },
                         success: function (data) {
@@ -81,10 +82,10 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Username, new { @class = "col-md-2 control-label" })
+                    @Html.LabelFor(model => model.Email, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Username, new { @class = "form-control", @id = "UsernameId" })
-                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @id = "EmailId" })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
