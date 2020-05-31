@@ -23,12 +23,14 @@ namespace PassParameter.Controllers
         {
             return View();
         }
+
         public ActionResult ConsultarArticulos(int id)
         {
             ViewBag.Message = "Usted está observando el resumen un artículo";
             ArticuloService servicioParaverResumen = new ArticuloService();
+            servicioParaverResumen.AumentarVisitas(id);
             ModelState.Clear();
-            return View(servicioParaverResumen.GetInfoArticulo(id)); // 
+            return View(servicioParaverResumen.GetInfoArticulo(id));  
         }
 
         // GET: Buscar por id Articulo

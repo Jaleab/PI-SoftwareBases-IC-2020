@@ -149,6 +149,7 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fontawesome.css" />
     <Content Include="Content\fontawesome.min.css" />
+    <Content Include="Content\FuncionesBotones.js" />
     <Content Include="Content\site.min.css" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
