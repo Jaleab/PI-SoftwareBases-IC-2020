@@ -51,30 +51,21 @@ function activarOtros(articuloID,valor) {
 }
 
 function enviarPuntos(articuloID, valor) {
-    $(document).ready(function () {
-        $.ajax(
-            {
-                //idS: $("ArtId").val(),
-                type: "POST", //HTTP POST Method
-                url: "Articulo/Puntuar",
-                //contentType: "Application/json; charset=utf-8”,
-                //dataType: "json",
-                data: { //Passing data
-                    Id: articuloID,
-                    PuntajeLector: valor
-                },
+    $.ajax({
+        type: "GET",
+        url: '/Articulo/puntuar/',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: { id: articuloID, puntaje: valor },
+        success: function (response) {
+            alert(response.message)
+        },
+        failure: function () {
+            alert("Error al puntuar")
+        },
+        error: function (err) {
+            alert("Error al puntuar")
+        }
 
-                success: function (data) {
-                    alert(data);
-                },
-
-                failure: function (response) {
-                    alert("gus bay F");
-                },
-                error: function (response) {
-                    alert("gg F");
-                }
-
-            });
     });
 }

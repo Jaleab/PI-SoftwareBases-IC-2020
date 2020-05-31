@@ -33,7 +33,7 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
         }
 
-        public void ModificarPuntaje(int idArticulo, string correoMiembro) //OK
+        public void ModificarPuntaje(int idArticulo, string correoMiembro, int puntaje) //OK
         {
             connection();
 
@@ -45,6 +45,21 @@ namespace ComunidadDePracticaMVC.Services
             cmd.ExecuteNonQuery();
             con.Close();
         }
+
+        //TODO METODO PROVISIONAL
+        public void modificarLikes(int idArticulo, int puntaje) //OK
+        {
+            connection();
+
+            SqlCommand cmd = new SqlCommand("ModificarLikes", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@IdArticulo", idArticulo);
+            cmd.Parameters.AddWithValue("@Puntaje", puntaje);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
 
         // ******************** ADD NEW ARTICULO ********************
         public List<ArticuloModel> GetArticulos() //OK

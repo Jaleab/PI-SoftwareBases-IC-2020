@@ -170,6 +170,17 @@ namespace PassParameter.Controllers
 
         }
 
+        public JsonResult puntuar(int id, int puntaje)
+        {
+            ArticuloService artServ = new ArticuloService();
+            artServ.modificarLikes(id, puntaje);
+
+            JsonResult result = Json(new
+            {
+                message = "Se modifico los likes de articulo " + id.ToString()
+            },  JsonRequestBehavior.AllowGet);;
+            return result;
+        }
 
     }
 }
