@@ -10,21 +10,37 @@ namespace ComunidadDePracticaMVC.Models
         [Display(Name = "ArticuloId")]
         public int ArticuloId { get; set; }
 
-        [Required(ErrorMessage = "Un autor es requerido.")]
         public string Autor { get; set; }
 
-        [Required(ErrorMessage = "Ingrese el contenido del articulo.")]
-        [AllowHtml]
-        public string Contenido { get; set; }
+        [Required(ErrorMessage = "Un titulo es requerido.")]
+        public string Titulo { get; set; }
 
         [Required(ErrorMessage = "Ingrese el resumen del articulo.")]
         [AllowHtml]
         public string Resumen { get; set; }
 
-        [Required(ErrorMessage = "Un titulo es requerido.")]
-        public string Titulo { get; set; }
+
+        [Required(ErrorMessage = "Ingrese el contenido del articulo.")]
+        [AllowHtml]
+        public string Contenido { get; set; }
+
 
         [Required(ErrorMessage = "Un topico es requerido.")]
         public string Topico { get; set; }
+
+        public int CantidadVisitas { get; set; }
+       
+
+        public DateTime FechaPublicacion{ get; set; }
+
+        public string TipoArchivo { get; set; }
+        public byte[] Archivo { get; set; }
+
+
+
+
+
+
+
     }
 }

@@ -58,11 +58,7 @@ namespace PassParameter.Controllers
             {
             try
             {
-                // TODO: Add insert logic here
-                ArticuloService dbhandle = new ArticuloService();
-                dbhandle.CrearArticulo(articulo);
-                Console.Write(articulo); 
-                return RedirectToAction("InicioArticulos");
+                return View();
             }
             catch
             {
@@ -73,6 +69,16 @@ namespace PassParameter.Controllers
         public ActionResult CrearArticulo()
         {
             return View(); 
+        }
+
+        [HttpPost]
+        public ActionResult CrearArticulo(ArticuloModel articulo)
+        {
+            // TODO: Add insert logic here
+            ArticuloService dbhandle = new ArticuloService();
+            dbhandle.CrearArticulo(articulo);
+            Console.Write(articulo);
+            return RedirectToAction("InicioArticulos");
         }
 
         // GET: Articulo/Edit/5

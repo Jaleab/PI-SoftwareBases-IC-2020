@@ -15,11 +15,9 @@ namespace ComunidadDePracticaMVC.Services
         private SqlConnection con;
         private void connection()
         {
-            string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn"].ToString();
+            string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString();
             con = new SqlConnection(constring);
         }
-
-
         
         // ******************** ADD NEW ARTICULO ********************
         public List<ArticuloModel> GetArticulos()
@@ -61,11 +59,12 @@ namespace ComunidadDePracticaMVC.Services
             SqlCommand cmd = new SqlCommand("AgregarNuevoArticulo", con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
             cmd.Parameters.AddWithValue("@Topico", articulo.Topico); 
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
+            cmd.Parameters.AddWithValue("@TipoArchivo", "corto");
+            cmd.Parameters.AddWithValue("@FechaPublicacion", articulo.FechaPublicacion); 
 
             con.Open();
             cmd.ExecuteNonQuery();

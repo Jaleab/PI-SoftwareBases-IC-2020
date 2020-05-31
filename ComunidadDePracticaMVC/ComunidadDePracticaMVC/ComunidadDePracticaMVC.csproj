@@ -132,6 +132,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AccountDBHandle.cs" />
     <Compile Include="Models\ArticuloModel.cs" />
     <Compile Include="Models\faqModel.cs" />
     <Compile Include="Models\FileModel.cs" />
@@ -357,6 +358,7 @@
     <Content Include="Views\Articulo\BorrarArticulo.cshtml" />
     <Content Include="Views\File\Index.cshtml" />
     <Content Include="Views\Articulo\CrearArticulo.cshtml" />
+    
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
