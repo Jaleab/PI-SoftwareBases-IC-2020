@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using ComunidadDePracticaMVC.Models;
+using System.Web.Mvc;
 
 namespace ComunidadDePracticaMVC.Services
 {
@@ -18,9 +19,45 @@ namespace ComunidadDePracticaMVC.Services
             string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString();
             con = new SqlConnection(constring);
         }
-        
-        // ******************** ADD NEW ARTICULO ********************
-        public List<ArticuloModel> GetArticulos()
+
+        public List<SelectListItem> FillList()
+        {
+            var list = new List<SelectListItem>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString()))
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("select * from Usuario", con);
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    dataAdapter.Fill(dt);
+
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            list.Add(new SelectListItem { Text = row["nombre"].ToString() + " " + row["apellido1"].ToString(), Value = row["correo"].GetHashCode().ToString() });
+                        }
+                    }
+                    else
+                    {
+                        list.Add(new SelectListItem { Text = "No records found", Value = "0" });
+                        con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                list.Add(new SelectListItem { Text = ex.Message.ToString(), Value = "0" });
+            }
+
+            return list;
+        }
+ 
+
+    // ******************** ADD NEW ARTICULO ********************
+    public List<ArticuloModel> GetArticulos()
         {
             connection();
             List<ArticuloModel> Articulolist = new List<ArticuloModel>();

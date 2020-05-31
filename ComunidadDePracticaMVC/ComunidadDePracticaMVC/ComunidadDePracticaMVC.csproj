@@ -358,7 +358,6 @@
     <Content Include="Views\Articulo\BorrarArticulo.cshtml" />
     <Content Include="Views\File\Index.cshtml" />
     <Content Include="Views\Articulo\CrearArticulo.cshtml" />
-    
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

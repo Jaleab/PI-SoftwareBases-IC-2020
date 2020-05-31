@@ -47,14 +47,16 @@ namespace PassParameter.Controllers
         }
 
         // GET: Articulo/Create
-        public ActionResult Create()
+        public ActionResult Create(ArticuloModel articulo)
         {
+            ArticuloService dbhandle = new ArticuloService();
+            articulo.Autores = dbhandle.FillList();
             return View();
         }
 
         // POST: Articulo/Create
         [HttpPost]
-        public ActionResult Create(ArticuloModel articulo)
+        public ActionResult Create()
             {
             try
             {
@@ -66,16 +68,19 @@ namespace PassParameter.Controllers
             }
         }
 
-        public ActionResult CrearArticulo()
+        public ActionResult CrearArticulo(ArticuloModel articulo)
         {
-            return View(); 
+            ArticuloService dbhandle = new ArticuloService();
+            articulo.Autores = dbhandle.FillList();
+            return View(articulo); 
         }
 
         [HttpPost]
-        public ActionResult CrearArticulo(ArticuloModel articulo)
+        public ActionResult CrearArticuloPost(ArticuloModel articulo)
         {
             // TODO: Add insert logic here
             ArticuloService dbhandle = new ArticuloService();
+            
             dbhandle.CrearArticulo(articulo);
             Console.Write(articulo);
             return RedirectToAction("InicioArticulos");
