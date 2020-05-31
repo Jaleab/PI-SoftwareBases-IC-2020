@@ -3,19 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using ComunidadDePracticaMVC.Models;
 
 namespace ComunidadDePracticaMVC.Controllers
 {
     public class AccountController : Controller
     {
 
+        public ActionResult Login()
+        {
+            return View();
+        }
+
         //
         // GET: /Account/Login
         //[AllowAnonymous]
-        public ActionResult Login(/*string returnUrl*/)
+
+        [HttpPost]
+        public JsonResult LoginAction(LoginViewModel model)
         {
+            //Default result
+            JsonResult result;
+            AccountDBHandle accountDbHandle = new AccountDBHandle();
+            if (accountDbHandle.loginUser(model) != -1)
+            {
+                //TODO get ROL de USUARIO
+                FormsAuthentication.SetAuthCookie(model.Email,true);
+                //TODO hacer que diga que pudo completar la accion
+                result = Json(new
+                {
+                    
+                    responseStatus = 1,
+                    responseMessage = "Bienvenido " + model.Email +"!",
+                    newUrl = Url.Action("Index", "Home") 
+                }
+                );
+            }
+            else
+            {
+                result = Json(new
+                {
+                    responseStatus = -1,
+                    responseMessage = "Correo o contraseña incorrecta.",
+                    newUrl = "" 
+                }
+                );
+            }
             //ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return result;
         }
 
         public ActionResult loginPRUEBA(/*string returnUrl*/)
@@ -33,7 +69,10 @@ namespace ComunidadDePracticaMVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        public ActionResult Register()
+        {
+            return View();
+        }
         //
         // POST: /Account/Login
 
@@ -41,13 +80,55 @@ namespace ComunidadDePracticaMVC.Controllers
         //
         // GET: /Account/Register
         //[AllowAnonymous]
-        public ActionResult Register()
+        [HttpPost]
+        public JsonResult RegisterAction(RegisterViewModel model)
         {
-            return View();
+            JsonResult result;
+            AccountDBHandle accountDbHandle = new AccountDBHandle();
+            if (accountDbHandle.registerUser(model) != -1)
+            {
+                //TODO get ROL de USUARIO
+                FormsAuthentication.SetAuthCookie(model.Email, true);
+                //TODO hacer que diga que pudo completar la accion
+                result = Json(new
+                    {
+                        responseStatus = 1,
+                        responseMessage = "Cuenta Registrada.",
+                        newUrl = Url.Action("Index", "Home") 
+                    }
+                );
+            }
+            else
+            {
+                result = Json(new
+                    {
+                        responseStatus = -1,
+                        responseMessage = "No se pudo registrar la cuenta, correo ya existe.",
+                        newUrl = "" 
+                    }
+                );
+            }
+
+            
+            return result;
         }
 
         //
         // POST: /Account/Register
-        
+        [Authorize]
+        public ActionResult MyProfile(String Name)
+        {
+
+            ViewBag.title = Name;
+            return View();
+        }
+
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
+
+
     }
 }
