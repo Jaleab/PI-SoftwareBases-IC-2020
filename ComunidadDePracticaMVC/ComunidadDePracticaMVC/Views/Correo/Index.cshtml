@@ -1,0 +1,124 @@
+﻿@using ComunidadDePracticaMVC.Models
+@model CorreoModel
+@{
+    ViewBag.Title = "Index";
+}
+<script type="text/javascript" src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="~/Scripts/tinyMCEMailConfig.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //TODO show por ahora
+        $("#mail").show();
+
+        $("#form").on('submit', function (e) {
+            //Previene el verdadero submit de la b
+            e.preventDefault();
+
+            //valida el form
+            $('#form').validate();
+            var isFormValid = $('#form').valid();
+            //Elementos para retroalimentacion al usuario
+            var alertValidation = document.getElementById("alert-validation");
+            alertValidation.style.display = "none";
+            var alertResponse = document.getElementById("alert-response");
+            alertResponse.style.display = "none";
+            var alertResponseTitle = document.getElementById("alert-response-title");
+
+
+
+            if (isFormValid) {
+                var content = tinymce.activeEditor.getContent();
+                $.ajax(
+                    {
+                        type: "POST", //HTTP POST Method
+                        url: "/Correo/EnviarCorreo/",
+                        dataType: "json",
+                        data: { //Passing data
+                            EmailTo: $("#EmailTo").val(),
+                            Subject: $("#Subject").val(),
+                            EmailBody: content,
+                            Sender: ''
+                        },
+                        success: function (data) {
+                            //document.getElementById('form').reset();
+
+                            alert(data.responseMessage);
+                            window.location.replace(data.newUrl);
+
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+            }
+            else {
+                alertValidation.style.display = "block";
+            }
+
+        });
+
+    });
+
+
+</script>
+
+<div id="mail" class="modal">
+
+    <!-- Contenido modal -->
+    <div class="modal-content">
+        <span id="closeCreate" class="close">&times;</span>
+
+
+
+        <form id="form" class="form-horizontal" novalidate="novalidate">
+
+            @Html.AntiForgeryToken()
+
+
+            <div id="alert-response" class="alert alert-danger" style="display:none">
+                <strong id="alert-response-title"></strong>
+            </div>
+            <div id="alert-validation" class="alert alert-danger" style="display:none">
+                <strong>Porfavor, arregle estos errores antes de acceder.</strong>
+                @Html.ValidationSummary()
+            </div>
+
+            <div class="form-group">
+                <h2>To</h2>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.EmailTo, new { @class = "miPreguntaArea", @id = "EmailTo" })
+                </div>
+            </div>
+            <div class="form-group">
+                <h2>Subject</h2>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Subject, new { @class = "miPreguntaArea", @id = "Subject" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.EmailBody, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "EmailBodyId" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+
+                    <!--<input type="submit" value="Log in" class="btn btn-default" />-->
+                    <input type="submit" value="Enviar" class="btn btn-default" />
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

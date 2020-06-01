@@ -9,17 +9,17 @@
     $(document).ready(function () {
         $("#btnSave").click(function () {
             $.ajax(
-                {
-                    type: "POST", //HTTP POST Method
-                    url: "Articulo/Create/",
-                    data: { //Passing data
-                        Autor: $("#AutorId").val(),
-                        Titulo: $("#TituloId").val(), 
-                        Contenido: $("#ContenidoId").val(),
-                        Resumen: $("#ResumenId").val(),
-                        Topico: $("#TopicoId").val()
-                    }
-                });
+            {
+                type: "POST", //HTTP POST Method
+                url: "Articulo/Create/",
+                data: { //Passing data
+                    Autor: $("#AutorId").val(),
+                    Titulo: $("#TituloId").val(), 
+                    Contenido: $("#ContenidoId").val(),
+                    Resumen: $("#ResumenId").val(),
+                    Topico: $("#TopicoId").val()
+                }
+            });
         });
     });
 </script>

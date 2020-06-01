@@ -6,8 +6,9 @@
     <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
     <li>@Html.ActionLink("Log in", "Login", "Account" , routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     -->
+        <li><a class = "fa fa-envelope-o" href="@Url.Action("Index", "Correo")"></a></li>
         <li><a>@User.Identity.Name</a></li>
-        <li>@Html.ActionLink("Sign out", "LogOut", "Account")</li>
+        <li>@Html.ActionLink("Sign out", "LogOut", "Account")</li   >
     </ul>
 }
 else

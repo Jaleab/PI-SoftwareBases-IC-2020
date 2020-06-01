@@ -32,12 +32,39 @@ span a:hover {
 /* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 6% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 800px; /* Could be more or less, depending on screen size */
-    height:800px;
+    height:650px;
 }
+
+.modal-content-header {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.modal-content-title {
+    background-color: #fefefe;
+    margin: 6% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 800px; /* Could be more or less, depending on screen size */
+    height: 650px;
+}
+
+
+/* Modal Content/Box */
+.modal-content-content {
+    background-color: #fefefe;
+    margin: 6% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 800px; /* Could be more or less, depending on screen size */
+    height: 650px;
+}
+
+
 
 .close {
     color: #aaa;
