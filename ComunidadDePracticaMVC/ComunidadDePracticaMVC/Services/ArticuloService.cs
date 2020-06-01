@@ -119,9 +119,7 @@ namespace ComunidadDePracticaMVC.Services
         public void CrearArticulo(ArticuloModel articulo)
         {
             //establecer la conexion con la base de datos
-            connection();
-
-            
+            connection();  
             
             SqlCommand cmd = new SqlCommand("AgregarNuevoArticulo", con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
@@ -153,9 +151,9 @@ namespace ComunidadDePracticaMVC.Services
             //establecer la conexion con la base de datos
             connection();
             //Ejecutar la consulta de un articulo segun su id
-            SqlCommand cmd = new SqlCommand("ConsultaUnitaria", con);
+            SqlCommand cmd = new SqlCommand("GetArticuloPorId", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@ArtId", id);
+            cmd.Parameters.AddWithValue("@ArticuloId", id);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
 
@@ -172,6 +170,8 @@ namespace ComunidadDePracticaMVC.Services
             articulo.Resumen = Convert.ToString(dr["resumen"]);
             articulo.Titulo = Convert.ToString(dr["titulo"]);
             articulo.Topico = Convert.ToString(dr["topico"]);
+            articulo.TipoArchivo = Convert.ToString(dr["tipoArchivo"]);
+            articulo.FechaPublicacion = Convert.ToDateTime(dr["fechaPublicacion"]);
 
 
             Console.WriteLine(articulo.ArticuloId);

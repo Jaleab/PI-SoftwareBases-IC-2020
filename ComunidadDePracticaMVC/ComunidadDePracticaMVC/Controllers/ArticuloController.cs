@@ -55,6 +55,8 @@ namespace PassParameter.Controllers
             return View();
         }
 
+
+
         // POST: Articulo/Create
         [HttpPost]
         public ActionResult Create()
@@ -92,8 +94,46 @@ namespace PassParameter.Controllers
         public ActionResult EditarArticulo(int id)
         {
             ArticuloService dbArticulo = new ArticuloService();
+            ArticuloModel articulo = dbArticulo.GetInfoArticulo(id);
+            if (articulo.TipoArchivo == "corto")
+            {
+                return RedirectToAction("EditarArticuloCorto",new { id = id });
+            }
+            else
+            {
+                return RedirectToAction("EditarArticuloLargo",new { id = id });
+            }
+        }
+
+        public ActionResult EditarArticuloCorto(int id)
+        {
+            ArticuloService dbArticulo = new ArticuloService(); 
+            return View(dbArticulo.GetInfoArticulo(id)); 
+        }
+
+        public ActionResult EditarArticuloLargo(int id)
+        {
+            ArticuloService dbArticulo = new ArticuloService();
             return View(dbArticulo.GetInfoArticulo(id));
         }
+
+        public ActionResult CrearArticuloLargo()
+        {
+            ArticuloModel art1 = new ArticuloModel();
+            ArticuloService dbhandle = new ArticuloService();
+            art1.Autores = dbhandle.FillList();
+            return View(art1);
+        }
+        [HttpPost]
+        public ActionResult CrearArticuloLargo(ArticuloModel articulo)
+        {
+            ArticuloService dbhandle = new ArticuloService();
+            dbhandle.CrearArticulo(articulo);
+            Console.Write(articulo);
+            string autorValue = articulo.Autor;
+            return RedirectToAction("InicioArticulos");
+        }
+
 
         // POST: Articulo/Edit/5
         [HttpPost]

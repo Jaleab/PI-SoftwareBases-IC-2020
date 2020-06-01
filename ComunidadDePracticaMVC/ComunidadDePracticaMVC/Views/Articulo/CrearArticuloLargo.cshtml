@@ -6,28 +6,34 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        var option = "";
+        $("#AutoresId").change(function () {
+            option = $("#AutoresId option:selected").val();
+            $("#AutorId").val(option);
+        });
         var id = $("#ArtId").val();
+
         $("#btnSave").click(function () {
+            alert($('#ArchivoId').val());
             $.ajax(
                 {
                     idS: $("ArtId").val(),
                     type: "POST", //HTTP POST Method
-                    url: "Articulo/EditarArticulo/",
+                    url: "/Articulo/CrearArticulo/",
                     data: { //Passing data
-                        Id: $("#ArtId").val(),
-                        Autor: $("#AutorId").val(),
+                        ArticuloId: $("#ArtId").val(),
                         Titulo: $("#TituloId").val(),
-                        Contenido: $("#ContenidoId").val(),
+                       // Archivo: $("#ContenidoId").val(),
                         Resumen: $("#ResumenId").val(),
-                        Topico: $("#TopicoId").val()
-                    }
-
+                        Topico: $("#TopicoId").val(),
+                        FechaPublicacion: $("#FechaPublicacion").val(),
+                        Autor: $("#AutorId").val()
+                    },
                 });
-
         });
     });
+    //$("#return".onClick())
 </script>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -35,23 +41,19 @@
 <div class="form-horizontal">
     <h4>ArticuloModel</h4>
     <hr />
+
+
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
     <div class="form-group">
-        @Html.LabelFor(model => model.ArticuloId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.ArticuloId, new { htmlAttributes = new { @class = "form-control", @id = "ArtId" } })
-            @Html.ValidationMessageFor(model => model.ArticuloId, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.Autores, htmlAttributes: new { @class = "control-label col-md-2", @style = "margin-left: 30px;" })
+            @Html.DropDownListFor(model => model.Autor, Model.Autores, "Escoger autor", new { @class = "btn btn-default", @id = "AutoresId" })
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Autor, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Autor, new { htmlAttributes = new { @class = "form-control", @id = "AutorId" } })
-            @Html.ValidationMessageFor(model => model.Autor, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
+    @Html.TextBoxFor(model => model.Autor, new { style = "visibility:hidden", @id = "AutorId" })
     <div class="form-group">
         @Html.LabelFor(model => model.Titulo, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -63,18 +65,28 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Resumen, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextAreaFor(model => model.Resumen, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "ResumenId" } })
+            @Html.TextAreaFor(model => model.Resumen, new { htmlAttributes = new { @class = "form-control editorHtml ", @id = "ResumenId" } })
             @Html.ValidationMessageFor(model => model.Resumen, "", new { @class = "text-danger" })
         </div>
     </div>
 
+
+    @using (Html.BeginForm("Index", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
     <div class="form-group">
-        @Html.LabelFor(model => model.Contenido, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(model => model.Contenido, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "ContenidoId" } })
-            @Html.ValidationMessageFor(model => model.Contenido, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.Archivo, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10 container-fluid">
+            <span>
+                <input type="file" name="postedFile" id="ArchivoId"/>
+                <input type="submit" id="btnUpload" class="rounded" value="Upload" style="margin-top:6px; width=78px"/>
+
+            </span>
         </div>
     </div>
+       
+
+
+    }
 
     <div class="form-group">
         @Html.LabelFor(model => model.Topico, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -85,16 +97,22 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(model => model.FechaPublicacion, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.FechaPublicacion, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "FechaPublicacion" } })
+            @Html.ValidationMessageFor(model => model.Topico, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" id="btnSave" />
+            <input type="submit" value="Regresar" class="btn btn-default" id="return" style="margin-right: 469px" />
+            <input type="submit" value="Crear artículo corto" class="btn btn-default" id="btnSave" />
         </div>
     </div>
 </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "InicioArticulos")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

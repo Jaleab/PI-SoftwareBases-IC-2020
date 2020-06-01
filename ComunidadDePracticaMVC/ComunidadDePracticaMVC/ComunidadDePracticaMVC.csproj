@@ -126,7 +126,6 @@
     <Compile Include="Controllers\ExampleController.cs" />
     <Compile Include="Controllers\ArticuloController.cs" />
     <Compile Include="Controllers\faqController.cs" />
-    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -135,12 +134,10 @@
     <Compile Include="Models\AccountDBHandle.cs" />
     <Compile Include="Models\ArticuloModel.cs" />
     <Compile Include="Models\faqModel.cs" />
-    <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\StudentDBHandle.cs" />
     <Compile Include="Models\StudentExample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ArticuloService.cs" />
-    <Compile Include="Services\FileService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -352,12 +349,13 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LayoutTopNav.cshtml" />
     <Content Include="Views\Shared\_LayoutSideBar.cshtml" />
-    <Content Include="Views\Articulo\EditarArticulo.cshtml" />
+    <Content Include="Views\Articulo\EditarArticuloCorto.cshtml" />
     <Content Include="Views\Articulo\Create.cshtml" />
     <Content Include="Views\faq\FAQ.cshtml" />
     <Content Include="Views\Articulo\BorrarArticulo.cshtml" />
-    <Content Include="Views\File\Index.cshtml" />
     <Content Include="Views\Articulo\CrearArticulo.cshtml" />
+    <Content Include="Views\Articulo\CrearArticuloLargo.cshtml" />
+    <Content Include="Views\Articulo\EditarArticuloLargo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
