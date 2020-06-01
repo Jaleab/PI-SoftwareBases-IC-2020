@@ -20,6 +20,35 @@ namespace ComunidadDePracticaMVC.Services
             con = new SqlConnection(constring);
         }
 
+        public int ArticuloIdInDB(ArticuloModel  articulo)
+        {
+            int Id = 0;
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString()))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("select * from Articulo", con);
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                dataAdapter.Fill(dt);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string titulo = row["Titulo"].ToString(); 
+                        if(titulo == articulo.Titulo)
+                        {
+                            Id = (int)row["ArticuloId"]; 
+                        }
+                    }
+                }
+                else
+                { 
+                    con.Close();
+                }
+            }
+            return Id;
+        }
+
         public List<SelectListItem> FillList()
         {
             var list = new List<SelectListItem>();
@@ -37,7 +66,7 @@ namespace ComunidadDePracticaMVC.Services
                     {
                         foreach (DataRow row in dt.Rows)
                         {
-                            list.Add(new SelectListItem { Text = row["nombre"].ToString() + " " + row["apellido1"].ToString(), Value = row["correo"].GetHashCode().ToString() });
+                            list.Add(new SelectListItem { Text = row["nombre"].ToString() + " " + row["apellido1"].ToString(), Value = row["correo"].ToString() });
                         }
                     }
                     else
@@ -92,7 +121,8 @@ namespace ComunidadDePracticaMVC.Services
             //establecer la conexion con la base de datos
             connection();
 
-
+            
+            
             SqlCommand cmd = new SqlCommand("AgregarNuevoArticulo", con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -101,7 +131,15 @@ namespace ComunidadDePracticaMVC.Services
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
             cmd.Parameters.AddWithValue("@TipoArchivo", "corto");
-            cmd.Parameters.AddWithValue("@FechaPublicacion", articulo.FechaPublicacion); 
+            cmd.Parameters.AddWithValue("@FechaPublicacion", articulo.FechaPublicacion);
+         
+
+            int Id = ArticuloIdInDB(articulo);
+
+
+            SqlCommand cmd1 = new SqlCommand("AgregarNuevoArticuloPublica", con);
+            cmd.Parameters.AddWithValue("@ArticuloId", Id);
+            cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
 
             con.Open();
             cmd.ExecuteNonQuery();

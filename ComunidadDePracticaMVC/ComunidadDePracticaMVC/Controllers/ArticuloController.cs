@@ -10,6 +10,7 @@ using ComunidadDePracticaMVC.Models;
 namespace PassParameter.Controllers
 
 {
+
     public class ArticuloController : Controller
     {
         // GET: Articulo
@@ -68,21 +69,22 @@ namespace PassParameter.Controllers
             }
         }
 
-        public ActionResult CrearArticulo(ArticuloModel articulo)
+        public ActionResult CrearArticulo()
         {
+            ArticuloModel art1 = new ArticuloModel(); 
             ArticuloService dbhandle = new ArticuloService();
-            articulo.Autores = dbhandle.FillList();
-            return View(articulo); 
+            art1.Autores = dbhandle.FillList();
+            return View(art1); 
         }
 
         [HttpPost]
-        public ActionResult CrearArticuloPost(ArticuloModel articulo)
+        public ActionResult CrearArticulo(ArticuloModel articulo)
         {
             // TODO: Add insert logic here
             ArticuloService dbhandle = new ArticuloService();
-            
             dbhandle.CrearArticulo(articulo);
             Console.Write(articulo);
+            string autorValue = articulo.Autor;
             return RedirectToAction("InicioArticulos");
         }
 
