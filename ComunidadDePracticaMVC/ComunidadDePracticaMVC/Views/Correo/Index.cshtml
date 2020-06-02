@@ -9,6 +9,14 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        //Cerrar modal y devolverse a inicio
+        var span = document.getElementById("close");
+        span.onclick = function () {
+            window.location.replace("@Url.Action("Index", "Home")");
+        }
+        
+
+
         //TODO show por ahora
         $("#mail").show();
 
@@ -73,7 +81,7 @@
     <div class="box-container">
         <div class="box-header row">
             <div class="col-md-3 box-header-title">Nuevo mensaje</div>
-            <span id="closeCreate" class="close box-header-links">&times;</span>
+            <span id="close" class="close box-header-links">&times;</span>
         </div>
         <div class="box-content">
             <form id="form" novalidate="novalidate">

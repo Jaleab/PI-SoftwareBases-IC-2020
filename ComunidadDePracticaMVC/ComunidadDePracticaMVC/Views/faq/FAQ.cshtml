@@ -8,13 +8,13 @@
     <script>
 
         $(document).ready(function () {
-            $("#form").on('submit', function (e) {
+            $("#formCreate").on('submit', function (e) {
                 //Previene el verdadero submit de la b
                 e.preventDefault();
 
                 //valida el form
-                $('#form').validate();
-                var isFormValid = $('#form').valid();
+                $('#formCreate').validate();
+                var isFormValid = $('#formCreate').valid();
                 //Elementos para retroalimentacion al usuario
                 var alertValidation = document.getElementById("alert-validation");
                 alertValidation.style.display = "none";
@@ -57,60 +57,67 @@
 
         function crearPregunta() {
             var windowCreate = document.getElementById("create");
-            var createPregunta = document.getElementById("textPreguntaCreate");
-            var createRespuesta = document.getElementById("textRespuestaCreate");
-
             windowCreate.style.display = "block";
             var span = document.getElementById("closeCreate");
             span.onclick = function () {
-                createPregunta.textContent = "";
-                createRespuesta.textContent = "";
                 windowCreate.style.display = "none";
+                document.getElementById("formCreate").reset();
             }
         }
 
-        function editarContenido(botonClick, id) {
-            var idBoton = botonClick.id;
-            var nombreVentana = "myModal" + id;
-            var modal = document.getElementById(nombreVentana);
+        function editarContenido(id) {
+            var modal = document.getElementById("myModal" + id);
             modal.style.display = "block";
             var span = document.getElementById("close" + id);
-            span.onclick = function () {
-                modal.style.display = "none";
-            }
-        }
+            //Modifica el submit del form
+            $('#form' + id).on('submit', function (e) {
+                //Previene el verdadero submit de la b
+                e.preventDefault();
 
-        function actualizar(botonClick) {
-            var idBoton = botonClick.id;
-            var nombreTxtAreaPreg = "textAreaPregunta" + idBoton.charAt(idBoton.length - 1);
-            var nombreTxtAreaResp = "textAreaRespuesta" + idBoton.charAt(idBoton.length - 1);
-            var sectionPreguntaMod = "PREG" + idBoton.charAt(idBoton.length - 1);
-            var sectionRespuestataMod = "RESP" + idBoton.charAt(idBoton.length - 1);
-            var preguntaString = document.getElementById(nombreTxtAreaPreg).value;
-            var respuestaString = document.getElementById(nombreTxtAreaResp).value;
-            document.getElementById(sectionPreguntaMod).textContent = preguntaString;
-            document.getElementById(sectionRespuestataMod).textContent = respuestaString;
+                //valida el form
+                $('#form' + id).validate();
+                var isFormValid = $('#form' + id).valid();
+                //Elementos para retroalimentacion al usuario
+                var alertValidation = document.getElementById("alert-validation" + id);
+                alertValidation.style.display = "none";
+                var alertResponse = document.getElementById("alert-response" + id);
+                alertResponse.style.display = "none";
+                var alertResponseTitle = document.getElementById("alert-response-title" + id);
 
-            var nombreVentana = "myModal" + idBoton.charAt(idBoton.length - 1);
-            modal = document.getElementById(nombreVentana);
-            modal.style.display = "none";
+                if (isFormValid) {
 
-        }
+                    var createPregunta = document.getElementById("textAreaPregunta" + id);
+                    var createRespuesta = document.getElementById("textAreaRespuesta" + id);
+                    var ids = id;
+                    $.ajax({
+                        type: "POST",
+                        url: "Edit",
+                        data: { id: ids, preguntaStr: createPregunta.value, respuestaStr: createRespuesta.value },
+                        traditional: true,
+                        success: function (response) {
+                            alert("Se edito la pregunta.")
+                            location.reload();
+                        },
+                        failure: function (response) {
+                            alert("No se pudo editar la pregunta.");
+                        },
+                        error: function (response) {
+                            alert("No se pudo editar la pregunta.");
+                        }
 
-        function ajaxEditar(id) {
-            var createPregunta = document.getElementById("textAreaPregunta" + id);
-            var createRespuesta = document.getElementById("textAreaRespuesta" + id);
-            var ids = id;
-            $.ajax({
-                type: "POST",
-                url: "Edit",
-                data: { id: ids, preguntaStr: createPregunta.value, respuestaStr: createRespuesta.value },
-                traditional: true,
-                success: function (response) {
-                    location.reload();
+                    });
+
+                }
+                else {
+                    alertValidation.style.display = "block";
                 }
 
             });
+
+            span.onclick = function () {
+                modal.style.display = "none";
+                document.getElementById('form' + id).reset();
+            }
         }
 
 
@@ -122,6 +129,7 @@
                 data: { id: ids },
                 traditional: true,
                 success: function (response) {
+                    alert("Se borro pregunta.");
                     location.reload();
                 }
 
@@ -157,7 +165,7 @@
                 <h2>Respuesta</h2>
                 <textarea class="box-group-line" placeholder="Escriba la respuesta" id="textRespuestaCreate"> </textarea>
                 -->
-                <form id="form" novalidate="novalidate">
+                <form id="formCreate" novalidate="novalidate">
 
                     @Html.AntiForgeryToken()
                     <div id="alert-response" class="alert alert-danger" style="display:none">
@@ -198,58 +206,93 @@
 
     @foreach (var item in Model)
     {
-        var preguntaId = "PREG" + @Html.DisplayFor(modelItem => item.Id);
-        var respuestaId = "RESP" + @Html.DisplayFor(modelItem => item.Id);
-        var botonId = "B" + @Html.DisplayFor(modelItem => item.Id);
+
         var modalId = "myModal" + @Html.DisplayFor(modelItem => item.Id);
         var textAreaPreguntaId = "textAreaPregunta" + @Html.DisplayFor(modelItem => item.Id);
         var textAreaRespuestaId = "textAreaRespuesta" + @Html.DisplayFor(modelItem => item.Id);
-        var actualizarBotonId = "BG" + @Html.DisplayFor(modelItem => item.Id);
         var closeId = "close" + @Html.DisplayFor(modelItem => item.Id);
+        var alert_response = "alert-response" + @Html.DisplayFor(modelItem => item.Id);
+        var alert_response_title = "alert-response-title" + @Html.DisplayFor(modelItem => item.Id);
+        var alert_validation = "alert-validation" + @Html.DisplayFor(modelItem => item.Id);
+        var formId = "form" + @Html.DisplayFor(modelItem => item.Id);
 
         <div>
-            <!-- Ventana modal para modificar contenido -->
-            @*
             <div id=@modalId class="modal">
 
                 <!-- Contenido modal -->
-                <div class="modal-content">
-                    <span id=@closeId class="close">&times;</span>
+                <div class="box-container">
+                    <div class="box-header row">
+                        <div class="col-md-3 box-header-title">Editar pregunta</div>
+                        <span id=@closeId class="close box-header-links">&times;</span>
+                    </div>
+                    <div class="box-content">
+                        <!--
+                        <h2>Pregunta</h2>
+                        <textarea class="box-group-line" placeholder="Escriba la pregunta" id="textPreguntaCreate"> </textarea>
 
-                    <h2>Pregunta</h2>
-                    <textarea class="miPreguntaArea" placeholder="Escriba la pregunta" id=@textAreaPreguntaId> </textarea>
+                        <h2>Respuesta</h2>
+                        <textarea class="box-group-line" placeholder="Escriba la respuesta" id="textRespuestaCreate"> </textarea>
+                        -->
+                        <form id="@formId" novalidate="novalidate">
 
-                    <h2>Respuesta</h2>
-                    <textarea class="miRespuestaArea" placeholder="Escriba la respuesta" id=@textAreaRespuestaId> </textarea>
+                            @Html.AntiForgeryToken()
+                            <div id="@alert_response" class="alert alert-danger" style="display:none">
+                                <strong id="@alert_response_title"></strong>
+                            </div>
+                            <div id="@alert_validation" class="alert alert-danger" style="display:none">
+                                <strong>Porfavor, arregle estos errores antes de continuar.</strong>
+                                @Html.ValidationSummary()
+                            </div>
+                            <div class="box-group-line">
+                                <div class="line-divider">
+                                    <input id="@textAreaPreguntaId" class="box-group-line-area" data-val="true"
+                                            data-val-required="La pregunta es requerida."
+                                            name="Pregunta" placeholder="Pregunta" type="text" value="@Html.DisplayFor(modelItem => item.Pregunta)">
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <div class="col-md-12">
+                                    <textarea id="@textAreaRespuestaId" class="box-group-content-area" cols="20" data-val="true" data-val-required="La respuesta es requerida."
+                                              style="resize:vertical" name="Respuesta" rows="2" aria-hidden="true"
+                                              placeholder="Escriba la respuesta aquí">@Html.DisplayFor(modelItem => item.Respuesta)</textarea>
+                                </div>
 
-                    <input type="button" value="Actualizar" id=@actualizarBotonId onclick="ajaxEditar(@item.id)">
+                            </div>
+                            <input class="btn box-btn " type="submit" value="Editar" style=" margin-left: 15px; margin-top: 10px">
+
+                        </form>
+
+                    </div>
+                    <div class="box-footer">
+
+                    </div>
+
                 </div>
-
-            </div>*@
+            </div>
 
             <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
 
                 <div class="col-md-9 mr-2">
                     <div class=" title_template row main-font article-h1">
 
-                        <textConten id=@preguntaId> @Html.DisplayFor(modelItem => item.Pregunta) </textConten>
+                        <textContent > @Html.DisplayFor(modelItem => item.Pregunta) </textContent>
 
                     </div>
 
                     <div class=" author_template row main-font article-h2">
 
-                        <textConten id=@respuestaId> @Html.DisplayFor(modelItem => item.Respuesta) </textConten>
+                        <textContent > @Html.DisplayFor(modelItem => item.Respuesta) </textContent>
 
                     </div>
                 </div>
                 <div class="col-md-3 mr-2">
-                    <input type="button" class="btn-group" value="Modificar" id=@botonId onclick="editarContenido(this, @item.Id)">
-                    <input type="button" class="btn-group" value="Borrar" id=@botonId onclick="ajaxBorrar(@item.Id)">
+                    <input type="button" class="btn-group" value="Modificar"  onclick="editarContenido(@item.Id)">
+                    <input type="button" class="btn-group" value="Borrar"  onclick="ajaxBorrar(@item.Id)">
                 </div>
             </div>
 
         </div>
-    }
+     }
 
 </body>
 
