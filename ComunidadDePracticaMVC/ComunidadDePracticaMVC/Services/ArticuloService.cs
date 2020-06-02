@@ -249,8 +249,8 @@ namespace ComunidadDePracticaMVC.Services
             SqlCommand cmd = new SqlCommand("AddNewQuestion", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@pregunta", preg.pregunta);
-            cmd.Parameters.AddWithValue("@respuesta", preg.respuesta);
+            cmd.Parameters.AddWithValue("@pregunta", preg.Pregunta);
+            cmd.Parameters.AddWithValue("@respuesta", preg.Respuesta);
 
 
             con.Open();
@@ -283,9 +283,9 @@ namespace ComunidadDePracticaMVC.Services
                 studentlist.Add(
                     new faqModel
                     {
-                        id = Convert.ToInt32(dr["id"]),
-                        pregunta = Convert.ToString(dr["pregunta"]),
-                        respuesta = Convert.ToString(dr["respuesta"]),
+                        Id = Convert.ToInt32(dr["id"]),
+                        Pregunta = Convert.ToString(dr["pregunta"]),
+                        Respuesta = Convert.ToString(dr["respuesta"]),
 
                     });
             }
@@ -299,9 +299,9 @@ namespace ComunidadDePracticaMVC.Services
             SqlCommand cmd = new SqlCommand("UpdateQuestion", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@id", preg.id);
-            cmd.Parameters.AddWithValue("@pregunta", preg.pregunta);
-            cmd.Parameters.AddWithValue("@respuesta", preg.respuesta);
+            cmd.Parameters.AddWithValue("@id", preg.Id);
+            cmd.Parameters.AddWithValue("@pregunta", preg.Pregunta);
+            cmd.Parameters.AddWithValue("@respuesta", preg.Respuesta);
 
             con.Open();
             int i = cmd.ExecuteNonQuery();

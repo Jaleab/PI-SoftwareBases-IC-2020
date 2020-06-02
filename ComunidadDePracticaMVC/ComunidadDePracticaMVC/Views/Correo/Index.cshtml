@@ -70,50 +70,50 @@
 <div id="mail" class="modal">
 
     <!-- Contenido modal -->
-    <div class="modal-content">
-        <span id="closeCreate" class="close">&times;</span>
+    <div class="box-container">
+        <div class="box-header row">
+            <div class="col-md-3 box-header-title">Nuevo mensaje</div>
+            <span id="closeCreate" class="close box-header-links">&times;</span>
+        </div>
+        <div class="box-content">
+            <form id="form" novalidate="novalidate">
+
+                @Html.AntiForgeryToken()
 
 
-
-        <form id="form" class="form-horizontal" novalidate="novalidate">
-
-            @Html.AntiForgeryToken()
-
-
-            <div id="alert-response" class="alert alert-danger" style="display:none">
-                <strong id="alert-response-title"></strong>
-            </div>
-            <div id="alert-validation" class="alert alert-danger" style="display:none">
-                <strong>Porfavor, arregle estos errores antes de acceder.</strong>
-                @Html.ValidationSummary()
-            </div>
-
-            <div class="form-group">
-                <h2>To</h2>
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.EmailTo, new { @class = "miPreguntaArea", @id = "EmailTo" })
+                <div id="alert-response" class="alert alert-danger" style="display:none">
+                    <strong id="alert-response-title"></strong>
                 </div>
-            </div>
-            <div class="form-group">
-                <h2>Subject</h2>
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.Subject, new { @class = "miPreguntaArea", @id = "Subject" })
+                <div id="alert-validation" class="alert alert-danger" style="display:none">
+                    <strong>Porfavor, arregle estos errores antes de enviar un correo.</strong>
+                    @Html.ValidationSummary()
                 </div>
-            </div>
 
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.TextAreaFor(model => model.EmailBody, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "EmailBodyId" } })
+                <div class="box-group-line">
+                    <div class="line-divider">
+                        @Html.TextBoxFor(model => model.EmailTo, new { @placeholder = "Destinatarios", @class = "box-group-line-area", @id = "EmailTo" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+                <div class="box-group-line">
+                    <div class="line-divider">
+                        @Html.TextBoxFor(model => model.Subject, new { @placeholder = "Asunto", @class = "box-group-line-area", @id = "Subject" })
+                    </div>
+                </div>
 
-                    <!--<input type="submit" value="Log in" class="btn btn-default" />-->
-                    <input type="submit" value="Enviar" class="btn btn-default" />
+                <div class="box-content">
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(model => model.EmailBody, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "EmailBodyId" } })
+                    </div>
+
                 </div>
-            </div>
-        </form>
+                <input type="submit" value="Enviar" class="btn box-btn" style=" margin-left: 15px; margin-top: 10px"/>
+
+            </form>
+        </div>
+        <div class="box-footer">
+
+        </div>
+
 
     </div>
 </div>
