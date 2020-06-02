@@ -50,6 +50,10 @@
                         <!--diferentes vistas dependiendo de si hay usuario logeado -->
                         @Html.Partial("_LayoutSideBar")
                         <!-- Por ahora ya que no hay usuarios-->
+
+                        <li> @Html.ActionLink("Subir Artículo Largo", "Index", "ArticuloLargo") </li>
+                        <li class="sidebar-divider"></li>
+
                         <li> @Html.ActionLink("Crear Articulo", "Create", "Articulo") </li>
                         <li class="sidebar-divider"></li>
 

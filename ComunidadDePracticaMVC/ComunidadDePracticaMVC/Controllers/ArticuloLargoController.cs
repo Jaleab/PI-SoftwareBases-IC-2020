@@ -23,16 +23,21 @@ namespace ComunidadDePracticaMVC.Controllers
 
         [HttpPost]
         public ActionResult Guardar(ArticuloLargoViewModel model) {
-            string RutaSitio = Server.MapPath("~/"); //guardar local
-            string PathArchivo1 = Path.Combine(RutaSitio+"/Files/")+model.Archivo1.FileName; //guardar local
-            if (!ModelState.IsValid) {
-                return View("Index",model);
+
+            if (!ModelState.IsValid)
+            {
+                return View("Index", model);
             }
-            model.Archivo1.SaveAs(PathArchivo1); // guardar local
-            ArticuloService servicioArt = new ArticuloService(); 
-            servicioArt.GuardarArticuloLargo(model);
-            @TempData["Message"] = "Se cargaron los archivos";
-            return RedirectToAction("Index");
+            else {
+                string RutaSitio = Server.MapPath("~/"); //guardar local
+                string PathArchivo1 = Path.Combine(RutaSitio + "/Files/") + model.Archivo1.FileName; //guardar local
+                model.Archivo1.SaveAs(PathArchivo1);
+                ArticuloService servicioArt = new ArticuloService();
+                servicioArt.GuardarArticuloLargo(model);
+                @TempData["Message"] = "Su archivo ha sido enviado a revisión";
+                return RedirectToAction("Index");
+            }
+
         }
     }
 }

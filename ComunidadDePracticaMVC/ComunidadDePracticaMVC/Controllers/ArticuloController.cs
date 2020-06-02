@@ -51,24 +51,26 @@ namespace PassParameter.Controllers
         // GET: Articulo/Create
         public ActionResult Create()
         {
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
             return View();
         }
 
-        // POST: Articulo/Create
         [HttpPost]
-        public ActionResult Create(ArticuloModel articulo)
+        public ActionResult Create(ArticuloModel model)
+        {
+            if (!ModelState.IsValid)
             {
-            try
-            {
-                // TODO: Add insert logic here
-                ArticuloService dbhandle = new ArticuloService();
-                dbhandle.CrearArticulo(articulo);
-                Console.Write(articulo); 
-                return RedirectToAction("InicioArticulos");
+                return View("Create", model);
             }
-            catch
+            else
             {
-                return View();
+                ArticuloService servicioArt = new ArticuloService();
+                @TempData["Message"] = "Artículo enviado a revisión";
+                servicioArt.CrearArticulo(model);
+                return RedirectToAction("Create");
             }
         }
 

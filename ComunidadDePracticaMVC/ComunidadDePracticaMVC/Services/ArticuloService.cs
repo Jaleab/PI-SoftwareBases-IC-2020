@@ -138,10 +138,9 @@ namespace ComunidadDePracticaMVC.Services
             connection();
 
 
-            SqlCommand cmd = new SqlCommand("AgregarNuevoArticulo", con);
+            SqlCommand cmd = new SqlCommand("AgregarNuevoArticuloCorto", con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
             cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
