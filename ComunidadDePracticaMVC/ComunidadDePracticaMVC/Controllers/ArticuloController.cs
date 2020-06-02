@@ -55,22 +55,6 @@ namespace PassParameter.Controllers
             return View();
         }
 
-
-
-        // POST: Articulo/Create
-        [HttpPost]
-        public ActionResult Create()
-            {
-            try
-            {
-                return View();
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         public ActionResult CrearArticulo()
         {
             ArticuloModel art1 = new ArticuloModel(); 
@@ -122,16 +106,18 @@ namespace PassParameter.Controllers
             ArticuloModel art1 = new ArticuloModel();
             ArticuloService dbhandle = new ArticuloService();
             art1.Autores = dbhandle.FillList();
+
             return View(art1);
         }
         [HttpPost]
         public ActionResult CrearArticuloLargo(ArticuloModel articulo)
         {
+            // TODO: Add insert logic here
             ArticuloService dbhandle = new ArticuloService();
-            dbhandle.CrearArticulo(articulo);
+            dbhandle.CrearArticuloLargo(articulo);
             Console.Write(articulo);
             string autorValue = articulo.Autor;
-            return RedirectToAction("InicioArticulos");
+            return RedirectToAction("Index", "File");
         }
 
 

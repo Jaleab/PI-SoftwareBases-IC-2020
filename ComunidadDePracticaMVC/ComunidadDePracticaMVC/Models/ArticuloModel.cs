@@ -2,7 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using System.Linq;
+
 using System.Collections.Generic;
+using System.Web;
 
 namespace ComunidadDePracticaMVC.Models
 {
@@ -39,12 +41,5 @@ namespace ComunidadDePracticaMVC.Models
 
         public string TipoArchivo { get; set; }
         public byte[] Archivo { get; set; }
-
-
-
-
-
-
-
     }
 }

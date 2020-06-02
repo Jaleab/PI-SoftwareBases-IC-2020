@@ -8,6 +8,9 @@ using System.Web;
 using ComunidadDePracticaMVC.Models;
 using System.Web.Mvc;
 
+using System.IO;
+
+
 namespace ComunidadDePracticaMVC.Services
 {
     
@@ -19,71 +22,6 @@ namespace ComunidadDePracticaMVC.Services
             string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString();
             con = new SqlConnection(constring);
         }
-
-        public int ArticuloIdInDB(ArticuloModel  articulo)
-        {
-            int Id = 0;
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString()))
-            {
-                con.Open();
-                SqlCommand cmd = new SqlCommand("select * from Articulo", con);
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                dataAdapter.Fill(dt);
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        string titulo = row["Titulo"].ToString(); 
-                        if(titulo == articulo.Titulo)
-                        {
-                            Id = (int)row["ArticuloId"]; 
-                        }
-                    }
-                }
-                else
-                { 
-                    con.Close();
-                }
-            }
-            return Id;
-        }
-
-        public List<SelectListItem> FillList()
-        {
-            var list = new List<SelectListItem>();
-            try
-            {
-                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString()))
-                {
-                    con.Open();
-                    SqlCommand cmd = new SqlCommand("select * from Usuario", con);
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    dataAdapter.Fill(dt);
-
-                    if (dt != null && dt.Rows.Count > 0)
-                    {
-                        foreach (DataRow row in dt.Rows)
-                        {
-                            list.Add(new SelectListItem { Text = row["nombre"].ToString() + " " + row["apellido1"].ToString(), Value = row["correo"].ToString() });
-                        }
-                    }
-                    else
-                    {
-                        list.Add(new SelectListItem { Text = "No records found", Value = "0" });
-                        con.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                list.Add(new SelectListItem { Text = ex.Message.ToString(), Value = "0" });
-            }
-
-            return list;
-        }
- 
 
     // ******************** ADD NEW ARTICULO ********************
     public List<ArticuloModel> GetArticulos()
@@ -136,15 +74,16 @@ namespace ComunidadDePracticaMVC.Services
 
 
             SqlCommand cmd1 = new SqlCommand("AgregarNuevoArticuloPublica", con);
-            cmd.Parameters.AddWithValue("@ArticuloId", Id);
-            cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
+            cmd1.Parameters.AddWithValue("@ArticuloId", Id);
+            cmd1.Parameters.AddWithValue("@Autor", articulo.Autor);
 
             con.Open();
-            cmd.ExecuteNonQuery();
+            cmd1.ExecuteNonQuery();
 
             con.Close();
             
         }
+
 
         public ArticuloModel GetInfoArticulo(int id)
         {
@@ -178,6 +117,35 @@ namespace ComunidadDePracticaMVC.Services
             return articulo;
         }
 
+        public void CrearArticuloLargo(ArticuloModel articulo)
+        {
+            //establecer la conexion con la base de datos
+            connection();
+
+            SqlCommand cmd = new SqlCommand("AgregarNuevoArticulo", con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
+            cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
+            cmd.Parameters.AddWithValue("@Contenido", "empty");
+            cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
+            cmd.Parameters.AddWithValue("@TipoArchivo", "corto");
+            cmd.Parameters.AddWithValue("@FechaPublicacion", articulo.FechaPublicacion);
+
+
+            int Id = ArticuloIdInDB(articulo);
+
+
+            SqlCommand cmd1 = new SqlCommand("AgregarNuevoArticuloPublica", con);
+            cmd1.Parameters.AddWithValue("@ArticuloId", Id);
+            cmd1.Parameters.AddWithValue("@Autor", articulo.Autor);
+
+            con.Open();
+            cmd1.ExecuteNonQuery();
+
+            con.Close();
+
+        }
 
         public List<ArticuloModel> GetArticuloConditional(int pageNumber, int pageSize)
         {
@@ -303,6 +271,74 @@ namespace ComunidadDePracticaMVC.Services
            
             return articuloList;
         }
+
+
+
+        public int ArticuloIdInDB(ArticuloModel articulo)
+        {
+            int Id = 0;
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString()))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("select * from Articulo", con);
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                dataAdapter.Fill(dt);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string titulo = row["Titulo"].ToString();
+                        if (titulo == articulo.Titulo)
+                        {
+                            Id = (int)row["ArticuloId"];
+                        }
+                    }
+                }
+                else
+                {
+                    con.Close();
+                }
+            }
+            return Id;
+        }
+
+        public List<SelectListItem> FillList()
+        {
+            var list = new List<SelectListItem>();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString()))
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("select * from Usuario", con);
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    dataAdapter.Fill(dt);
+
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            list.Add(new SelectListItem { Text = row["nombre"].ToString() + " " + row["apellido1"].ToString(), Value = row["correo"].ToString() });
+                        }
+                    }
+                    else
+                    {
+                        list.Add(new SelectListItem { Text = "No records found", Value = "0" });
+                        con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                list.Add(new SelectListItem { Text = ex.Message.ToString(), Value = "0" });
+            }
+
+            return list;
+        }
+
+
 
     }
 

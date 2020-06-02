@@ -126,6 +126,7 @@
     <Compile Include="Controllers\ExampleController.cs" />
     <Compile Include="Controllers\ArticuloController.cs" />
     <Compile Include="Controllers\faqController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -134,10 +135,12 @@
     <Compile Include="Models\AccountDBHandle.cs" />
     <Compile Include="Models\ArticuloModel.cs" />
     <Compile Include="Models\faqModel.cs" />
+    <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\StudentDBHandle.cs" />
     <Compile Include="Models\StudentExample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ArticuloService.cs" />
+    <Compile Include="Services\FileService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -356,6 +359,7 @@
     <Content Include="Views\Articulo\CrearArticulo.cshtml" />
     <Content Include="Views\Articulo\CrearArticuloLargo.cshtml" />
     <Content Include="Views\Articulo\EditarArticuloLargo.cshtml" />
+    <Content Include="Views\File\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
