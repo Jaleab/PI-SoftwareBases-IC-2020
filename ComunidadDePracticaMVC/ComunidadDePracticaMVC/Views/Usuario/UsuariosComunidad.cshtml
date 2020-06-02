@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ComunidadDePracticaMVC.Models.UsuarioModel>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Correo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Correo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+            @Html.DisplayFor(modelItem => item.Apellido1)
+            @Html.DisplayFor(modelItem => item.Apellido2)
+        </td>
+        <td>
+            @Html.ActionLink("Ver meritos", "VerMeritosUsuario" ,"Usuario", new { hilera = item.Correo})
+        </td>
+    </tr>
+}
+</table>
+@*<script type="text/javascript">
+    function enviarMerito(articuloID, valor) {
+                $.ajax({
+                    type: "GET",
+                    url: '/Articulo/AsignarMeritos/',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: { id: articuloID, merito: valor },
+                    success: function (response) {
+                        alert(response.message)
+                    },
+                    failure: function () {
+                        alert("Error al asignar merito")
+                    },
+                    error: function (err) {
+                        alert("Error al asignar merito")
+                    }
+                });
+    }
+    </script>*@
