@@ -23,13 +23,13 @@
         </header>*@
 
     <div>
-        <h3>@ViewBag.Title </h3>
+        <h2>@ViewBag.Title </h2>
     </div>
 
     <hr />
 
     <div>
-        <h4>@ViewBag.Message</h4>
+        <h3>@ViewBag.Message</h3>
     </div>
 
     <hr />
@@ -74,11 +74,16 @@
     </div>
 
     <div class="seccion_Votar">
+        <h3> Brinde su opinión respecto a este artículo</h3>
         <button value="1" id="b0" class="btn-puntuar" onclick="activarOtros(@idArtStr,1)"> Me gusta </button>
         <button value="0" id="b1" class="btn-puntuar" onclick="activarOtros(@idArtStr,0)"> Neutral </button>
         <button value="-1" id="b2" class="btn-puntuar" onclick="activarOtros(@idArtStr,-1)"> No me gusta </button> <br />
         <p id="ArtID" value="@articuloId"></p>
         @*Falta agregar la acciOn que envia estos valores seleccionados a la base de datos*@
+    </div>
+
+    <div>
+        <a href="/Articulo/InicioArticulos"> Volver al listado de artículos</a>
     </div>
 
     <script src="~/Content/FuncionesBotones.js"></script>
