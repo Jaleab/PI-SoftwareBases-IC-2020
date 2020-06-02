@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using ComunidadDePracticaMVC.ViewModels;
+using ComunidadDePracticaMVC.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ComunidadDePracticaMVC.Services;
-using ComunidadDePracticaMVC.Models;
 
 namespace PassParameter.Controllers
 
@@ -49,97 +50,53 @@ namespace PassParameter.Controllers
             return View();
         }
 
-        // GET: Articulo/Create
-        public ActionResult Create(ArticuloModel articulo)
-        {
-            ArticuloService dbhandle = new ArticuloService();
-            articulo.Autores = dbhandle.FillList();
-            return View();
-        }
-
-        public ActionResult CrearArticulo()
-        {
-            ArticuloModel art1 = new ArticuloModel(); 
-            ArticuloService dbhandle = new ArticuloService();
-            art1.Autores = dbhandle.FillList();
-            return View(art1); 
-        }
-
-        [HttpPost]
-        public ActionResult CrearArticulo(ArticuloModel articulo)
-        {
-            // TODO: Add insert logic here
-            ArticuloService dbhandle = new ArticuloService();
-            dbhandle.CrearArticulo(articulo);
-            Console.Write(articulo);
-            string autorValue = articulo.Autor;
-            return RedirectToAction("InicioArticulos");
-        }
-
-        // GET: Articulo/Edit/5
-        public ActionResult EditarArticulo(int id)
-        {
-            ArticuloService dbArticulo = new ArticuloService();
-            ArticuloModel articulo = dbArticulo.GetInfoArticulo(id);
-            if (articulo.TipoArchivo == "corto")
-            {
-                return RedirectToAction("EditarArticuloCorto",new { id = id });
-            }
-            else
-            {
-                return RedirectToAction("EditarArticuloLargo",new { id = id });
-            }
-        }
+        //[HttpPost]
+        //public ActionResult CrearArticulo(ArticuloModel articulo)
+        //{
+        //    // TODO: Add insert logic here
+        //    ArticuloService dbhandle = new ArticuloService();
+        //    dbhandle.CrearArticulo(articulo);
+        //    Console.Write(articulo);
+        //    string autorValue = articulo.Autor;
+        //    return RedirectToAction("InicioArticulos");
+        //}
 
         public ActionResult EditarArticuloCorto(int id)
         {
             ArticuloService dbArticulo = new ArticuloService(); 
+
             return View(dbArticulo.GetInfoArticulo(id)); 
         }
 
-        public ActionResult EditarArticuloLargo(int id)
-        {
-            ArticuloService dbArticulo = new ArticuloService();
-            return View(dbArticulo.GetInfoArticulo(id));
-        }
-
-        public ActionResult CrearArticuloLargo()
-        {
-            ArticuloModel art1 = new ArticuloModel();
-            ArticuloService dbhandle = new ArticuloService();
-            art1.Autores = dbhandle.FillList();
-
-            return View(art1);
-        }
         [HttpPost]
-        public ActionResult CrearArticuloLargo(ArticuloModel articulo)
+        public ActionResult Editar(int id, ArticuloModel model)
         {
-            // TODO: Add insert logic here
-            ArticuloService dbhandle = new ArticuloService();
-            dbhandle.CrearArticuloLargo(articulo);
-            Console.Write(articulo);
-            string autorValue = articulo.Autor;
-            return RedirectToAction("Index", "File");
+            ArticuloService servicioArticulo = new ArticuloService();
+            servicioArticulo.EditarArticuloCorto(id, model);
+
+            int articuloId = id;
+            ViewBag.mensaje = "Se cargaron los archivos";
+            return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloId});
         }
 
 
-        // POST: Articulo/Edit/5
-        [HttpPost]
-        public ActionResult EditarArticulo(int id, ArticuloModel articulo)
-        {
-            try
-            {
-                // TODO: Add update logic here
+        //// POST: Articulo/Edit/5
+        //[HttpPost]
+        //public ActionResult EditarArticulo(int id, ArticuloModel articulo)
+        //{
+        //    try
+        //    {
+        //        // TODO: Add update logic here
 
-                ArticuloService dbhandle = new ArticuloService();
-                dbhandle.EditarArticulo(id, articulo);
-                return RedirectToAction("InicioArticulos"); 
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //        ArticuloService dbhandle = new ArticuloService();
+        //        dbhandle.EditarArticulo(id, articulo);
+        //        return RedirectToAction("InicioArticulos"); 
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
         // GET: Articulo/BorrarArticulo/5
         public ActionResult BorrarArticulo(int id)

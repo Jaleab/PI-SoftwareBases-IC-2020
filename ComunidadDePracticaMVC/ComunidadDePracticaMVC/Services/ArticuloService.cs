@@ -9,9 +9,6 @@ using ComunidadDePracticaMVC.Models;
 using System.IO;
 using ComunidadDePracticaMVC.ViewModels;
 
-using System.IO;
-
-
 namespace ComunidadDePracticaMVC.Services
 {
 
@@ -179,8 +176,6 @@ namespace ComunidadDePracticaMVC.Services
             articulo.Resumen = Convert.ToString(dr["resumen"]);
             articulo.Titulo = Convert.ToString(dr["titulo"]);
             articulo.Topico = Convert.ToString(dr["topico"]);
-            articulo.TipoArchivo = Convert.ToString(dr["tipoArchivo"]);
-            articulo.FechaPublicacion = Convert.ToDateTime(dr["fechaPublicacion"]);
 
 
             Console.WriteLine(articulo.ArticuloId);
@@ -233,28 +228,20 @@ namespace ComunidadDePracticaMVC.Services
             return articulolist;
         }
 
-        public void EditarArticulo(int id, ArticuloModel articulo)
+        public void EditarArticuloCorto(int id, ArticuloModel articulo)
         {
-            //establecer la conexion con la base de datos
             connection();
-            //Ejecutar la consulta de un articulo segun su id
-
-            SqlCommand cmd = new SqlCommand("EditarArticulo", con);
-            SqlDataAdapter sd = new SqlDataAdapter(cmd);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Id", id);
-            cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
+            SqlCommand cmd = new SqlCommand("UPDATE Articulo SET titulo = @Titulo, topico = @Topico, resumen = @Resumen, contenido = @Contenido  WHERE articuloId = @Id", con);
+            //cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
             cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
-            cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
-
+            cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
+            cmd.Parameters.AddWithValue("@Id", id);
+            
             con.Open();
             cmd.ExecuteNonQuery();
-
             con.Close();
-
-
         }
 
         public bool BorrarArticulo(int id)
