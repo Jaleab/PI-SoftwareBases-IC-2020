@@ -28,5 +28,9 @@ namespace ComunidadDePracticaMVC.Models
         public string Topico { get; set; }
 
         public int PuntajeLectores { get; set; }
+
+        public int NotaRevision { get; set; }
+
+        public string FechaPublicacion { get; set; }
     }
 }

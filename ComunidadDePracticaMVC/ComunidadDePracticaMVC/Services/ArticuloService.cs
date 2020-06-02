@@ -33,6 +33,44 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
         }
 
+        private string ObtenerAutorDeArticulo(int articuloID)
+        { //deberia estar en un modelo de usuarios o autores
+            connection();
+            
+            SqlCommand cmd = new SqlCommand("ObtenerAutorDeArticulo", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@articuloID", articuloID);
+
+
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            DataRow dr = dt.Rows[0];
+ 
+            return Convert.ToString(dr["correoMiembroFK"]);
+        }
+
+        public void AumentarMeritoPorCalificacion(int articuloID,int merito)
+        {
+            //esto deberia estar en el modelo de usuarios
+            string correoUsuario = ObtenerAutorDeArticulo(articuloID);
+            connection();
+
+            SqlCommand cmd = new SqlCommand("ModificarMeritos", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@merito", merito);
+            cmd.Parameters.AddWithValue("@correo", correoUsuario);
+
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+
+        }
+
         public void ModificarPuntaje(int idArticulo, string correoMiembro, int puntaje) //OK
         {
             connection();
@@ -181,6 +219,8 @@ namespace ComunidadDePracticaMVC.Services
                         Resumen = Convert.ToString(dr["resumen"]),
                         Topico = Convert.ToString(dr["topico"]),
                         Contenido = Convert.ToString(dr["contenido"]),
+                        NotaRevision= Convert.ToInt32(dr["notaRevision"]),
+                        FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
                     });
             }
 

@@ -358,6 +358,7 @@
     <Content Include="Views\faq\FAQ.cshtml" />
     <Content Include="Views\Articulo\BorrarArticulo.cshtml" />
     <Content Include="Views\Account\MyProfile.cshtml" />
+    <Content Include="Views\Articulo\ArticulosCalificados.cshtml" />
     <Content Include="Views\Usuario\UsuariosComunidad.cshtml" />
   </ItemGroup>
   <ItemGroup>
