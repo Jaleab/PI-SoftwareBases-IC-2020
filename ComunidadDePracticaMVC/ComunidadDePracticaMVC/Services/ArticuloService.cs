@@ -9,6 +9,9 @@ using ComunidadDePracticaMVC.Models;
 using System.IO;
 using ComunidadDePracticaMVC.ViewModels;
 
+using System.IO;
+
+
 namespace ComunidadDePracticaMVC.Services
 {
 
@@ -135,13 +138,11 @@ namespace ComunidadDePracticaMVC.Services
         public void CrearArticulo(ArticuloModel articulo)
         {
             //establecer la conexion con la base de datos
-            connection();
-
-
+            connection();  
+            
             SqlCommand cmd = new SqlCommand("AgregarNuevoArticulo", con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Autor", articulo.Autor);
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
             cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
@@ -178,6 +179,8 @@ namespace ComunidadDePracticaMVC.Services
             articulo.Resumen = Convert.ToString(dr["resumen"]);
             articulo.Titulo = Convert.ToString(dr["titulo"]);
             articulo.Topico = Convert.ToString(dr["topico"]);
+            articulo.TipoArchivo = Convert.ToString(dr["tipoArchivo"]);
+            articulo.FechaPublicacion = Convert.ToDateTime(dr["fechaPublicacion"]);
 
 
             Console.WriteLine(articulo.ArticuloId);

@@ -1,0 +1,29 @@
+﻿@model  IEnumerable<ComunidadDePracticaMVC.Models.FileModel>
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style src="~/Content/bootstrap.min.css"></style>
+
+    <style>
+        .rounded {
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    @using (Html.BeginForm("Index", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="container-fluid">
+            <input type="file" name="postedFile" />
+            <input type="submit" id="btnUpload" class="rounded" value="Upload" />
+
+        </div>
+
+    }
+</body>
+</html>

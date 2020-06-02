@@ -1,92 +1,17 @@
 ﻿@model ComunidadDePracticaMVC.Models.ArticuloModel
 
-<script type="text/javascript" src="~/Scripts/tinymce/tinymce.min.js"></script>
-<script type="text/javascript" src="~/Scripts/tinyMCEResumenConfig.js"></script>
-<script type="text/javascript" src="~/Scripts/tinyMCEContenidoConfig.js"></script>
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#btnSave").click(function () {
-            $.ajax(
-                {
-                    type: "POST", //HTTP POST Method
-                    url: "Articulo/Create/",
-                    data: { //Passing data
-                        Autor: $("#AutorId").val(),
-                        Titulo: $("#TituloId").val(), 
-                        Contenido: $("#ContenidoId").val(),
-                        Resumen: $("#ResumenId").val(),
-                        Topico: $("#TopicoId").val()
-                    }
-                });
-        });
-    });
-</script>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-<div class="form-horizontal">
-    <h4>Crear nuevo artículo</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Autor, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Autor, new { htmlAttributes = new { @class = "form-control", @id = "AutorId" } })
-            @Html.ValidationMessageFor(model => model.Autor, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Titulo, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", @id = "TituloId" } })
-            @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Resumen, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(model => model.Resumen, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "ResumenId" } })
-            @Html.ValidationMessageFor(model => model.Resumen, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Contenido, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(model => model.Contenido, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "ContenidoId" } })
-            @Html.ValidationMessageFor(model => model.Contenido, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Topico, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Topico, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "TopicoId" } })
-            @Html.ValidationMessageFor(model => model.Topico, "", new { @class = "text-danger" })
-        </div>
-    </div>
 
 
-
-
+<div> 
+    <h3>Crear artículo:</h3>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" id="btnSave" />
+            <input type="submit" value="Crear artículo corto"  onclick="@("window.location.href='" + @Url.Action("CrearArticulo", "Articulo") + "'");" class="btn btn-default" id="artCorto" />
+            <input type="submit" value="Subir artículo largo" onclick="@("window.location.href='" + @Url.Action("CrearArticuloLargo", "Articulo") + "'");" class="btn btn-default" id="artLargo" />
         </div>
     </div>
 </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "InicioArticulos")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

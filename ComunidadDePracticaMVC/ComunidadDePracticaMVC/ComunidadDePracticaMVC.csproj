@@ -357,7 +357,7 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LayoutTopNav.cshtml" />
     <Content Include="Views\Shared\_LayoutSideBar.cshtml" />
-    <Content Include="Views\Articulo\EditarArticulo.cshtml" />
+    <Content Include="Views\Articulo\EditarArticuloCorto.cshtml" />
     <Content Include="Views\Articulo\Create.cshtml" />
     <Content Include="Views\faq\FAQ.cshtml" />
     <Content Include="Views\Articulo\BorrarArticulo.cshtml" />

@@ -27,7 +27,7 @@ tinymce.init({
         { title: 'Some class', value: 'class-name' }
     ],
     importcss_append: true,
-    height: 400,
+    height: 50,
     file_picker_callback: function (callback, value, meta) {
         /* Provide file and text for the link dialog */
         if (meta.filetype === 'file') {
@@ -51,7 +51,7 @@ tinymce.init({
     ],
     template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
     template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
-    height: 600,
+    height: 200,
     image_caption: true,
     quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
     noneditable_noneditable_class: "mceNonEditable",

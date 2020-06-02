@@ -10,6 +10,7 @@ using ComunidadDePracticaMVC.Models;
 namespace PassParameter.Controllers
 
 {
+
     public class ArticuloController : Controller
     {
         // GET: Articulo
@@ -49,35 +50,78 @@ namespace PassParameter.Controllers
         }
 
         // GET: Articulo/Create
-        public ActionResult Create()
+        public ActionResult Create(ArticuloModel articulo)
         {
+            ArticuloService dbhandle = new ArticuloService();
+            articulo.Autores = dbhandle.FillList();
             return View();
         }
 
-        // POST: Articulo/Create
+        public ActionResult CrearArticulo()
+        {
+            ArticuloModel art1 = new ArticuloModel(); 
+            ArticuloService dbhandle = new ArticuloService();
+            art1.Autores = dbhandle.FillList();
+            return View(art1); 
+        }
+
         [HttpPost]
-        public ActionResult Create(ArticuloModel articulo)
-            {
-            try
-            {
-                // TODO: Add insert logic here
-                ArticuloService dbhandle = new ArticuloService();
-                dbhandle.CrearArticulo(articulo);
-                Console.Write(articulo); 
-                return RedirectToAction("InicioArticulos");
-            }
-            catch
-            {
-                return View();
-            }
+        public ActionResult CrearArticulo(ArticuloModel articulo)
+        {
+            // TODO: Add insert logic here
+            ArticuloService dbhandle = new ArticuloService();
+            dbhandle.CrearArticulo(articulo);
+            Console.Write(articulo);
+            string autorValue = articulo.Autor;
+            return RedirectToAction("InicioArticulos");
         }
 
         // GET: Articulo/Edit/5
         public ActionResult EditarArticulo(int id)
         {
             ArticuloService dbArticulo = new ArticuloService();
+            ArticuloModel articulo = dbArticulo.GetInfoArticulo(id);
+            if (articulo.TipoArchivo == "corto")
+            {
+                return RedirectToAction("EditarArticuloCorto",new { id = id });
+            }
+            else
+            {
+                return RedirectToAction("EditarArticuloLargo",new { id = id });
+            }
+        }
+
+        public ActionResult EditarArticuloCorto(int id)
+        {
+            ArticuloService dbArticulo = new ArticuloService(); 
+            return View(dbArticulo.GetInfoArticulo(id)); 
+        }
+
+        public ActionResult EditarArticuloLargo(int id)
+        {
+            ArticuloService dbArticulo = new ArticuloService();
             return View(dbArticulo.GetInfoArticulo(id));
         }
+
+        public ActionResult CrearArticuloLargo()
+        {
+            ArticuloModel art1 = new ArticuloModel();
+            ArticuloService dbhandle = new ArticuloService();
+            art1.Autores = dbhandle.FillList();
+
+            return View(art1);
+        }
+        [HttpPost]
+        public ActionResult CrearArticuloLargo(ArticuloModel articulo)
+        {
+            // TODO: Add insert logic here
+            ArticuloService dbhandle = new ArticuloService();
+            dbhandle.CrearArticuloLargo(articulo);
+            Console.Write(articulo);
+            string autorValue = articulo.Autor;
+            return RedirectToAction("Index", "File");
+        }
+
 
         // POST: Articulo/Edit/5
         [HttpPost]
