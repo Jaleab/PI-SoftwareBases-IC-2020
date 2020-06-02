@@ -93,14 +93,14 @@ namespace ComunidadDePracticaMVC.Controllers
             if (String.Equals(datos[0], "Nucleo",
                    StringComparison.OrdinalIgnoreCase))
             {
-                usuario.DegradarPeso(hilera, "Activo", Int32.Parse(datos[1])-2, Int32.Parse(datos[2]));
+                usuario.DegradarPeso(hilera, "Activo", Int32.Parse(datos[1])-2, Int32.Parse(datos[2])-2);
                 mensajeEvento = "Se ha degradado correctamente";
             }
             else {
                 if (String.Equals(datos[0], "Activo",
                    StringComparison.OrdinalIgnoreCase))
                 {
-                    usuario.DegradarPeso(hilera, "Periferico", Int32.Parse(datos[1])-2, Int32.Parse(datos[2]));
+                    usuario.DegradarPeso(hilera, "Periferico", Int32.Parse(datos[1])-2, Int32.Parse(datos[2])-2);
                     mensajeEvento = "Se ha degradado correctamente";
                 }
             }
