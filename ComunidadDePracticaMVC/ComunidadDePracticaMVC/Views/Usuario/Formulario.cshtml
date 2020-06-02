@@ -1,0 +1,34 @@
+﻿@model ComunidadDePracticaMVC.Models.UsuarioModel
+@{
+    ViewBag.Title = "Formulario";
+}
+
+<h2>Formulario de Rango </h2>
+
+<br /><br />
+<form>
+    <div class="form-group row">
+        <label for="Correo" class="col-sm-1 col-form-label">Correo:</label>
+        <div class="col-sm-6">
+            <input type="text" readonly class="form-control-plaintext" id="Correo" value= "@Html.DisplayFor(model =>model.Correo)">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="OpcionesRango">Seleccionar el rango al cual quiere pertenecer</label>
+        <select class="form-control" id="exampleFormControlSelect1">
+            <option>Miembro Periferico</option>
+            <option>Miembro Activo </option>
+            <option>Miembro Nucleo</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="TextArea">Argumento (Opcional)</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <br />
+    <div class="button">
+        <button type="button" class="btn btn-success">Enviar</button>
+    </div>
+</form>

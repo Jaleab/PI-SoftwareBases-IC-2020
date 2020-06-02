@@ -1,0 +1,215 @@
+﻿@model ComunidadDePracticaMVC.Models.UsuarioModel
+
+@{
+    ViewBag.Title = "DesplegarUsuario";
+}
+
+<html>
+<head>
+    <script type="text/javascript">
+
+        function enviarResumen(mensaje) {
+            alert(mensaje);
+        }
+
+        $(document).ready(function () {
+            var currentPage = 1;
+            loadArticlesData(currentPage);
+
+            $(window).scroll(function () {
+                var windowComparison = ($(document).height() - $(window).height()) - $(window).scrollTop();
+                if (Math.abs(windowComparison) <= 1) {
+                    currentPage += 1;
+                    loadArticlesData(currentPage);
+                }
+
+            });
+
+
+        });
+
+        function verVara() {
+            var windowComparison = ($(document).height() - $(window).height()) - $(window).scrollTop();
+            alert(windowComparison);
+        }
+        function loadArticlesData(currentPageNumber) {
+            $.ajax({
+                type: "GET",
+                url: 'Articulos/getArticulosInfo',
+                data: {},
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: { pageNumber: currentPageNumber, pageSize: 5 },
+                success: function (response) {
+                    //get the template element:
+                    var artTemp = document.getElementsByTagName("template")[0].content;
+                    var articleList = $('#articleList');
+
+                    // Looping over emloyee list and display it
+                    $.each(response, function (index, articulo) {
+                        var idS = new String(articulo.ArticuloId);
+                        //url para ver
+                        var lookUrl = '@Url.Action("ConsultarArticulos", "Articulo",new { id= "VAL"},null)';
+                        lookUrl = lookUrl.replace("VAL", idS);
+                        //url para editar
+                        var editUrl = '@Url.Action("EditarArticulo", "Articulo",new { id= "VAL"},null)';
+                        editUrl = editUrl.replace("VAL", idS);
+                        //url para borrar
+                        var deleteUrl = '@Url.Action("BorrarArticulo", "Articulo",new { id= "VAL"},null)';
+                        deleteUrl = deleteUrl.replace("VAL", idS);
+
+                        var articleInstance = document.importNode(artTemp, true);
+
+                        var title, author, info, lookLink, editLink, deleteLink;
+
+                        //get the DIV element from the template Instance:
+                        title = articleInstance.querySelector(".title_template");
+                        author = articleInstance.querySelector(".author_template");
+                        //info = articleInstance.querySelector("#info");
+                        lookLink = articleInstance.querySelector(".look-template");
+                        editLink = articleInstance.querySelector(".edit-template");
+                        deleteLink = articleInstance.querySelector(".delete-template");
+
+                        title.textContent = articulo.Titulo;
+                        author.textContent = articulo.Autor;
+                        //info.textContent = articulo.Autor;
+                        lookLink.href = lookUrl;
+                        editLink.href = editUrl;
+                        deleteLink.href = deleteUrl;
+
+                        articleList.append(articleInstance);
+
+                        /*
+                        actionLink = actionLink.replace("VAL", idS);
+                        tblExample.append('<tr> <td>' + articulo.ArticuloId + '</td> <td>'
+                            + articulo.Autor + '</td><td>' + articulo.Titulo + '</td><td>'
+                            + '<span>' + actionLink + '</span>' + '</td></tr>');
+                        */
+                    });
+                },
+                error: function (err) {
+
+                }
+
+            });
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="~/Content/estilos.css">
+
+</head>
+<body>
+    <h2>DesplegarUsuario</h2>
+  
+        <div>
+            <h4>UsuarioModel</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Correo)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Correo)
+                </dd>
+                <dt><br /></dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Nombre)
+                </dd>
+                <dt><br /></dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Apellido1)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Apellido1)
+                </dd>
+                <dt><br /></dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Apellido2)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Apellido2)
+                </dd>
+                <dt><br /></dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Ciudad)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Ciudad)
+                </dd>
+                <dt><br /></dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Pais)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Pais)
+                </dd>
+                <dt><br /></dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Idioma)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Idioma)
+                </dd>
+                <dt><br /></dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Merito)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Merito)
+                </dd>
+                <dt><br /></dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Peso)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Peso)
+                </dd>
+                <dt><br /></dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Categoria)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Categoria)
+                </dd>
+                <dt><br /></dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Habilidad)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Habilidad)
+                </dd>
+                <dt><br /></dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Hobbie)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Hobbie)
+                </dd>
+                <dt><br /></dt>
+            </dl>
+        </div>
+
+        <p>
+            @Html.ActionLink("Editar", "DesplegarEditarUsuario", new { }) <!--id = Model.Correo })-->
+        </p>
+
+    <div id="articleList">
+
+    </div>
+
+</body>
+</html>
