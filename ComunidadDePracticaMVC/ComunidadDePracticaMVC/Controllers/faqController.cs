@@ -1,5 +1,5 @@
 ﻿using ComunidadDePracticaMVC.Models;
-using ComunidadDePracticaMVC.Services;
+using ComunidadDePracticaMVC.ArticuloService;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;

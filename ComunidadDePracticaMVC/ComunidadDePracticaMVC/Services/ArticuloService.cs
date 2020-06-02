@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 using ComunidadDePracticaMVC.Models;
 
-namespace ComunidadDePracticaMVC.Services
+namespace ComunidadDePracticaMVC.ArticuloService
 {
     
     public class ArticuloService
@@ -230,7 +230,42 @@ namespace ComunidadDePracticaMVC.Services
             return articuloList;
         }
 
+        public List<ArticuloModel> GetArticulosUsuario(string correo)
+        {
+            string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString();
+            con = new SqlConnection(constring);
+            List<ArticuloModel> articulos = new List<ArticuloModel>();
+            //establecer la conexion con la base de datos;
+            //Ejecutar la consulta de un articulo segun su id
+            SqlCommand cmd = new SqlCommand("GetArticuloCorreo", con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Correo", correo);
+            DataTable dt = new DataTable();
+
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();           
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                articulos.Add(
+                    new ArticuloModel
+                    {
+                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Titulo = Convert.ToString(dr["titulo"]),
+                        Topico = Convert.ToString(dr["topico"])
+                    });
+            }
+
+
+            return articulos;
+        }
+
     }
+
+    
 
     public class questionService 
     {

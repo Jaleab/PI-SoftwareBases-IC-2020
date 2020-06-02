@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using ComunidadDePracticaMVC.Services;
+using ComunidadDePracticaMVC.ArticuloService;
 using ComunidadDePracticaMVC.Models;
 
 namespace PassParameter.Controllers

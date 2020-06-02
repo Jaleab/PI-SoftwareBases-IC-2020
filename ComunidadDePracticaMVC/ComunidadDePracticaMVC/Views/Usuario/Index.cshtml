@@ -1,0 +1,186 @@
+﻿@model ComunidadDePracticaMVC.Models.UsuarioModelCompleto
+
+@{
+    ViewBag.Title = "DesplegarUsuario";
+}
+
+
+<body>
+    <h2>Mi Perfil</h2>
+
+    <div>
+        <h3>Datos</h3>
+        <dl class="dl-horizontal">
+            @foreach (var item in Model.Usuario)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => item.Correo)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.Correo)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => item.Nombre)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.Nombre)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => item.Apellido1)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.Apellido1)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => item.Apellido2)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.Apellido2)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => item.Ciudad)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.Ciudad)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => item.Pais)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.Pais)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => item.Merito)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.Merito)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => item.Peso)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.Peso)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => item.Categoria)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.Categoria)
+                </dd>
+
+            }
+        </dl>
+    </div>
+    <br /><br />
+    <div>
+        <h3>Mis idiomas</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Idiomas:</th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.Idioma)
+            {
+
+                <tr>
+                    <th scope="row">=></th>
+                    <th>@item</th>
+                </tr>
+
+            }
+
+        </table>
+    </div>
+    <br /><br />
+    <div>
+        <h3>Mis hobbies</h3>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Hobbies:</th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.Hobbie)
+            {
+
+                <tr>
+                    <th scope="row">=></th>
+                    <th>@item</th>
+                </tr>
+
+            }
+
+        </table>
+    </div>
+    <br /><br />
+    <div>
+        <h3>Mis habilidades</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Habilidades:</th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.Habilidad)
+            {
+
+                <tr>
+                    <th scope="row">=></th>
+                    <th>@item</th>
+                </tr>
+
+            }
+
+        </table>
+    </div>
+    <br /><br />
+    <div>
+        <h3>Mis articulos</h3>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Topico</th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.Articulo)
+            {
+
+                <tr>
+                    <th scope="row">@item.ArticuloId</th>
+                    <td>@item.Titulo</td>
+                    <td>@item.Topico</td>
+                </tr>
+
+            }
+
+        </table>
+    </div>
+    <br /><br />
+    <p>
+        @Html.ActionLink("Editar", "DesplegarEditarUsuario", new { }) <!--id = Model.Correo })-->
+    </p>
+</body>

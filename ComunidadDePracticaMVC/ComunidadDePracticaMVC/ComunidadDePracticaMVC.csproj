@@ -358,8 +358,8 @@
     <Content Include="Views\Articulo\BorrarArticulo.cshtml" />
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Usuario\DesplegarEditarUsuario.cshtml" />
-    <Content Include="Views\Usuario\DesplegarUsuario.cshtml" />
     <Content Include="Views\Usuario\Formulario.cshtml" />
+    <Content Include="Views\Usuario\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
