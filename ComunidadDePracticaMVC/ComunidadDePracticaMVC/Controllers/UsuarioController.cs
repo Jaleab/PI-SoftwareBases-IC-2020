@@ -44,16 +44,51 @@ namespace ComunidadDePracticaMVC.Controllers
             return View(usuario.GetProfile(correo));
         }
 
-        public ActionResult UsuariosComunidad()
+        public ActionResult UsuariosComunidad(string mensaje)
         {
             UsuarioService usuario = new UsuarioService();
+            if (mensaje != "") {
+                ViewBag.mensaje = mensaje;                               
+            }
             return View(usuario.GetNombreUsuarios());
         }
 
-        public ActionResult VerMeritosUsuario(string correo)
+        public ActionResult VerMeritosUsuario(string hilera)
         {
-            return View();               
+            UsuarioService usuario = new UsuarioService();
+            string[] datos = usuario.GetDatosMiembro(hilera);
+            ViewBag.categoriaMiembro = datos[0];
+            ViewBag.merito = datos[1];
+            ViewBag.peso = datos[2];
+            return View(usuario.GetMeritosUsuario(hilera));
         }
 
+        public ActionResult DegradarUsuario(string hilera)
+        {
+
+            UsuarioService usuario = new UsuarioService();
+            string mensajeEvento = "No se ha podido degradar al usuario porque es Periferico";
+            string[] datos = usuario.GetDatosMiembro(hilera);
+            if (String.Equals(datos[0], "Nucleo",
+                   StringComparison.OrdinalIgnoreCase))
+            {
+                usuario.DegradarPeso(hilera, "Activo", Int32.Parse(datos[1])-2, Int32.Parse(datos[2]));
+                mensajeEvento = "Se ha degradado correctamente";
+            }
+            else {
+                if (String.Equals(datos[0], "Activo",
+                   StringComparison.OrdinalIgnoreCase))
+                {
+                    usuario.DegradarPeso(hilera, "Periferico", Int32.Parse(datos[1])-2, Int32.Parse(datos[2]));
+                    mensajeEvento = "Se ha degradado correctamente";
+                }
+            }
+            string correo = hilera;
+            //return RedirectToAction("UsuariosComunidad");
+            return RedirectToAction("UsuariosComunidad", "Usuario", new { mensaje = mensajeEvento });
+        }
+
+
+       
     }
 }

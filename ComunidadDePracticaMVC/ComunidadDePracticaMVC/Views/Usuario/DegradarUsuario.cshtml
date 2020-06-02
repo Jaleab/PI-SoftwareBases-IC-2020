@@ -3,15 +3,6 @@
     ViewBag.Title = "Miembros";
 }
 
-
-    @if (!string.IsNullOrEmpty(ViewBag.mensaje))
-    {
-        <script type="text/javascript">
-            alert("@ViewBag.mensaje");
-        </script>
-    }
-
-
 <table class="table">
     <tr>
         <th>
@@ -36,7 +27,7 @@
             </td>
             <td>
                 @Html.ActionLink("Meritos", "VerMeritosUsuario", "Usuario", new { hilera = item.Correo }, null) |
-                @Html.ActionLink("Degradar", "DegradarUsuario", "Usuario", new { hilera = item.Correo }, null)
+                @Html.ActionLink("Degradar", "DegradarUsuario", "Usuario", new { hilera = item.Correo, Model }, null)
             </td>
         </tr>
     }

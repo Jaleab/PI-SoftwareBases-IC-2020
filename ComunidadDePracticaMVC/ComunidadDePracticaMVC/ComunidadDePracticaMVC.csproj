@@ -358,6 +358,9 @@
     <Content Include="Views\faq\FAQ.cshtml" />
     <Content Include="Views\Articulo\BorrarArticulo.cshtml" />
     <Content Include="Views\Account\MyProfile.cshtml" />
+    <Content Include="Views\Usuario\UsuariosComunidad.cshtml" />
+    <Content Include="Views\Usuario\VerMeritosUsuario.cshtml" />
+    <Content Include="Views\Usuario\DegradarUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

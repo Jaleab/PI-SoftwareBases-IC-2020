@@ -111,12 +111,13 @@ namespace ComunidadDePracticaMVC.Services
             return UsuarioList;
         }
 
-        public List<ArticuloModel> GetMeritosUsuario() //OK
+        public List<ArticuloModel> GetMeritosUsuario(string hilera) //OK
         {
             Connection();
-            List<ArticuloModel> UsuarioList = new List<ArticuloModel>();
+            List<ArticuloModel> ArticuloList= new List<ArticuloModel>();
             SqlCommand cmd = new SqlCommand("GetMeritosUsuario", con);
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Correo", hilera);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
 
@@ -127,13 +128,54 @@ namespace ComunidadDePracticaMVC.Services
 
             foreach (DataRow dr in dt.Rows)
             {
-                UsuarioList.Add(
+                ArticuloList.Add(
                     new ArticuloModel
                     {
-                        Titulo = Convert.ToString(dr["correo"])
+                        Titulo = Convert.ToString(dr["titulo"]),
+                        FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
+                        PuntajeLectores = Convert.ToInt32(dr["cantidadLikes"]),
+                        CantidadVistas = Convert.ToInt32(dr["cantidadVisitas"]),
+                        NotaRevision = Convert.ToInt32(dr["notaRevision"])
                     });
             }
-            return UsuarioList;
+            return ArticuloList;
+        }
+
+        public string[] GetDatosMiembro(string hilera) //OK
+        {
+            Connection();
+            List<ArticuloModel> ArticuloList = new List<ArticuloModel>();
+            SqlCommand cmd = new SqlCommand("GetDatosMiembro", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Correo", hilera);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+            DataRow dr = dt.Rows[0];
+            string[] datos;            
+            string str1 = Convert.ToString(dr["categoriaMiembro"]);
+            string str2 = Convert.ToString(dr["merito"]);
+            string str3 = Convert.ToString(dr["peso"]);
+            datos = new string[3] { str1, str2, str3 };           
+           
+            return datos;
+        }
+
+        public void DegradarPeso(string hilera, string categoria, int merito, int peso)
+        {
+            Connection();
+            SqlCommand cmd = new SqlCommand("UPDATE Miembro SET categoriaMiembro = @Categoria, merito = @Merito, peso = @Peso WHERE correoUsuarioFK = @Correo", con);
+            //cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Correo", hilera);
+            cmd.Parameters.AddWithValue("@Categoria", categoria);
+            cmd.Parameters.AddWithValue("@Merito", merito);
+            cmd.Parameters.AddWithValue("@Peso", peso);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
     }
 }
