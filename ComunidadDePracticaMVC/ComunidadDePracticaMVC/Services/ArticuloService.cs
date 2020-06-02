@@ -6,6 +6,8 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using ComunidadDePracticaMVC.Models;
+using System.IO;
+using ComunidadDePracticaMVC.ViewModels;
 
 namespace ComunidadDePracticaMVC.Services
 {
@@ -310,6 +312,30 @@ namespace ComunidadDePracticaMVC.Services
             return articuloList;
         }
 
+        public void GuardarArticuloLargo(ArticuloLargoViewModel articulo) {
+            byte[] bytes;
+            BinaryReader br = new  BinaryReader(articulo.Archivo1.InputStream); //
+            bytes = br.ReadBytes(articulo.Archivo1.ContentLength);
+            connection();
+            SqlCommand cmd = new SqlCommand("AgregarNuevoArticuloLargo", con); // elegir procedimiento
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Archivo", bytes); // completar resto de parametros
+            cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
+            cmd.Parameters.AddWithValue("@Topico", "Matemática Largo");
+            cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
+            cmd.Parameters.AddWithValue("@TipoArchivo",  articulo.Archivo1.ContentType);
+
+
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+
+        }
+
+        public void DescargarArticuloLargo() {
+
+        }
     }
 
     public class questionService

@@ -123,6 +123,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ArticuloLargoController.cs" />
     <Compile Include="Controllers\ExampleController.cs" />
     <Compile Include="Controllers\ArticuloController.cs" />
     <Compile Include="Controllers\faqController.cs" />
@@ -131,6 +132,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ArticuloLargoViewModel.cs" />
     <Compile Include="Models\ArticuloModel.cs" />
     <Compile Include="Models\faqModel.cs" />
     <Compile Include="Models\StudentDBHandle.cs" />
@@ -356,9 +358,11 @@
     <Content Include="Views\Articulo\BorrarArticulo.cshtml" />
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Articulo\ArticulosCalificados.cshtml" />
+    <Content Include="Views\ArticuloLargo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Files\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
