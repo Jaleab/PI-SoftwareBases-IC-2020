@@ -91,13 +91,41 @@ namespace ComunidadDePracticaMVC.Services
         {
             connection();
 
-            SqlCommand cmd = new SqlCommand("ModificarLikes", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@IdArticulo", idArticulo);
-            cmd.Parameters.AddWithValue("@Puntaje", puntaje);
-            con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close();
+            //SqlCommand cmd = new SqlCommand("ModificarLikes", con);
+            //cmd.CommandType = CommandType.StoredProcedure;
+            //cmd.Parameters.AddWithValue("@IdArticulo", idArticulo);
+            //cmd.Parameters.AddWithValue("@Puntaje", puntaje);
+            //con.Open();
+            //cmd.ExecuteNonQuery();
+            //con.Close();
+
+            string consulta1 = 
+                "UPDATE Articulo "+
+                "SET cantidadLikes=cantidadLikes+1 "+
+                "WHERE articuloId=@articuloId"
+                ;
+            string consulta2 =
+                    "UPDATE Articulo " +
+                    "SET cantidadNoMeGusta=cantidadNoMeGusta+1 " +
+                    "WHERE articuloId=@articuloId"
+                    ;
+            SqlCommand cmd1;
+            if (puntaje == 1)
+            {
+                cmd1 = new SqlCommand(consulta1, con);
+                cmd1.Parameters.AddWithValue("@articuloId", idArticulo);
+                con.Open();
+                cmd1.ExecuteNonQuery();
+                con.Close();
+            }
+            else if (puntaje == -1) {
+                cmd1 = new SqlCommand(consulta2, con);
+                cmd1.Parameters.AddWithValue("@articuloId", idArticulo);
+                con.Open();
+                cmd1.ExecuteNonQuery();
+                con.Close();
+            }
+
         }
 
 
@@ -177,6 +205,10 @@ namespace ComunidadDePracticaMVC.Services
             articulo.Resumen = Convert.ToString(dr["resumen"]);
             articulo.Titulo = Convert.ToString(dr["titulo"]);
             articulo.Topico = Convert.ToString(dr["topico"]);
+            articulo.TipoArchivo= Convert.ToString(dr["tipoArchivo"]);
+            articulo.Likes= Convert.ToInt32(dr["cantidadLikes"]);
+            articulo.Dislikes = Convert.ToInt32(dr["cantidadNoMeGusta"]);
+            articulo.FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]);
 
 
             Console.WriteLine(articulo.ArticuloId);
@@ -222,6 +254,8 @@ namespace ComunidadDePracticaMVC.Services
                         Contenido = Convert.ToString(dr["contenido"]),
                         NotaRevision= Convert.ToInt32(dr["notaRevision"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
+                        Likes= Convert.ToInt32(dr["cantidadLikes"]),
+                        Dislikes = Convert.ToInt32(dr["cantidadNoMeGusta"])
                     });
             }
 
@@ -332,8 +366,28 @@ namespace ComunidadDePracticaMVC.Services
 
         }
 
-        public void DescargarArticuloLargo() {
-
+        public Tuple<byte[], string> DescargarArticuloLargo(int id) {
+            byte[] bytes;
+            string contentType;
+            connection();
+            using (con)
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandText = "SELECT archivo, tipoArchivo FROM Articulo WHERE articuloId=@Id";
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Connection = con;
+                    con.Open();
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        sdr.Read();
+                        bytes = (byte[])sdr["archivo"];
+                        contentType = sdr["tipoArchivo"].ToString();
+                    }
+                    con.Close();
+                }
+            }
+            return new Tuple<byte[], string>(bytes, contentType);
         }
 
         public List< List< string > > ObtenerAutoresCorreos() {

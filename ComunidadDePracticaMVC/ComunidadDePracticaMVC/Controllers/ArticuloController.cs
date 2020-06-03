@@ -30,7 +30,14 @@ namespace PassParameter.Controllers
             ArticuloService servicioParaverResumen = new ArticuloService();
             servicioParaverResumen.AumentarVisitas(id);
             ModelState.Clear();
-            return View(servicioParaverResumen.GetInfoArticulo(id));  
+            var articuloModel = servicioParaverResumen.GetInfoArticulo(id);
+            if (articuloModel.TipoArchivo == "corto")
+            {
+                return View(articuloModel);
+            }
+            else {
+                return RedirectToAction("AccederArticuloLargo", new { idArt=id });
+            }
         }
 
         // GET: Buscar por id Articulo
@@ -43,11 +50,11 @@ namespace PassParameter.Controllers
 
 
         // GET: Articulo/Details/5
-        public ActionResult Details()
+        public FileResult AccederArticuloLargo(int idArt)
         {
-            ArticuloService aserv = new ArticuloService();
-            ViewBag.lista = aserv.ObtenerAutoresCorreos();
-            return View();
+            ArticuloService hdb = new ArticuloService();
+            var tupla=hdb.DescargarArticuloLargo(idArt);
+            return File(tupla.Item1,tupla.Item2);
         }
 
         // GET: Articulo/Create
@@ -181,7 +188,7 @@ namespace PassParameter.Controllers
 
             JsonResult result = Json(new
             {
-                message = "Se modifico los likes de articulo " + id.ToString()
+                message = "Gracias por brindar su opinión "
             },  JsonRequestBehavior.AllowGet);;
             return result;
         }
