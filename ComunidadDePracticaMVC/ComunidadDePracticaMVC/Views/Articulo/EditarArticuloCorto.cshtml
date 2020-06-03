@@ -34,29 +34,24 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Resumen, htmlAttributes: new { @class = "control-label col-md-2" })
-                
-                <div class="col-md-10">
-                    @Html.TextAreaFor(model => model.Resumen, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "ResumenId" } })
-                    @Html.ValidationMessageFor(model => model.Resumen, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <br />
-            <div class="form-group">
-                @Html.LabelFor(model => model.Contenido, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextAreaFor(model => model.Contenido, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "ContenidoId" } })
-                    @Html.ValidationMessageFor(model => model.Contenido, "", new { @class = "text-danger" })
-                </div>
+                    @Html.LabelFor(d => d.Resumen)
+                    @Html.TextAreaFor(d => d.Resumen, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(d => d.Resumen, "", new { @class = "text-danger" })
             </div>
 
-            <div class="form-group" style="text-align:right">
-                <input type="submit" class="btn btn-success" value="Editar" />
+            <div class="form-group">
+                    @Html.LabelFor(d => d.Contenido)
+                    @Html.TextAreaFor(d => d.Contenido, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(d => d.Contenido, "", new { @class = "text-danger" })
             </div>
-        </div>
+
+                <div class="form-group" style="text-align:right">
+                    <input type="submit" class="btn btn-success" value="Editar" />
+                </div>
+            </div>
     </div>
 }
-}
+
 
 
 
@@ -66,8 +61,6 @@
 
 
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+
 
 

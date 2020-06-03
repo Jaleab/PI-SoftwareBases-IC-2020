@@ -76,7 +76,10 @@ namespace PassParameter.Controllers
             }
         }
 
-            return View(dbArticulo.GetInfoArticulo(id)); 
+        public ActionResult EditarArticuloCorto(int id)
+        {
+            ArticuloService dbArticulo = new ArticuloService();
+            return View(dbArticulo.GetInfoArticulo(id));
         }
 
         [HttpPost]
@@ -89,25 +92,6 @@ namespace PassParameter.Controllers
             ViewBag.mensaje = "Se cargaron los archivos";
             return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloId});
         }
-
-
-        //// POST: Articulo/Edit/5
-        //[HttpPost]
-        //public ActionResult EditarArticulo(int id, ArticuloModel articulo)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add update logic here
-
-        //        ArticuloService dbhandle = new ArticuloService();
-        //        dbhandle.EditarArticulo(id, articulo);
-        //        return RedirectToAction("InicioArticulos"); 
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
 
         // GET: Articulo/BorrarArticulo/5
         public ActionResult BorrarArticulo(int id)

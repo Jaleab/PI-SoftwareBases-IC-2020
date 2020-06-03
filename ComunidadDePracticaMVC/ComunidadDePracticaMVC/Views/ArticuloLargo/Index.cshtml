@@ -29,15 +29,32 @@
         <div class="col-md-6 col-lg-offset-3">
             <div class="form-group">
                 @Html.LabelFor(d => d.Archivo1)
-                @Html.TextBoxFor(d => d.Archivo1, new { type = "file",  @class = "form-control" })
+                @Html.TextBoxFor(d => d.Archivo1, new { type = "file", @class = "form-control" })
                 @Html.ValidationMessageFor(d => d.Archivo1, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(d => d.Autor)
-                @Html.TextBoxFor(d => d.Autor, new { @class = "form-control" })
+                @Html.DropDownListFor(d => d.Autor, new List<SelectListItem>
+                {
+                    new SelectListItem{ Text="Select Month", Disabled = true, Selected = true},
+                    new SelectListItem{ Text="January"},
+                    new SelectListItem{ Text="February"},
+                    new SelectListItem{ Text="March"},
+                    new SelectListItem{ Text="April"},
+                    new SelectListItem{ Text="May"},
+                    new SelectListItem{ Text="June"},
+                    new SelectListItem{ Text="July"},
+                    new SelectListItem{ Text="August"},
+                    new SelectListItem{ Text="September"},
+                    new SelectListItem{ Text="October"},
+                    new SelectListItem{ Text="November"},
+                    new SelectListItem{ Text="December"},
+                }, new {@class = "form-control"})
                 @Html.ValidationMessageFor(d => d.Autor, "", new { @class = "text-danger" })
             </div>
+                    @*@Html.DropDownListFor(model => model.RoleId, Model.Roles, "--Select Role--", new { @class = "form-control" })*@
+                    
 
             <div class="form-group">
                 @Html.LabelFor(d => d.Titulo)

@@ -4,40 +4,38 @@
 }
 
 
-    @if (!string.IsNullOrEmpty(ViewBag.mensaje))
-    {
-        <script type="text/javascript">
+@if (!string.IsNullOrEmpty(ViewBag.mensaje))
+{
+    <script type="text/javascript">
             alert("@ViewBag.mensaje");
-        </script>
-    }
+    </script>
+}
 
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Correo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Correo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-                @Html.DisplayFor(modelItem => item.Apellido1)
-                @Html.DisplayFor(modelItem => item.Apellido2)
-            </td>
-            <td>
-                @Html.ActionLink("Meritos", "VerMeritosUsuario", "Usuario", new { hilera = item.Correo }, null) |
-                @Html.ActionLink("Degradar", "DegradarUsuario", "Usuario", new { hilera = item.Correo }, null)
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Correo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Correo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                    @Html.DisplayFor(modelItem => item.Apellido1)
+                    @Html.DisplayFor(modelItem => item.Apellido2)
+                </td>
+                <td>
+                    @Html.ActionLink("Meritos", "VerMeritosUsuario", "Usuario", new { hilera = item.Correo }, null) |
+                    @Html.ActionLink("Degradar", "DegradarUsuario", "Usuario", new { hilera = item.Correo }, null)
+                </td>
+            </tr>
+        }
+    </table>
