@@ -19,9 +19,9 @@
     </script>
     <ul class="nav navbar-nav navbar-right">
         <!--
-    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-    <li>@Html.ActionLink("Log in", "Login", "Account" , routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    -->
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new {id = "registerLink"})</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account" , routeValues: null, htmlAttributes: new {id = "loginLink"})</li>
+        -->
         <li><a class="fa fa-envelope" title="Redactar correo" href="@Url.Action("Index", "Correo")"></a></li>
         <li><a class="vertical-divider"></a></li>
         <li><a id="name" title="Tu perfil">@User.Identity.Name</a></li>
@@ -32,7 +32,6 @@
             <ul class="dropdown-menu">
                 <li>@Html.ActionLink("Sign out", "LogOut", "Account")</li>
                 <li>@Html.ActionLink("Perfil", "Usuario", "Account")</li>
-
             </ul>
         </li>
         
