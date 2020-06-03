@@ -91,7 +91,7 @@
                         title.textContent = articulo.Titulo;
                         author.textContent = articulo.Autor;
                         nota.textContent = "Nota: " + articulo.NotaRevision;
-                        fecha.textContent = "Fecha publicación: " + articulo.FechaPublicacion;
+                        fecha.textContent = "Fecha publicación: " + (articulo.FechaPublicacion).split(' ')[0];
                         articleList.append(articleInstance);
                         btnEnvio.addEventListener('click', function (e) { cargarMerito(idS) });
 
@@ -108,13 +108,13 @@
 
     </script>
 
-    <link rel="stylesheet" type="text/css" href="~/Content/estilos.css">
 </head>
 
 <body>
     <div class="col-xl-12 col-md-12 mb-12">
         <div class="row page-title main-font ">
-            <h1>Artículos calificados</h1>
+            <h2>Artículos calificados</h2>
+            <hr />
         </div>
     </div>
     <div>
@@ -134,16 +134,17 @@
             <div class=" title_template row main-font article-h1">La Descomposición del Estudiante</div>
             <div class=" author_template row main-font article-h2">Edwin Brenes</div>
         </div>
+        <div class="box-vertical-divider col-md-1   "></div>
         <div class="col-md-3 mr-2">
             <div class="nota-template row main-font article-h2">-Nota-</div>
             <div class="fecha-template row main-font article-h2"> FechaPublicación </div>
         </div>
-        <div col-md-3 mr-2">
-            
-            <h4>Asignar merito</h4>
-            <input type="number" min="0"  class="merito-input" placeholder="Ingrese un valor"/> 
+        <div class="box-vertical-divider col-md-1   "></div>
+        <div col-md-1 mr-2">
 
-            <input type="submit" min="0"  class="btn-enviar" value="Enviar merito" style="margin-top:10px"/>
+            <input type="number" min="0" class="merito-input " style="border:none; border-bottom: 1px solid #dedede; margin-bottom: 5px; padding: 5px;" placeholder="Ingrese un merito" />
+
+            <input type="submit" min="0" class="btn-enviar btn box-btn" value="Enviar merito" style="margin-top:10px" />
 
 
         </div>

@@ -52,21 +52,19 @@
                         <!--diferentes vistas dependiendo de si hay usuario logeado -->
                         @Html.Partial("_LayoutSideBar")
                         <!-- Por ahora ya que no hay usuarios-->
-
-                        <li> @Html.ActionLink("Subir Artículo Largo", "Index", "ArticuloLargo") </li>
-                        <li class="sidebar-divider"></li>
-
-                        <li> @Html.ActionLink("Crear Articulo", "Create", "Articulo") </li>
+                        
+                        <li> @Html.ActionLink("Crear Artículo Largo", "Index", "ArticuloLargo") </li>
+                        <li> @Html.ActionLink("Crear Artículo Corto", "Create", "Articulo") </li>
                         <li class="sidebar-divider"></li>
 
                         <li> @Html.ActionLink("Ver Miembros", "UsuariosComunidad", "Usuario") </li>
-                        <li class="sidebar-divider"></li>
+
 
                         <li> @Html.ActionLink("Asignar Meritos", "ArticulosCalificados", "Articulo") </li>
                         <li class="sidebar-divider"></li>
 
                         <!-- Por ahora  ya que no hay usuarios-->
-                        <li style="color: #999999; padding: 1rem;"> Busqueda  </li>
+                        <li style="color: #999999; padding: 1rem;"> Busqueda por tópico  </li>
                         <li>
 
                             <div style="padding-left: 10px; padding-right: 10px;">
@@ -102,9 +100,9 @@
                             </ul>
                         </li>
                         <li class="sidebar-divider"></li>
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("FAQ", "FAQ", "faq")</li>
+                        <li>@Html.ActionLink("Página Principal", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Devolverse a la página principal" })</li>
+                        @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
+                        <li>@Html.ActionLink("FAQ", "FAQ", "faq", routeValues: null, htmlAttributes: new { title = "Preguntas frecuentes" })</li>
                     </ul>
 
 

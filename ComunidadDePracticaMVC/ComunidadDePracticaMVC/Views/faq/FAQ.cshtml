@@ -142,11 +142,14 @@
 
 <body>
 
-    <h1>Sección de preguntas frecuentes</h1>
+    <h2>Sección de preguntas frecuentes</h2>
+    <hr />
+    <bdi></bdi>
 
     <div>
-        <input type="button" class="btn-group" value="Crear pregunta" onclick="crearPregunta()">
+        <input type="button" class="btn box-btn" value="Crear pregunta" onclick="crearPregunta()">
     </div>
+    <br />
 
     <!-- Ventana modal para modificar contenido -->
     <div id="create" class="modal">
@@ -286,8 +289,8 @@
                     </div>
                 </div>
                 <div class="col-md-3 mr-2">
-                    <input type="button" class="btn-group" value="Modificar"  onclick="editarContenido(@item.Id)">
-                    <input type="button" class="btn-group" value="Borrar"  onclick="ajaxBorrar(@item.Id)">
+                    <input type="button" class="btn box-btn" value="Modificar"  onclick="editarContenido(@item.Id)">
+                    <input type="button" class="btn box-btn" value="Borrar"  style ="margin-top: 10px "onclick="ajaxBorrar(@item.Id)">
                 </div>
             </div>
 

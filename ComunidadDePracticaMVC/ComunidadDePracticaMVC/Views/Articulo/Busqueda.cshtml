@@ -3,17 +3,6 @@
 
 
 
-
-<head>
-    <title></title>
-    <script type="text/javascript" src="~/Scripts/jquery-1.12.0.js"></script>
-    <script type="text/javascript" src="~/Scripts/editor.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/editor.css">
-</head>
-
 <body>
     @*@{
         string autor = Model.Autor;
@@ -22,26 +11,32 @@
         string topico = Model.Topico;
         string contenido = Model.Contenido;
     }*@
+    <h2>Busqueda por tópico: @ViewBag.busqueda</h2>
+    <hr />
 
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Titulo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Autor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Topico)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Contenido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resumen)
-            </th>
-            <th></th>
-        </tr>
+
+    <table class="table table-striped ">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Titulo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Autor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Topico)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Contenido)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Resumen)
+                </th>
+                <th> Consultar</th>
+            </tr>
+        </thead>
+        
 
         <tbody id="myTable">
             @foreach (var item in Model)
@@ -61,6 +56,9 @@
                 </td>
                 <td>
                     @Html.Raw(HttpUtility.HtmlDecode(item.Resumen))
+                </td>
+                <td>
+                    @Html.ActionLink("Ver", "ConsultarArticulos", "Articulo", new { id = item.ArticuloId }, null)
                 </td>
             </tr>
             }

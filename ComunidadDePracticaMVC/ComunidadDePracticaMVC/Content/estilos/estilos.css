@@ -33,6 +33,19 @@ span a:hover {
     width: 800px; /* Could be more or less, depending on screen size */
 }
 
+.box-container-article {
+
+    min-height: 250px; /* Could be more or less, depending on screen size */
+    width: 100%;
+}
+
+.box-container-generic { /* Could be more or less, depending on screen size */
+    width: 100%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin: 20px;
+}
+
 .box-header {
     margin-right: 0px;
     margin-left: 0px;
@@ -107,9 +120,19 @@ span a:hover {
     padding-left: 15px;
 }
 
+
+
 .line-divider {
     border-bottom: 1px solid #dadee2;
     padding-bottom: 5px;
+}
+
+.box-vertical-divider {
+    border-left: 1px solid #dadee2;
+    padding: 5px;
+    padding-top: 90px;
+    height: 100%;
+    width: 1.333333%;
 }
 
 .close {

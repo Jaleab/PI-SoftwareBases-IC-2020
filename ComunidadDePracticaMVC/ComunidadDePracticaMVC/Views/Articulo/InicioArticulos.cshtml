@@ -73,9 +73,9 @@
                         //deleteLink = articleInstance.querySelector(".delete-template");
 
                         title.textContent = articulo.Titulo;
-                        like.textContent = "# Me gusta: " + articulo.Likes;
-                        dislike.textContent = "# No me gusta: " + articulo.Dislikes;
-                        fecha.textContent = "Fecha publicación: " + articulo.FechaPublicacion;
+                        like.textContent = like.textContent + articulo.Likes;
+                        dislike.textContent = dislike.textContent + articulo.Dislikes;
+                        fecha.textContent = fecha.textContent + (articulo.FechaPublicacion).split(' ')[0];
                         author.textContent = articulo.Autor;
                         //info.textContent = articulo.Autor;
                         lookLink.href = lookUrl;
@@ -106,7 +106,8 @@
 
     <div class="col-xl-12 col-md-12 mb-12">
         <div class="row page-title main-font ">
-            <h1>Artículos publicados</h1>
+            <h2>Artículos publicados</h2>
+            <hr />
         </div>
         @*<div class="row main-font search-bar">
             <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
@@ -123,22 +124,32 @@
 </html>
 
 <template>
+
     <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
 
         <div class="col-md-6 mr-2">
             <div class=" title_template row main-font article-h1">La Descomposición del Estudiante</div>
             <div class=" author_template row main-font article-h2">Edwin Brenes</div>
+
         </div>
+        <div class="box-vertical-divider col-md-1   "></div>
         <div class="col-md-3 mr-2">
-            <div class=" fecha_template row main-font article-h2">07/05/2020</div>
-            <div class=" likes_template row main-font article-h2">300 Likes</div>
-            <div class=" dislikes_template row main-font article-h2">14 Descargas</div>
+
+            <div title="Publicación" class=" fecha_template row main-font article-h2">&#128197 </div>
+            <div title="Likes" class=" likes_template row main-font article-h2">&#128077 </div>
+            <div title="Dislikes " class=" dislikes_template row main-font article-h2">&#128078 </div>
+
         </div>
-        <div col-md-3 mr-2">
-            <ul>
-                <li><a class="look-template" href="">ver</a></li>
-                <li><a class="edit-template" href="">editar</a></li>
-            </ul>
+        <div class="box-vertical-divider col-md-1   "></div>
+
+        <div class="col-md-2 mr-2">
+            <div class="row">
+                <a class="look-template row btn box-btn" style ="margin-left:15px; margin-bottom: 15px; padding-right: 30px;" href=""> <i class="fa fa-eye"></i> ver  </a>
+            </div>
+            <div class="row"> 
+                <a class="edit-template row btn box-btn" style ="margin-left:15px" href=""><i class="fa fa-edit"></i> editar</a>
+            </div>
+            
         </div>
     </div>
 

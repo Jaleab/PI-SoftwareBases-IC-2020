@@ -9,9 +9,10 @@
 
 <title>Subir Artículo Largo</title>
 
-<h1>Subir Artículo Largo</h1>
+<h2>Subir Artículo Largo</h2>
 
 <hr />
+<br />
 
 
 @if (ViewBag.mensaje != null)
@@ -23,7 +24,7 @@
 
 
 
-@{ 
+@{
     List<SelectListItem> listaNombreCorreo = new List<SelectListItem>();
     foreach (var item in ViewBag.listaAutoresCorreos)
     {
@@ -74,13 +75,9 @@
                 @Html.ValidationMessageFor(d => d.Archivo1, "", new { @class = "text-danger" })
             </div>
 
+            <input type="submit" value="Guardar" class="btn btn-success" />
+            @Html.ActionLink("Cancelar", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Cancelar", @class = "btn btn-danger" })
 
-            <div class="col-md-2">
-                <input type="submit" value="Guardar" class="btn btn-success" />
-            </div>
-            <div class="col-md-2">
-                @Html.ActionLink("Cancelar", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Cancelar", @class ="" })
-            </div>
             <br />
             <br />
             <br />

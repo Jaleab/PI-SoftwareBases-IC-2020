@@ -24,7 +24,7 @@ namespace ComunidadDePracticaMVC.Controllers
             MailMessage mailMessage = new MailMessage
                 ("comunidadDePracticaGrupo3@gmail.com", correo.EmailTo);
             mailMessage.IsBodyHtml = true;
-            mailMessage.Body = correo.EmailBody;
+            mailMessage.Body = "<div>"+ correo.EmailBody + "</div>"+"<p> -Enviado desde Comunidad de Práctica Grupo 3</p>";
             mailMessage.Subject = correo.Sender + " en Comunidad De Práctica: " + correo.Subject;
             
             SmtpClient smtpClient;

@@ -175,6 +175,7 @@ namespace PassParameter.Controllers
 
             //char[] hilera = hileraBusqueda.ToCharArray();
             ModelState.Clear();
+            ViewBag.busqueda = hilera;
             //return View(noDupsList);
             return View(dbhandle.GetArticulosTopico(hilera));
         }
