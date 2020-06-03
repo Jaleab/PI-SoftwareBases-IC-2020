@@ -327,6 +327,40 @@ namespace ComunidadDePracticaMVC.Services
         public void DescargarArticuloLargo() {
 
         }
+
+        public List< List< string > > ObtenerAutoresCorreos() {
+            List< List<string> > listaNombreCorreos = new List< List<string> >();
+
+            connection();
+            string consulta =
+                "SELECT nombre  + \' \' + apellido1   AS [nombre completo], correo " +
+                "FROM Usuario";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            
+            foreach (DataRow dr in dt.Rows)
+            {
+                List<string> listaInterna = new List<string>();
+
+                listaInterna.Add(
+                 Convert.ToString(dr["nombre completo"])
+                );
+                listaInterna.Add(
+                    Convert.ToString(dr["correo"])
+                );
+                listaNombreCorreos.Add(listaInterna);
+            }
+
+            return listaNombreCorreos;
+        }
+
     }
 
     public class questionService
