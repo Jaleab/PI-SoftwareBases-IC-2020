@@ -181,7 +181,41 @@ namespace ComunidadDePracticaMVC.Services
             Console.WriteLine(articulo.ArticuloId);
             return articulo;
         }
+        public List<ArticuloModel> GetArticulosByAutor(string autorCorreo) //OK
+        {
+            connection();
+            List<ArticuloModel> articulolist = new List<ArticuloModel>();
 
+            string queryArticuloAutor = "SELECT * FROM Articulo WHERE correoUsuarioFK=@correo;";
+            SqlCommand commandArticuloAutor = new SqlCommand(queryArticuloAutor, con);
+            commandArticuloAutor.Parameters.AddWithValue("@Correo", autorCorreo);
+
+            SqlDataAdapter sd = new SqlDataAdapter(commandArticuloAutor);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                articulolist.Add(
+                    new ArticuloModel
+                    {
+                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Autor = Convert.ToString(dr["autor"]),
+                        Titulo = Convert.ToString(dr["titulo"]),
+                        Resumen = Convert.ToString(dr["resumen"]),
+                        Topico = Convert.ToString(dr["topico"]),
+                        Contenido = Convert.ToString(dr["contenido"]),
+                        NotaRevision = Convert.ToInt32(dr["notaRevision"]),
+                        FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
+                    });
+            }
+
+
+            return articulolist;
+        }
 
         public List<ArticuloModel> GetArticuloConditional(int pageNumber, int pageSize) //OK
         {

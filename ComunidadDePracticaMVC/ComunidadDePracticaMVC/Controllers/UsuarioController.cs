@@ -63,7 +63,7 @@ namespace ComunidadDePracticaMVC.Controllers
             return View();
         }
 
-        public ActionResult Formulario(string correo = "edwin.brenes.c@gmail.com")
+        public ActionResult Formulario(string correo)
         {
             UsuarioService usuario = new UsuarioService();
             return View(usuario.GetProfile(correo));
@@ -90,6 +90,8 @@ namespace ComunidadDePracticaMVC.Controllers
             string[] datos = usuario.GetDatosMiembro(hilera);
             ViewBag.categoriaMiembro = datos[0];
             ViewBag.merito = datos[1];
+            ViewBag.peso = datos[2];
+            ViewBag.nombre = datos[3];
             return View(usuario.GetMeritosUsuario(hilera));
         }
 
@@ -162,7 +164,12 @@ namespace ComunidadDePracticaMVC.Controllers
             return RedirectToAction("UsuariosComunidad", "Usuario", new { mensaje = mensajeEvento });
         }
 
+        
 
+        public ActionResult MisArticulos(string correo) {
+            ViewBag.correo = correo;
+            return View();
+        }
        
     }
 }

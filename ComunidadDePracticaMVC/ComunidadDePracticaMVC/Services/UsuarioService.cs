@@ -242,7 +242,8 @@ namespace ComunidadDePracticaMVC.Services
             string str1 = Convert.ToString(dr["categoriaMiembro"]);
             string str2 = Convert.ToString(dr["merito"]);
             string str3 = Convert.ToString(dr["peso"]);
-            datos = new string[3] { str1, str2, str3 };           
+            string str4 = Convert.ToString(dr["nombreCompleto"]);
+            datos = new string[4] { str1, str2, str3, str4 };           
            
             return datos;
         }
@@ -260,5 +261,7 @@ namespace ComunidadDePracticaMVC.Services
             cmd.ExecuteNonQuery();
             con.Close();
         }
+
+
     }
 }

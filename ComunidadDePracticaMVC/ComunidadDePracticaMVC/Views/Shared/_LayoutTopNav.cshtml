@@ -1,6 +1,8 @@
 ﻿
 @if (User.Identity.IsAuthenticated)
 {
+    var correo = User.Identity.Name;
+
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -30,8 +32,9 @@
                 <a href="#" id="avatar" class="avatar"></a><a href="#" class="fa fa-caret-down" style="margin-left: -6px; margin-top: 2px;"></a>
             </div>
             <ul class="dropdown-menu">
+    
                 <li>@Html.ActionLink("Cerrar sesión", "LogOut", "Account", routeValues: null, htmlAttributes: new { title = "Cerrar sesión" })</li>
-                <li>@Html.ActionLink("Perfil", "DesplegarUsuario", "Usuario", new { correo = "@User.Identity.Name" }, htmlAttributes: new { title = "Mi perfil" })</li>
+                <li>@Html.ActionLink("Perfil", "DesplegarUsuario", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Mi perfil" })</li>
             </ul>
         </li>
         

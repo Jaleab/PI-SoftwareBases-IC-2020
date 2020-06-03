@@ -4,8 +4,11 @@
     ViewBag.Title = "Meritos del miembro";
 }
 
-<h1>Puntos totales de meritos: @ViewBag.merito</h1>
+
+<h1>Meritos de @ViewBag.nombre</h1>
 <hr />
+
+<h4>Puntos totales de meritos: @ViewBag.merito</h4>
 
 <h4>Categoria: @ViewBag.categoriaMiembro (@ViewBag.peso pts)</h4>
 <br />
@@ -20,14 +23,14 @@
             Puntos
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.NotaRevision)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaPublicacion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CantidadVistas)
-        </th>*@
+                @Html.DisplayNameFor(model => model.NotaRevision)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaPublicacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CantidadVistas)
+            </th>*@
         <th>
             Fecha
         </th>
@@ -43,12 +46,12 @@
             </td>
             <td>
                 @*@Html.DisplayFor(modelItem => item.PuntajeLectores)
-                @Html.DisplayFor(modelItem => item.NotaRevision)
-                @Html.DisplayFor(modelItem => item.CantidadVistas)*@
-                @puntos                
+                    @Html.DisplayFor(modelItem => item.NotaRevision)
+                    @Html.DisplayFor(modelItem => item.CantidadVistas)*@
+                @puntos
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaPublicacion)                
+                @Html.DisplayFor(modelItem => item.FechaPublicacion)
             </td>
         </tr>
     }

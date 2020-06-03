@@ -14,7 +14,7 @@
         span.onclick = function () {
             window.location.replace("@Url.Action("Index", "Home")");
         }
-        
+
 
 
         //TODO show por ahora
@@ -47,7 +47,7 @@
                             EmailTo: $("#EmailTo").val(),
                             Subject: $("#Subject").val(),
                             EmailBody: content,
-                            Sender: ''
+                            Sender: "@User.Identity.Name"
                         },
                         success: function (data) {
                             //document.getElementById('form').reset();

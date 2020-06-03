@@ -25,10 +25,8 @@ namespace ComunidadDePracticaMVC.Controllers
                 ("comunidadDePracticaGrupo3@gmail.com", correo.EmailTo);
             mailMessage.IsBodyHtml = true;
             mailMessage.Body = correo.EmailBody;
-            mailMessage.Subject = "*Insertar usuario* en Comunidad De Práctica: "+ correo.Subject;
+            mailMessage.Subject = correo.Sender + " en Comunidad De Práctica: " + correo.Subject;
             
-
-
             SmtpClient smtpClient;
 
             string nombreGrupo3 = "comunidadDePracticaGrupo3@gmail.com";

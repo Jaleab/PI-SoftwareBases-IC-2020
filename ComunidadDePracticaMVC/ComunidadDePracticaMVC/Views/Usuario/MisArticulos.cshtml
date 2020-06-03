@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "MisArticulos";
+}
+
+<h2>Articulos de @ViewBag.correo</h2>
+
+<html>
+
+<head>
+    <script type="text/javascript">
+
+        function enviarResumen(mensaje) {
+            alert(mensaje);
+        }
+
+        $(document).ready(function () {
+            var currentPage = 1;
+            loadArticlesData(currentPage);
+
+            $(window).scroll(function () {
+                var windowComparison = ($(document).height() - $(window).height()) - $(window).scrollTop();
+                if (Math.abs(windowComparison) <= 1) {
+                    currentPage += 1;
+                    loadArticlesData(currentPage);
+                }
+
+            });
+
+
+        });
+
+        function verVara() {
+            var windowComparison = ($(document).height() - $(window).height()) - $(window).scrollTop();
+            alert(windowComparison);
+        }
+        function loadArticlesData(currentPageNumber) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ArticulosAutor", "Articulo")',
+                data: {},
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: { correo: '@ViewBag.correo' },
+                success: function (response) {
+                    //get the template element:
+                    var artTemp = document.getElementsByTagName("template")[0].content;
+                    var articleList = $('#articleList');
+
+                    // Looping over emloyee list and display it
+                    $.each(response, function (index, articulo) {
+                        var idS = new String(articulo.ArticuloId);
+                        //url para ver
+                        var lookUrl = '@Url.Action("ConsultarArticulos", "Articulo",new { id= "VAL"},null)';
+                        lookUrl = lookUrl.replace("VAL", idS);
+                        //url para editar
+                        var editUrl = '@Url.Action("EditarArticulo", "Articulo",new { id= "VAL"},null)';
+                        editUrl = editUrl.replace("VAL", idS);
+                        //url para borrar
+                        var deleteUrl = '@Url.Action("BorrarArticulo", "Articulo",new { id= "VAL"},null)';
+                        deleteUrl = deleteUrl.replace("VAL", idS);
+
+                        var articleInstance = document.importNode(artTemp, true);
+
+                        var title, author, info, lookLink, editLink, deleteLink;
+
+                        //get the DIV element from the template Instance:
+                        title = articleInstance.querySelector(".title_template");
+                        author = articleInstance.querySelector(".author_template");
+                        //info = articleInstance.querySelector("#info");
+                        lookLink = articleInstance.querySelector(".look-template");
+                        editLink = articleInstance.querySelector(".edit-template");
+                        deleteLink = articleInstance.querySelector(".delete-template");
+
+                        title.textContent = articulo.Titulo;
+                        author.textContent = articulo.Autor;
+                        //info.textContent = articulo.Autor;
+                        lookLink.href = lookUrl;
+                        editLink.href = editUrl;
+                        deleteLink.href = deleteUrl;
+
+                        articleList.append(articleInstance);
+
+                        /*
+                        actionLink = actionLink.replace("VAL", idS);
+                        tblExample.append('<tr> <td>' + articulo.ArticuloId + '</td> <td>'
+                            + articulo.Autor + '</td><td>' + articulo.Titulo + '</td><td>'
+                            + '<span>' + actionLink + '</span>' + '</td></tr>');
+                        */
+                    });
+                },
+                error: function (err) {
+
+                }
+
+            });
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <div class="col-xl-12 col-md-12 mb-12">
+        <div class="row page-title main-font ">
+            <h1>Artículos publicados</h1>
+        </div>
+        @*<div class="row main-font search-bar">
+                <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
+            </div>*@
+    </div>
+    <div>
+        <div id="articleList">
+
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<template>
+    <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
+
+        <div class="col-md-6 mr-2">
+            <div class=" title_template row main-font article-h1">La Descomposición del Estudiante</div>
+            <div class=" author_template row main-font article-h2">Edwin Brenes</div>
+        </div>
+        <div class="col-md-3 mr-2">
+            <div class="row main-font article-h2">07/05/2020</div>
+            <div class="row main-font article-h2">300 Likes</div>
+            <div class="row main-font article-h2">14 Descargas</div>
+        </div>
+        <div col-md-3 mr-2">
+            <ul>
+                <li><a class="look-template" href="">ver</a></li>
+                <li><a class="edit-template" href="">editar</a></li>
+                <li><a class="delete-template" href="">eliminar</a></li>
+            </ul>
+        </div>
+    </div>
+
+</template>
+
+
