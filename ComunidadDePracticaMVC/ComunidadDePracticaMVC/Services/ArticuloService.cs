@@ -245,16 +245,19 @@ namespace ComunidadDePracticaMVC.Services
             Console.WriteLine(articulo.ArticuloId);
             return articulo;
         }
-        public List<ArticuloModel> GetArticulosByAutor(string autorCorreo) //OK
+        public List<ArticuloModel> GetArticulosByAutor(int pageNumber, int pageSize, string autorCorreo) //OK
         {
             connection();
             List<ArticuloModel> articulolist = new List<ArticuloModel>();
 
-            string queryArticuloAutor = "SELECT * FROM Articulo WHERE correoUsuarioFK=@correo;";
-            SqlCommand commandArticuloAutor = new SqlCommand(queryArticuloAutor, con);
-            commandArticuloAutor.Parameters.AddWithValue("@Correo", autorCorreo);
 
-            SqlDataAdapter sd = new SqlDataAdapter(commandArticuloAutor);
+            SqlCommand cmd = new SqlCommand("GetArticulosDeAutorByPage", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@correo", autorCorreo);
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
 
             con.Open();
@@ -274,6 +277,7 @@ namespace ComunidadDePracticaMVC.Services
                         Contenido = Convert.ToString(dr["contenido"]),
                         NotaRevision = Convert.ToInt32(dr["notaRevision"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
+                        Estado = Convert.ToString(dr["estado"])
                     });
             }
 
@@ -549,6 +553,18 @@ namespace ComunidadDePracticaMVC.Services
                 listaTopicos.Add(Convert.ToString(dr["topico"]));
             }
             return listaTopicos;
+        }
+
+        public void PonerEnRevision(int id) {
+            connection();
+            string consulta = "UPDATE Articulo SET estado= 'Revision' WHERE articuloId=@articuloId";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            cmd.Parameters.AddWithValue("@articuloId", id);
+
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+
         }
 
     }

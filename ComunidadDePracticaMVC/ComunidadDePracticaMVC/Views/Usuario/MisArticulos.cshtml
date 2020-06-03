@@ -3,8 +3,6 @@
     ViewBag.Title = "MisArticulos";
 }
 
-<h2>Articulos de @ViewBag.correo</h2>
-
 <html>
 
 <head>
@@ -41,7 +39,7 @@
                 data: {},
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: { correo: '@ViewBag.correo' },
+                data: { pageNumber: currentPageNumber, pageSize: 5, correo: '@ViewBag.correo' },
                 success: function (response) {
                     //get the template element:
                     var artTemp = document.getElementsByTagName("template")[0].content;
@@ -54,33 +52,53 @@
                         var lookUrl = '@Url.Action("ConsultarArticulos", "Articulo",new { id= "VAL"},null)';
                         lookUrl = lookUrl.replace("VAL", idS);
                         //url para editar
-                        var editUrl = '@Url.Action("EditarArticulo", "Articulo",new { id= "VAL"},null)';
+                        var editUrl = '@Url.Action("EditarArticuloCorto", "Articulo",new { id= "VAL"},null)';
                         editUrl = editUrl.replace("VAL", idS);
                         //url para borrar
-                        var deleteUrl = '@Url.Action("BorrarArticulo", "Articulo",new { id= "VAL"},null)';
-                        deleteUrl = deleteUrl.replace("VAL", idS);
+                        @*var deleteUrl = '@Url.Action("BorrarArticulo", "Articulo",new { id= "VAL"},null)';
+                        deleteUrl = deleteUrl.replace("VAL", idS);*@
 
                         var articleInstance = document.importNode(artTemp, true);
 
-                        var title, author, info, lookLink, editLink, deleteLink;
+                        var title, author, info, lookLink, editLink;
 
                         //get the DIV element from the template Instance:
+                        like = articleInstance.querySelector(".likes_template");
+                        dislike = articleInstance.querySelector(".dislikes_template");
+                        fecha = articleInstance.querySelector(".fecha_template");
                         title = articleInstance.querySelector(".title_template");
                         author = articleInstance.querySelector(".author_template");
                         //info = articleInstance.querySelector("#info");
                         lookLink = articleInstance.querySelector(".look-template");
                         editLink = articleInstance.querySelector(".edit-template");
-                        deleteLink = articleInstance.querySelector(".delete-template");
+                        //deleteLink = articleInstance.querySelector(".delete-template");
 
                         title.textContent = articulo.Titulo;
+                        like.textContent = like.textContent + articulo.Likes;
+                        dislike.textContent = dislike.textContent + articulo.Dislikes;
+                        fecha.textContent = fecha.textContent + (articulo.FechaPublicacion).split(' ')[0];
                         author.textContent = articulo.Autor;
                         //info.textContent = articulo.Autor;
+
                         lookLink.href = lookUrl;
                         editLink.href = editUrl;
-                        deleteLink.href = deleteUrl;
+                        //Boton para revisar
+                        var revision = articleInstance.querySelector(".revision-template");
+                        revision.id = articulo.ArticuloId;
+                        if (articulo.Estado == "Revision") {
+
+                            revision.setAttribute("disabled", "disabled");
+                            revision.textContent = "Revision";
+                        }
+                        else {
+                            revision.textContent = "A Revisar";
+                            revision.title= "Enviar artículo a revisar.";
+
+                        }
+
+                        //deleteLink.href = deleteUrl;
 
                         articleList.append(articleInstance);
-
                         /*
                         actionLink = actionLink.replace("VAL", idS);
                         tblExample.append('<tr> <td>' + articulo.ArticuloId + '</td> <td>'
@@ -90,11 +108,38 @@
                     });
                 },
                 error: function (err) {
-
+                    alert("Error");
+                },
+                failure: function (err) {
+                    alert("Error");
                 }
 
             });
         }
+
+        function enviarRevision(selector) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("EnviarRevision", "Articulo")',
+                data: {},
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: { id: selector.id },
+                success: function (response) {
+                    alert(response.message);
+                    location.reload();
+                },
+                failure:  function(err) {
+                    alert("Fallo al enviar revisión");
+
+                }
+
+
+
+            });
+
+        }
+
     </script>
 
 </head>
@@ -103,7 +148,8 @@
 
     <div class="col-xl-12 col-md-12 mb-12">
         <div class="row page-title main-font ">
-            <h1>Artículos publicados</h1>
+            <h2>Articulos de @ViewBag.correo</h2>
+            <hr />
         </div>
         @*<div class="row main-font search-bar">
                 <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
@@ -117,29 +163,47 @@
 
 </body>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
 </html>
 
 <template>
+
     <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
 
         <div class="col-md-6 mr-2">
             <div class=" title_template row main-font article-h1">La Descomposición del Estudiante</div>
             <div class=" author_template row main-font article-h2">Edwin Brenes</div>
+
         </div>
+        <div class="box-vertical-divider col-md-1   "></div>
         <div class="col-md-3 mr-2">
-            <div class="row main-font article-h2">07/05/2020</div>
-            <div class="row main-font article-h2">300 Likes</div>
-            <div class="row main-font article-h2">14 Descargas</div>
+
+            <div title="Publicación" class=" fecha_template row main-font article-h2">&#128197 </div>
+            <div title="Likes" class=" likes_template row main-font article-h2">&#128077 </div>
+            <div title="Dislikes " class=" dislikes_template row main-font article-h2">&#128078 </div>
+
         </div>
-        <div col-md-3 mr-2">
-            <ul>
-                <li><a class="look-template" href="">ver</a></li>
-                <li><a class="edit-template" href="">editar</a></li>
-                <li><a class="delete-template" href="">eliminar</a></li>
-            </ul>
+        <div class="box-vertical-divider col-md-1   "></div>
+
+        <div class="col-md-2 mr-2">
+            <div class="row">
+                <a class="look-template row btn box-btn" style="margin-left:15px; margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""> <i class="fa fa-eye"></i> ver  </a>
+            </div>
+            <div class="row">
+                <a class="edit-template row btn box-btn" style="margin-left:15px ;margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""><i class="fa fa-edit"></i> editar</a>
+            </div>
+            <div class="row">
+                <a class="revision-template row btn box-btn" style="margin-left:15px; width: 100%; padding-left: -15px;" href="" onclick="enviarRevision (this)">asd</a>
+            </div>
+
         </div>
     </div>
 
 </template>
+
 
 

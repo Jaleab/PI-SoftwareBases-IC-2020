@@ -189,11 +189,11 @@ namespace PassParameter.Controllers
 
         }
 
-        public JsonResult ArticulosAutor(string correo)
+        public JsonResult ArticulosAutor(int pageNumber, int pageSize, string correo)
         {
 
             ArticuloService serviceArt = new ArticuloService();
-            List<ArticuloModel> articuloList = serviceArt.GetArticulosByAutor(correo);
+            List<ArticuloModel> articuloList = serviceArt.GetArticulosByAutor(pageNumber, pageSize,correo);
             return Json(articuloList, JsonRequestBehavior.AllowGet);
         }
 
@@ -223,6 +223,28 @@ namespace PassParameter.Controllers
 
         public ActionResult ArticulosCalificados() {
             return View();
+        }
+
+        public JsonResult EnviarRevision(int id) {
+            JsonResult result;
+            try
+            {
+                ArticuloService artServ = new ArticuloService();
+                artServ.PonerEnRevision(id);
+                result = Json(new
+                {
+                    message = "Se envio a revisar."
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch {
+                result = Json(new
+                {
+                    message  = "No se pudo enviar a revisar."
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+
+            return result;
         }
 
     }
