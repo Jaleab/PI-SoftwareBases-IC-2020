@@ -59,17 +59,6 @@
                         <!--diferentes vistas dependiendo de si hay usuario logeado -->
                         @Html.Partial("_LayoutSideBar")
                         <!-- Por ahora ya que no hay usuarios-->
-                        
-                        <li> @Html.ActionLink("Crear Artículo Largo", "Index", "ArticuloLargo") </li>
-                        <li> @Html.ActionLink("Crear Artículo Corto", "Create", "Articulo") </li>
-                        <li class="sidebar-divider"></li>
-
-                        <li> @Html.ActionLink("Ver Miembros", "UsuariosComunidad", "Usuario") </li>
-
-
-                        <li> @Html.ActionLink("Asignar Meritos", "ArticulosCalificados", "Articulo") </li>
-                        <li class="sidebar-divider"></li>
-
                         <!-- Por ahora  ya que no hay usuarios-->
                         <li style="color: #999999; padding: 1rem;"> Busqueda por tópico  </li>
                         <li>
@@ -94,8 +83,17 @@
                             </script>
 
                         </li>
-
                         <li class="sidebar-divider"></li>
+                        <li> @Html.ActionLink("Crear Artículo Largo", "Index", "ArticuloLargo") </li>
+                        <li> @Html.ActionLink("Crear Artículo Corto", "Create", "Articulo") </li>
+                        <li class="sidebar-divider"></li>
+
+                        <li> @Html.ActionLink("Ver Miembros", "UsuariosComunidad", "Usuario") </li>
+
+
+                        <li> @Html.ActionLink("Asignar Meritos", "ArticulosCalificados", "Articulo") </li>
+                        <li class="sidebar-divider"></li>
+
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tópicos<span class="caret"></span></a>
                             <ul class="dropdown-content">
