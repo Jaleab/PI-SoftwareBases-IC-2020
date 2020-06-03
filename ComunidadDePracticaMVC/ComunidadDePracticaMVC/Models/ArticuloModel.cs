@@ -27,6 +27,9 @@ namespace ComunidadDePracticaMVC.Models
         [Required(ErrorMessage = "Un topico es requerido.")]
         public string Topico { get; set; }
 
+        [Required(ErrorMessage = "Un correo es requerido.")]
+        public string Correo { get; set; }
+
         public int PuntajeLectores { get; set; }
 
         public int NotaRevision { get; set; }
