@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using ComunidadDePracticaMVC.Models;
+using System.Web.Script.Serialization;
 
 namespace ComunidadDePracticaMVC.Controllers
 {
@@ -29,7 +30,10 @@ namespace ComunidadDePracticaMVC.Controllers
             if (accountDbHandle.loginUser(model) != -1)
             {
                 //TODO get ROL de USUARIO
-                FormsAuthentication.SetAuthCookie(model.Email,true);
+                //var jsonUsuario = new JavaScriptSerializer().Serialize(model);
+                //FormsAuthentication.SetAuthCookie(jsonUsuario, true);
+                FormsAuthentication.SetAuthCookie(model.Email, true);
+
                 //TODO hacer que diga que pudo completar la accion
                 result = Json(new
                 {
@@ -88,7 +92,11 @@ namespace ComunidadDePracticaMVC.Controllers
             if (accountDbHandle.registerUser(model) != -1)
             {
                 //TODO get ROL de USUARIO
+                //var jsonUsuario = new JavaScriptSerializer().Serialize(model);
+                //FormsAuthentication.SetAuthCookie(jsonUsuario, true);
                 FormsAuthentication.SetAuthCookie(model.Email, true);
+
+
                 //TODO hacer que diga que pudo completar la accion
                 result = Json(new
                     {

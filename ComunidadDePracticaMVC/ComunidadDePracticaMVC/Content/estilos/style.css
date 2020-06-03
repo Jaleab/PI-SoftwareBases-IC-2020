@@ -170,26 +170,74 @@
     box-shadow: 0 .15rem 1.75rem 0 rgba(30,30,30,.45) !important;
 }
 
-.topnav-text {
-    color: white;
-    text-align: center;
-    font-size: 17px;
-    font-weight: 700;
-}
+
 
 /*Targetea esas clases y les sobreescribe esas cosas*/
-.nav.navbar-nav li a {
+
+.nav.navbar-left li a {
     color: white;
     text-align: center;
     font-size: 17px;
     font-weight: 700;
 }
 
-    .nav.navbar-nav li a:hover {
-        color: #0c377f;
-        background-color: #eeeeee;
-        border-radius: 50px;
-    } 
+.nav.navbar-left li a:hover {
+    color: white;
+    background-color: transparent;
+}
+
+.nav.navbar-right li a {
+    color: #dedede;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.nav.navbar-right li a:hover {
+    color: white;
+    background-color: transparent;
+}
+
+.vertical-divider {
+    padding-left: 15px !important;
+    padding-right: 0px !important;
+    padding-top: 36px !important;
+    padding-bottom: 0px !important;
+    margin-top: 6px;
+    margin-left: 15px !important;
+    border-left: 1px solid #dedede;
+    height: 0px !important;
+    width: 0px !important;
+}
+
+.avatar {
+    margin-top: 3px;
+    line-height: 36px !important;
+    padding: 5px !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    color: white !important;
+    width: 43px !important;
+    height: 43px !important;
+    background-color: rgb(224, 108, 114) !important;
+    text-align: center !important;
+    border-radius: 50% !important;
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+}
+
+.dropdown-menu li a {
+    color: dimgray !important;
+    font-weight: 400 !important;
+    text-align: left !important;
+    width: 100%;
+}
+
+.dropdown-menu li a:hover {
+    color: black !important;
+    background-color: #dedcdc!important;
+}
+
 
 
 /* Style the links inside the navigation bar */
