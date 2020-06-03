@@ -38,6 +38,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 return View("Index", "ArticuloLargo");
             }
             else {
+               
                 string RutaSitio = Server.MapPath("~/"); //guardar local
                 string PathArchivo1 = Path.Combine(RutaSitio + "/Files/") + model.Archivo1.FileName; //guardar local
                 model.Archivo1.SaveAs(PathArchivo1);

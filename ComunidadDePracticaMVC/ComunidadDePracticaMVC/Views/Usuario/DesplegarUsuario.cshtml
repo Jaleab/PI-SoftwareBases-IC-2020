@@ -182,7 +182,7 @@
 
         </table>
         <div class="col-md-1 ">
-            @Html.ActionLink("Editar", "DesplegarEditarUsuario", "Usuario", new { correo = "@User.Identity.Name" }, htmlAttributes: new { title = "Edite su perfil", @class = "btn btn-primary" })
+            @Html.ActionLink("Editar", "DesplegarEditarUsuario", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Edite su perfil", @class = "btn btn-primary" })
         </div>
 
     </div>

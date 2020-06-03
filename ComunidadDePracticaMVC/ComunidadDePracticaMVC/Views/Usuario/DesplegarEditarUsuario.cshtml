@@ -161,7 +161,7 @@
                 <input type="submit" value="Guardar datos" class="btn btn-success" />
             </div>
             <div class="col-md-2">
-                @Html.ActionLink("Cancelar", "DesplegarUsuario", "Usuario", new { correo = "@User.Identity.Name" }, htmlAttributes: new { title = "Devolverse a mi perfil", @class = "btn btn-danger" })
+                @Html.ActionLink("Cancelar", "DesplegarUsuario", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Devolverse a mi perfil", @class = "btn btn-danger" })
             </div>
         </div>
     </div>
