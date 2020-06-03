@@ -1,0 +1,156 @@
+﻿@{
+   
+}
+
+<html>
+
+<head>
+    <script type="text/javascript">
+
+        function cargarMerito(articuloId) {
+            var caja = document.getElementById(articuloId.toString());
+            if (caja.value != null && caja.value != '') {
+                var id = parseInt(articuloId);
+                var merito = parseInt(caja.value);
+                if (merito >= 0) {
+                    enviarMerito(id, merito);
+                } else {
+                    alert("El merito debe ser un número positivo");
+                }
+            }
+            else {
+                alert("Debe ingresar un valor antes de pulsar enviar");
+            }
+        }
+
+        function enviarMerito(articuloID, valor) {
+            $.ajax({
+                type: "GET",
+                url: '/Articulo/AsignarMeritos/',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: { id: articuloID, merito: valor },
+                success: function (response) {
+                    alert(response.message)
+                },
+                failure: function () {
+                    alert("Error al asignar merito")
+                },
+                error: function (err) {
+                    alert("Error al asignar merito")
+                }
+
+            });
+        }
+
+        $(document).ready(function () {
+            var currentPage = 1;
+            loadArticlesData(currentPage);
+
+            $(window).scroll(function () {
+                var windowComparison = ($(document).height() - $(window).height()) - $(window).scrollTop();
+                if (Math.abs(windowComparison) <= 1) {
+                    currentPage += 1;
+                    loadArticlesData(currentPage);
+                }
+
+            });
+
+
+        });
+
+        function loadArticlesData(currentPageNumber) {
+            $.ajax({
+                type: "GET",
+                url: 'getArticulosInfo',
+                data: {},
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: { pageNumber: currentPageNumber, pageSize: 5 },
+                success: function (response) {
+
+                    var artTemp = document.getElementsByTagName("template")[0].content;
+                    var articleList = $('#articleList');
+
+                    $.each(response, function (index, articulo) {
+                        var idS = new String(articulo.ArticuloId);
+
+                        var articleInstance = document.importNode(artTemp, true);
+
+                        var title, author, nota, fecha, btnEnvio,merito;
+                       
+                        title = articleInstance.querySelector(".title_template");
+                        author = articleInstance.querySelector(".author_template");
+                        articleInstance.querySelector("row main-font article-h2");
+                        nota = articleInstance.querySelector(".nota-template");
+                        fecha = articleInstance.querySelector(".fecha-template");
+                        btnEnvio = articleInstance.querySelector(".btn-enviar");
+                        merito = articleInstance.querySelector(".merito-input");
+
+                        merito.id = idS;                    
+                        title.textContent = articulo.Titulo;
+                        author.textContent = articulo.Autor;
+                        nota.textContent = "Nota: " + articulo.NotaRevision;
+                        fecha.textContent = "Fecha publicación: " + articulo.FechaPublicacion;
+                        articleList.append(articleInstance);
+                        btnEnvio.addEventListener('click', function (e) { cargarMerito(idS) });
+
+
+                    });
+                },
+                error: function (err) {
+
+                }
+
+            });
+        }
+
+
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="~/Content/estilos.css">
+</head>
+
+<body>
+    <div class="col-xl-12 col-md-12 mb-12">
+        <div class="row page-title main-font ">
+            <h1>Artículos calificados</h1>
+        </div>
+    </div>
+    <div>
+        <div id="articleList">
+
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<template>
+    <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
+
+        <div class="col-md-6 mr-2">
+            <div class=" title_template row main-font article-h1">La Descomposición del Estudiante</div>
+            <div class=" author_template row main-font article-h2">Edwin Brenes</div>
+        </div>
+        <div class="col-md-3 mr-2">
+            <div class="nota-template row main-font article-h2">-Nota-</div>
+            <div class="fecha-template row main-font article-h2"> FechaPublicación </div>
+        </div>
+        <div col-md-3 mr-2">
+            
+            <h4>Asignar merito</h4>
+            <input type="number" min="0"  class="merito-input" placeholder="Ingrese un valor"/> 
+
+            <input type="submit" min="0"  class="btn-enviar" value="Enviar merito" style="margin-top:10px"/>
+
+
+        </div>
+    </div>
+
+</template>
+
+
+
+
