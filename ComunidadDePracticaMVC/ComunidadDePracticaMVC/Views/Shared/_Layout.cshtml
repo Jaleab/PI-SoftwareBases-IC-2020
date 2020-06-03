@@ -1,6 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using System;
+@using System.Collections.Generic;
+@using System.Data;
+@using System.Data.SqlClient;
+@using System.Configuration;
+@using System.Linq;
+@using System.Web;
+@using ComunidadDePracticaMVC.Models;
+@using System.IO;
 
-
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -21,7 +29,6 @@
 
 </head>
 
-
 <body>
 
     <nav class="topnav navbar navbar-fixed-top main-font">
@@ -38,7 +45,7 @@
                     @Html.Partial("_LayoutTopNav")
                 </div><!--/.nav-collapse -->
             </div>
-            
+
         </div><!--/.container-fluid -->
     </nav>
 
@@ -92,11 +99,12 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tópicos<span class="caret"></span></a>
                             <ul class="dropdown-content">
-                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="Educación"})">Educación</a></li>
+                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="Biología"})">Biología</a></li>
+                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="Educación virtual"})">Educación virtual</a></li>
+                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="Matemática"})">Matemática</a></li>
+                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="SQLServer"})">SQLServer</a></li>
+                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="Videojuegos"})">Videojuegos</a></li>
                                 <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="WEB"})">WEB</a></li>
-                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="Estudios"})">Estudios</a></li>
-                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="Kung Fu"})">Kung Fu</a></li>
-                                <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="fisica"})">Fisica</a></li>
                             </ul>
                         </li>
                         <li class="sidebar-divider"></li>

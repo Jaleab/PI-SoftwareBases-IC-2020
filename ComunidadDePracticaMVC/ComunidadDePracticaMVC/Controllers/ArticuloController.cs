@@ -64,26 +64,31 @@ namespace PassParameter.Controllers
         {
             ArticuloService servicioArt = new ArticuloService();
             ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
-            ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
-            //ViewBag.Message = TempData["Message"].ToString();                        
+            ViewBag.listaTopicos = servicioArt.ObtenerTopicos();                       
             return View();
         }
 
         [HttpPost]
         public ActionResult Create(ArticuloModel model)
         {
-            if (model == null)
+            if (model.Titulo == null || model.Topico == null || model.Correo == null || model.Resumen == null || model.Contenido == null)
             {
                 ArticuloService servicioArt = new ArticuloService();
                 ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
                 ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
-                return View("Create", model);
+                return View();
             }
             else
             {
                 ArticuloService servicioArt = new ArticuloService();
-                servicioArt.CrearArticulo(model);
-                ViewBag.mensaje = "Artículo ha sido guardado";
+                bool exito = servicioArt.CrearArticulo(model);
+                if (exito == true)
+                {
+                    ViewBag.mensaje = "Artículo ha sido guardado";
+                }
+                else {
+                    ViewBag.mensaje = "Articulo no ha sido guardado por titulo duplicado";
+                }
                 ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
                 ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
                 return View();
@@ -96,8 +101,8 @@ namespace PassParameter.Controllers
             {
                 ViewBag.Message = TempData["Message"].ToString();
             }
-            if (mensaje == "Se guardo el articulo") {
-                ViewBag.mensaje = "Se guardo el articulo";
+            else {
+                ViewBag.mensaje = mensaje;
             }
             ArticuloService servicioArticulo = new ArticuloService();
             ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
@@ -109,10 +114,19 @@ namespace PassParameter.Controllers
         public ActionResult Editar(int id, ArticuloModel model, string hilera)
         {
             ArticuloService servicioArticulo = new ArticuloService();
-            servicioArticulo.EditarArticuloCorto(id, model, hilera);
+            bool exito = servicioArticulo.EditarArticuloCorto(id, model, hilera);
+            if (exito == true)
+            {
+                ViewBag.mensaje = "Artículo ha sido guardado";
+            }
+            else
+            {
+                ViewBag.mensaje = "Articulo no ha sido guardado por titulo duplicado";
+            }
 
             int articuloId = id;
-            return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloId, mensaje = "Se guardo el articulo"});
+            //return View(new { id = articuloId });
+            return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloId, mensaje = ViewBag.mensaje});
             }
 
         // GET: Articulo/BorrarArticulo/5

@@ -30,6 +30,12 @@ namespace ComunidadDePracticaMVC
                 "Usuario/{action}/{hilera}",
                 new { controller = "Usuario", action = "GetNombreUsuarios", hilera = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                "ArticuloLargo",
+                "ArticuloLargo/{action}/{hilera}",
+                new { controller = "ArticuloLargo", action = "Index", hilera = UrlParameter.Optional }
+            );
         }
     }
 }

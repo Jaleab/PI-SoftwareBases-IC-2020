@@ -14,6 +14,13 @@
     </div>
 }
 
+@if (ViewBag.mensaje == "Articulo no ha sido guardado por titulo duplicado")
+{
+    <div class="text-danger">
+        @ViewBag.mensaje
+    </div>
+}
+
 @{
     List<SelectListItem> listaNombreCorreo = new List<SelectListItem>();
     foreach (var item in ViewBag.listaAutoresCorreos)

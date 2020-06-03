@@ -1,67 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="PassParameter.Controllers.ArticuloController">
-    <Position X="2.75" Y="0.5" Width="1.5" />
+    <Position X="6" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAABBAAIAABCAAAAAAAAAAEAEAAEBACAQCAA=</HashCode>
+      <HashCode>AACAAAAAAABAAAIAABCAgAAAAAAAAEAEAAEBACAQCAA=</HashCode>
       <FileName>Controllers\ArticuloController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComunidadDePracticaMVC.Controllers.ArticuloLargoController">
-    <Position X="8.75" Y="4.5" Width="1.5" />
+    <Position X="7.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEABAAAAAA=</HashCode>
       <FileName>Controllers\ArticuloLargoController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComunidadDePracticaMVC.Controllers.CorreoController">
-    <Position X="10.75" Y="3" Width="1.5" />
+    <Position X="11.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>Controllers\CorreoController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComunidadDePracticaMVC.Controllers.UsuarioController">
-    <Position X="5.5" Y="7.5" Width="1.5" />
+    <Position X="2.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAAAAoAoAAAEAAAAAgAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\UsuarioController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComunidadDePracticaMVC.Services.UsuarioService">
-    <Position X="0.5" Y="7.5" Width="1.5" />
+    <Position X="1.25" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAEAAACACQAQAAAgAQAAAQAAAAAAAAA=</HashCode>
       <FileName>Services\UsuarioService.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComunidadDePracticaMVC.Services.ArticuloService">
-    <Position X="0.75" Y="1" Width="1.5" />
+    <Position X="4.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAEAAACAhAAKQAABABAQAgAAAAAAAABQgAAAAICAA=</HashCode>
       <FileName>Services\ArticuloService.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComunidadDePracticaMVC.Models.ArticuloModel">
-    <Position X="5" Y="1" Width="1.5" />
+    <Position X="6.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAgAAACAEAIAAAABAAgAAABAAIAAACAAACAAACAAABA=</HashCode>
+      <HashCode>AAgAAACAEAIAAAAAAAgAAAhAAIAAACACACQAACAAABA=</HashCode>
       <FileName>Models\ArticuloModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComunidadDePracticaMVC.Models.UsuarioModel">
-    <Position X="3" Y="6" Width="1.5" />
+    <Position X="2.5" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAAAAAAAQAAAAkAAAAgAgAAIAAAAAAACAAQAAAAAA=</HashCode>
       <FileName>Models\UsuarioModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComunidadDePracticaMVC.Models.CorreoModel">
-    <Position X="8.75" Y="2.5" Width="1.5" />
+    <Position X="11" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAAAIAABAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
       <FileName>Models\CorreoModel.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="System.Web.Mvc.Controller" Collapsed="true">
+    <Position X="10.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="8" Y="0.75" Width="1.5" />
+    <TypeIdentifier />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
