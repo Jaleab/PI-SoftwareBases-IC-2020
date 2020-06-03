@@ -18,9 +18,9 @@ namespace ComunidadDePracticaMVC.Controllers
         // GET: ArticuloLargo
         public ActionResult Index()
         {
-            if (TempData["Message"] != null) {
-                ViewBag.Message = TempData["Message"].ToString();
-            }
+            //if (TempData["Message"] != null) {
+            //    ViewBag.Message = TempData["Message"].ToString();
+            //}
             ArticuloService servicioArticulo = new ArticuloService();
             ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
             ViewBag.listaTopicos = servicioArticulo.ObtenerTopicos();
@@ -30,7 +30,7 @@ namespace ComunidadDePracticaMVC.Controllers
         [HttpPost]
         public ActionResult Guardar(ArticuloLargoViewModel model) {
 
-            if (model == null)
+            if (model.Titulo == null || model.Topico == null || model.Correo == null || model.Resumen == null || model.Archivo1 == null)
             {                
                 ArticuloService servicioArticulo = new ArticuloService();
                 ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
@@ -42,9 +42,16 @@ namespace ComunidadDePracticaMVC.Controllers
                 string PathArchivo1 = Path.Combine(RutaSitio + "/Files/") + model.Archivo1.FileName; //guardar local
                 model.Archivo1.SaveAs(PathArchivo1);
                 ArticuloService servicioArt = new ArticuloService();
-                servicioArt.GuardarArticuloLargo(model);
-                //@TempData["Message"] = "Su archivo ha sido enviado a revisión";           
-                ViewBag.mensaje = "Su archivo ha sido enviado a revisión";
+                bool exito = servicioArt.GuardarArticuloLargo(model);
+                if (exito == true)
+                {
+                    ViewBag.mensaje = "Artículo ha sido guardado";
+                }
+                else
+                {
+                    ViewBag.mensaje = "Articulo no ha sido guardado por titulo duplicado";
+                }
+                //@TempData["Message"] = "Su archivo ha sido enviado a revisión";
                 ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
                 ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
                 return View("Index");

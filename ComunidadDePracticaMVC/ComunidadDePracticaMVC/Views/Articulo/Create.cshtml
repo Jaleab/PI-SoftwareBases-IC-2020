@@ -5,10 +5,17 @@
 <script type="text/javascript" src="~/Scripts/tinyMCEContenidoConfig.js"></script>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
-
-@if (ViewBag.mensaje == "Se guardo el articulo")
+<h1>Crear articulo corto</h1>
+@if (ViewBag.mensaje == "Artículo ha sido guardado")
 {
     <div class="alert-success">
+        @ViewBag.mensaje
+    </div>
+}
+
+@if (ViewBag.mensaje == "Articulo no ha sido guardado por titulo duplicado")
+{
+    <div class="text-danger">
         @ViewBag.mensaje
     </div>
 }
@@ -27,7 +34,7 @@
     }
 }
 
-<h1>Crear articulo corto</h1>
+
 
 @using (Html.BeginForm("Create", "Articulo", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -71,8 +78,6 @@
         </div>
     </div>
 }
-
-
 
 
 <div>

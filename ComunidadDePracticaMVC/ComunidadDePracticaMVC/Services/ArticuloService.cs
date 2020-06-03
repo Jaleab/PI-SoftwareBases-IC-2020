@@ -160,9 +160,10 @@ namespace ComunidadDePracticaMVC.Services
             return Articulolist;
         }
 
-        public void CrearArticulo(ArticuloModel articulo)
+        public bool CrearArticulo(ArticuloModel articulo)
         {
             //establecer la conexion con la base de datos
+            bool exito = false;
             connection();
 
 
@@ -175,8 +176,19 @@ namespace ComunidadDePracticaMVC.Services
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
 
             con.Open();
-            cmd.ExecuteNonQuery();
+            try
+            {
+                exito = cmd.ExecuteNonQuery() >= 1;
+
+            }
+            catch (Exception e)
+            {
+            }
             con.Close();
+            if (exito == false)
+            {
+                return exito;
+            }
 
             DataTable dt = new DataTable();
 
@@ -209,7 +221,7 @@ namespace ComunidadDePracticaMVC.Services
             cmd2.ExecuteNonQuery();
             //sd2.Fill(dt);
             con.Close();
-
+            return exito;
         }
 
         public ArticuloModel GetInfoArticulo(int id) //OK
@@ -294,9 +306,10 @@ namespace ComunidadDePracticaMVC.Services
             return articulolist;
         }
 
-        public void EditarArticuloCorto(int id, ArticuloModel articulo, string hilera)
+        public bool EditarArticuloCorto(int id, ArticuloModel articulo, string hilera)
         {
             connection();
+            bool exito = false;
             SqlCommand cmd = new SqlCommand("UPDATE Articulo SET titulo = @Titulo, topico = @Topico, resumen = @Resumen, contenido = @Contenido  WHERE articuloId = @Id", con);
             //cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
@@ -304,10 +317,21 @@ namespace ComunidadDePracticaMVC.Services
             cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
             cmd.Parameters.AddWithValue("@Id", id);
-            
+
             con.Open();
-            cmd.ExecuteNonQuery();
+            try
+            {
+                exito = cmd.ExecuteNonQuery() >= 1;
+
+            }
+            catch (Exception e)
+            {
+            }
             con.Close();
+            if (exito == false)
+            {
+                return exito;
+            }
 
             connection();
             cmd = new SqlCommand(
@@ -322,8 +346,7 @@ namespace ComunidadDePracticaMVC.Services
             con.Open();
             cmd.ExecuteNonQuery();
             con.Close();
-
-
+            return exito;
         }
 
         public bool BorrarArticulo(int id)
@@ -378,14 +401,12 @@ namespace ComunidadDePracticaMVC.Services
                         Contenido = Convert.ToString(dr["contenido"]),
                     });
             }
-
-
-
             return articuloList;
         }
 
-        public void GuardarArticuloLargo(ArticuloLargoViewModel articulo) {
+        public bool GuardarArticuloLargo(ArticuloLargoViewModel articulo) {
             byte[] bytes;
+            bool exito = false;
             BinaryReader br = new  BinaryReader(articulo.Archivo1.InputStream); //
             bytes = br.ReadBytes(articulo.Archivo1.ContentLength);
             connection();
@@ -399,8 +420,20 @@ namespace ComunidadDePracticaMVC.Services
             cmd.Parameters.AddWithValue("@TipoArchivo",  articulo.Archivo1.ContentType);
 
             con.Open();
-            cmd.ExecuteNonQuery();
+
+            try
+            {
+                exito = cmd.ExecuteNonQuery() >= 1;
+                                  
+            }
+            catch (Exception e)
+            {
+            }
             con.Close();
+            if (exito == false)
+            {
+                return exito;
+            }
 
             DataTable dt = new DataTable();
              
@@ -433,7 +466,7 @@ namespace ComunidadDePracticaMVC.Services
             cmd2.ExecuteNonQuery();
             //sd2.Fill(dt);
             con.Close();
-
+            return exito;
         }
 
         public Tuple<byte[], string> DescargarArticuloLargo(int id) {
@@ -498,8 +531,8 @@ namespace ComunidadDePracticaMVC.Services
 
             connection();
             string consulta =
-                "SELECT DISTINCT * " +
-                "FROM Topico";
+                "SELECT DISTINCT topico " +
+                "FROM Articulo";
             SqlCommand cmd = new SqlCommand(consulta, con);
 
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
