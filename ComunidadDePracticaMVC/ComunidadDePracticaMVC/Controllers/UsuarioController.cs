@@ -45,6 +45,75 @@ namespace ComunidadDePracticaMVC.Controllers
             return result;
         }
 
+        [HttpPost]
+        public JsonResult EditarIdioma(string correo , string viejo, string nuevo )
+        {
+            if (nuevo=="")
+            {
+                return null;
+            }
+            else
+            {
+                UsuarioService usuario = new UsuarioService();
+                usuario.EditarIdioma(viejo, nuevo, correo);
+                JsonResult result = Json(new
+                {
+
+                    newUrl = ""
+                }
+                );
+
+                return result;
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResult EditarHobbie(string correo, string viejo, string nuevo)
+        {
+            if (nuevo == "")
+            {
+                return null;
+            }
+            else
+            {
+                UsuarioService usuario = new UsuarioService();
+                usuario.EditarHobbie(viejo, nuevo, correo);
+                JsonResult result = Json(new
+                {
+
+                    newUrl = ""
+                }
+                );
+
+                return result;
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResult EditarHabilidad(string correo, string viejo, string nuevo)
+        {
+            if (nuevo == "")
+            {
+                return null;
+            }
+            else
+            {
+                UsuarioService usuario = new UsuarioService();
+                usuario.EditarHabilidad(viejo, nuevo, correo);
+                JsonResult result = Json(new
+                {
+
+                    newUrl = ""
+                }
+                );
+
+                return result;
+
+            }
+        }
+
 
         public ActionResult NuevoUsuario()
         {

@@ -81,6 +81,48 @@ namespace ComunidadDePracticaMVC.ArticuloService
          
         }
 
+        public void EditarIdioma(string correo , string viejo, string nuevo)
+        {
+            Connection();
+
+            SqlCommand cmd = new SqlCommand("EditarIdioma", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Correo",correo);
+            cmd.Parameters.AddWithValue("@Viejo", viejo);
+            cmd.Parameters.AddWithValue("@Nuevo", nuevo);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
+        public void EditarHobbie(string correo, string viejo, string nuevo)
+        {
+            Connection();
+
+            SqlCommand cmd = new SqlCommand("EditarHobbie", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Correo", correo);
+            cmd.Parameters.AddWithValue("@Viejo", viejo);
+            cmd.Parameters.AddWithValue("@Nuevo", nuevo);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
+        public void EditarHabilidad(string correo, string viejo, string nuevo)
+        {
+            Connection();
+
+            SqlCommand cmd = new SqlCommand("EditarHabilidad", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Correo", correo);
+            cmd.Parameters.AddWithValue("@Viejo", viejo);
+            cmd.Parameters.AddWithValue("@Nuevo", nuevo);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
 
         public UsuarioModelCompleto GetUsuarioCompleto(string correo)
         {

@@ -2,27 +2,19 @@
 
 
 <script type="text/javascript">
-
     $(document).ready(function () {
 
-        
-        
+
         $("#form").on('submit', function (e) {
-            
             //Previene el verdadero submit de la b
             e.preventDefault();
             //valida el form
-            
             $('#form').validate();
-            
             var isFormValid = $('#form').valid();
-            //Elementos para retroalimentacion al usuario           
-            
 
             if (isFormValid) {
                 $.ajax(
                     {
-
                         type: "POST", //HTTP POST Method
                         url: "EditarUsuario/",
                         dataType: "json",
@@ -34,30 +26,14 @@
                             Apellido2: $("#apellido2").val(),
                             Ciudad: $("#ciudad").val(),
                             Pais: $("#pais").val(),
-
                         },
                         success: function (data) {
-                            /*document.getElementById('form').reset();
 
-                            if (data.responseStatus != -1) {
-                                alert(data.responseMessage);
-                                window.location.replace(data.newUrl);
-                            }
-                            else {
-                                alertRegsiterBox.style.display = "block";
-                                alertRegsiterTitle.innerText = data.responseMessage;
-                            }*/
-                            alert("Cambio Generado Correctamente")
-
-                        },
-                        failure: function (response) {
-                            alert("Fallo");
                         },
                         error: function (response) {
-                            alert("Fallo");
+                            alert(response.responseText);
                         }
                     });
-
             }
             else {
                 alertValidation.style.display = "block";
@@ -65,16 +41,118 @@
 
         });
 
-    });
 
+        ///////////////////////////////// IDIOMAS
+
+        $("#form").on('submit', function (e) {
+            //Previene el verdadero submit de la b
+            e.preventDefault();
+            //valida el form
+            $('#form').validate();
+            var isFormValid = $('#form').valid();
+
+            if (isFormValid) {
+                $.ajax(
+                    {
+                        type: "POST", //HTTP POST Method
+                        url: "EditarIdioma/",
+                        dataType: "json",
+                        data: { //Passing data
+
+                            Correo: $("#correo").text(),
+                            Viejo: $("#idiomaViejo").text(),
+                            Nuevo: $("#idiomaNuevo").val(),
+                        },
+                        success: function (data) {
+
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+            }
+            else {
+                alertValidation.style.display = "block";
+            }
+
+        });
+
+    ////////////////////////////// Hobbie
+
+        $("#form").on('submit', function (e) {
+            //Previene el verdadero submit de la b
+            e.preventDefault();
+            //valida el form
+            $('#form').validate();
+            var isFormValid = $('#form').valid();
+
+            if (isFormValid) {
+                $.ajax(
+                    {
+                        type: "POST", //HTTP POST Method
+                        url: "EditarHobbie/",
+                        dataType: "json",
+                        data: { //Passing data
+
+                            Correo: $("#correo").text(),
+                            Viejo: $("#hobbieViejo").text(),
+                            Nuevo: $("#hobbieNuevo").val(),
+                        },
+                        success: function (data) {
+
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+            }
+            else {
+                alertValidation.style.display = "block";
+            }
+        });
+        //////////////////////////////////////////////// Habilidad
+        $("#form").on('submit', function (e) {
+            //Previene el verdadero submit de la b
+            e.preventDefault();
+            //valida el form
+            $('#form').validate();
+            var isFormValid = $('#form').valid();
+
+            if (isFormValid) {
+                $.ajax(
+                    {
+                        type: "POST", //HTTP POST Method
+                        url: "EditarHabilidad/",
+                        dataType: "json",
+                        data: { //Passing data
+
+                            Correo: $("#correo").text(),
+                            Viejo: $("#habilidadViejo").text(),
+                            Nuevo: $("#habilidadNuevo").val(),
+                        },
+                        success: function (data) {
+
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+            }
+            else {
+                alertValidation.style.display = "block";
+            }
+
+        });
+
+        //////////////////////////////////////
+    });
 </script>
 
 
-@{
-    ViewBag.Title = "Editar Usuario";
-}
 
 <h2>Editar mis datos</h2>
+
+
 <form id="form" class="form-horizontal" novalidate="novalidate">
     @Html.AntiForgeryToken()
 
@@ -86,9 +164,13 @@
         @foreach (var item in Model.Usuario)
         {
             <div class="form-group">
-                @Html.LabelFor(model => item.Correo, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div id="correo" class="col-md-10">@Html.DisplayFor(model => item.Correo)</div>
+                @Html.LabelFor(model => item.Correo, htmlAttributes: new { @class = "control-label col-md-2", })
+                <div class="col-md-10" id="correo">
+                    @Html.DisplayFor(model => item.Correo)
+                </div>
             </div>
+
+
             <br />
             <div class="form-group">
                 @Html.LabelFor(model => item.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -132,61 +214,66 @@
 
         }
 
-        <!--
 
-        <div class="form-group">
-            @@Html.LabelFor(model => model.Idioma, htmlAttributes: new { @@class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @@Html.EditorFor(model => model.Idioma, new { htmlAttributes = new { @@class = "form-control", @@id = "idioma" } })
-                @@Html.ValidationMessageFor(model => model.Idioma, "", new { @@class = "text-danger" })
-                <input type="email" class="form-control" id="idiomaNuevo">
-            </div>
-        </div>
+    </div>
+
+    <h3>Seleccione el valor a editar y escriba el nuevo en el cuadro de textp</h3>
+
+    <div class="form-group">
+        <h3>Idioma</h3>
+        <Select id="idiomaViejo" class="form-control">
+            @foreach (var item in Model.Idioma)
+            {
+                <option> @item</option>
+            }
+        </Select>
+        <input type="email" class="form-control" id="idiomaNUevo">
+    </div>
+
+    <div class="form-group">
+        <h3>Hobbies</h3>
+        <Select id="hobbieViejo" class="form-control">
+            @foreach (var item in Model.Hobbie)
+            {
+                <option> @item</option>
+            }
+        </Select>
+        <input type="email" class="form-control" id="hobbieNUevo">
+    </div>
+
+    <div class="form-group">
+        <h3>Habilidad</h3>
+        <Select id="habilidadViejo" class="form-control">
+            @foreach (var item in Model.Habilidad)
+            {
+                <option> @item</option>
+            }
+        </Select>
+        <input type="email" class="form-control" id="habilidadNuevo">
+    </div>
+
+    <br /><br />
+
+    <div>
+        @Html.ActionLink("Regresar", "Index", new { })
+    </div>
 
 
-
-
-        <div class="form-group">
-            @@Html.LabelFor(model => model.Hobbie, htmlAttributes: new {@@class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @@Html.EditorFor(model => model.Hobbie, new { htmlAttributes = new { @@class = "form-control",@@id = "hobbie" } })
-                @@Html.ValidationMessageFor(model => model.Hobbie, "", new { @@class = "text-danger" })
-                <input type="email" class="form-control" id="hobbieNUevo">
-            </div>
-        </div>
-
-
-
-
-        <div class="form-group">
-            @@Html.LabelFor(model => model.Habilidad, htmlAttributes: new {@@class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @@Html.EditorFor(model => model.Habilidad, new { htmlAttributes = new { @@class = "form-control", @@id = "habilidad" } })
-                @@Html.ValidationMessageFor(model => model.Habilidad, "", new { @@class = "text-danger" })
-                <input type="email" class="form-control" id="habilidadNUeva" >
-            </div>
-        </div>
-
-
-        <br />
-        <br />
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
         </div>
     </div>
 
-            -->
-
-
-        <div>
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-
-
 </form>
+
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+
+
+
+
+
