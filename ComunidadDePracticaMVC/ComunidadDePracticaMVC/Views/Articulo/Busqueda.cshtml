@@ -33,7 +33,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Resumen)
                 </th>
-                <th> Consultar</th>
+                @*<th> Consultar</th>*@
             </tr>
         </thead>
         
@@ -57,9 +57,9 @@
                 <td>
                     @Html.Raw(HttpUtility.HtmlDecode(item.Resumen))
                 </td>
-                <td>
+                @*<td>
                     @Html.ActionLink("Ver", "ConsultarArticulos", "Articulo", new { id = item.ArticuloId }, null)
-                </td>
+                </td>*@
             </tr>
             }
             </tbody>
