@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ComunidadDePracticaMVC.Models.ArticuloModel>
+
+@{
+    ViewBag.Title = "Meritos del miembro";
+}
+
+<h1>Puntos totales de meritos: @ViewBag.merito</h1>
+
+<h3>Categoria miembro: @ViewBag.categoriaMiembro (@ViewBag.peso pts)</h3>
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Titulo)*@
+            Aporte
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.PuntajeLectores)*@
+            Puntos
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.NotaRevision)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaPublicacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CantidadVistas)
+        </th>*@
+        <th>
+            Fecha
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        int puntos = item.PuntajeLectores + item.CantidadVistas + item.NotaRevision;
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.PuntajeLectores)
+                @Html.DisplayFor(modelItem => item.NotaRevision)
+                @Html.DisplayFor(modelItem => item.CantidadVistas)*@
+                @puntos                
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaPublicacion)                
+            </td>
+        </tr>
+    }
+</table>

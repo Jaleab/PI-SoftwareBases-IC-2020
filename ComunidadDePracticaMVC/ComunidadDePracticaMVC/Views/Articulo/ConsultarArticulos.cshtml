@@ -8,59 +8,89 @@
     string titulo = Model.Titulo;
     string topico = Model.Topico;
     string contenido = Model.Contenido;
-    
+    int articuloId = Model.ArticuloId;
+    string voto = "2"; // debe ser un parametro
+    string idArtStr = "\'" + articuloId.ToString() + "\'";
+
 }
 
 
-<div>
-    <h3>@ViewBag.Title </h3>
-</div>
 
-<hr />
+<html>
+<body onload="botonesHabilitados(@voto, event)">
+    @*<header>
+            <script src="~/Content/FuncionesBotones.js"></script>
+        </header>*@
 
-<div>
-    <h4>@ViewBag.Message</h4>
-</div>
+    <div>
+        <h2>@ViewBag.Title </h2>
+    </div>
 
-<hr />
+    <hr />
 
-<div>
+    <div>
+        <h3>@ViewBag.Message</h3>
+    </div>
 
-    <table class="table table-bordered table-striped">
-        <tr>
-            <td><strong> Autor </strong></td>
-            <td>   @autor </td>
-        </tr>
+    <hr />
 
-        <tr>
-            <td> <strong> Título</strong> </td>
-            <td> @titulo </td>
-        </tr>
+    <div>
 
-        <tr>
-            <td> <strong> Tópico </strong> </td>
-            <td> @topico </td>
-        </tr>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <td><strong> Autor </strong></td>
+                <td>   @autor </td>
+            </tr>
 
-        <tr>
-            <td> <strong> Resumen </strong> </td>
-            <td>
-                <p>
-                    @Html.Raw(HttpUtility.HtmlDecode(resumen))
-                </p>
-            </td>
-        </tr>
+            <tr>
+                <td> <strong> Título</strong> </td>
+                <td> @titulo </td>
+            </tr>
 
-        <tr>
-            <td> <strong> Contenido </strong> </td>
-            <td>
-                <p>
-                    @Html.Raw(HttpUtility.HtmlDecode(contenido))
-                </p>
-            </td>
-        </tr>
+            <tr>
+                <td id="Topico"> <strong> Tópico </strong> </td>
+                <td> @topico </td>
+            </tr>
 
-    </table>
-</div>
+            <tr>
+                <td> <strong> Resumen </strong> </td>
+                <td>
+                    <p>
+                        @Html.Raw(HttpUtility.HtmlDecode(resumen))
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
+                <td> <strong> Contenido </strong> </td>
+                <td>
+                    <p>
+                        @Html.Raw(HttpUtility.HtmlDecode(contenido))
+                    </p>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div class="seccion_Votar">
+        <h3> Brinde su opinión respecto a este artículo</h3>
+        <button value="1" id="b0" class="btn-puntuar" onclick="activarOtros(@idArtStr,1)"> Me gusta </button>
+        <button value="0" id="b1" class="btn-puntuar" onclick="activarOtros(@idArtStr,0)"> Neutral </button>
+        <button value="-1" id="b2" class="btn-puntuar" onclick="activarOtros(@idArtStr,-1)"> No me gusta </button> <br />
+        <p id="ArtID" value="@articuloId"></p>
+        @*Falta agregar la acciOn que envia estos valores seleccionados a la base de datos*@
+    </div>
+
+    <div>
+        <a href="/Articulo/InicioArticulos"> Volver al listado de artículos</a>
+    </div>
+
+    <script src="~/Content/FuncionesBotones.js"></script>
+
+</body>
+</html>
+
+
 
 

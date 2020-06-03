@@ -78,6 +78,5 @@ namespace ComunidadDePracticaMVC.Models
             string encryptedVal = string.Concat(hash.Select(b => b.ToString("x2"))).ToUpperInvariant();
             return encryptedVal;
         }
-
     }
 }

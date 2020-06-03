@@ -23,12 +23,14 @@ namespace PassParameter.Controllers
         {
             return View();
         }
+
         public ActionResult ConsultarArticulos(int id)
         {
-            ViewBag.Message = "Usted está observando el resumen un artículo";
+            ViewBag.Message = "Usted está visitando un artículo";
             ArticuloService servicioParaverResumen = new ArticuloService();
+            servicioParaverResumen.AumentarVisitas(id);
             ModelState.Clear();
-            return View(servicioParaverResumen.GetInfoArticulo(id)); // 
+            return View(servicioParaverResumen.GetInfoArticulo(id));  
         }
 
         // GET: Buscar por id Articulo
@@ -168,6 +170,33 @@ namespace PassParameter.Controllers
 
         }
 
+        public JsonResult puntuar(int id, int puntaje)
+        {
+            ArticuloService artServ = new ArticuloService();
+            artServ.modificarLikes(id, puntaje);
+
+            JsonResult result = Json(new
+            {
+                message = "Se modifico los likes de articulo " + id.ToString()
+            },  JsonRequestBehavior.AllowGet);;
+            return result;
+        }
+
+        public JsonResult AsignarMeritos(int id, int merito)
+        {
+            ArticuloService artServ = new ArticuloService();
+            artServ.AumentarMeritoPorCalificacion(id, merito);
+
+            JsonResult result = Json(new
+            {
+                message = "Usted a enviado un merito de " + merito.ToString() + " al articulo"
+            }, JsonRequestBehavior.AllowGet); ;
+            return result;
+        }
+
+        public ActionResult ArticulosCalificados() {
+            return View();
+        }
 
     }
 }
