@@ -82,8 +82,8 @@ namespace PassParameter.Controllers
             else
             {
                 ArticuloService servicioArt = new ArticuloService();
-                ViewBag.mensaje = "Artículo ha sido guardado";
                 servicioArt.CrearArticulo(model);
+                ViewBag.mensaje = "Artículo ha sido guardado";
                 ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
                 ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
                 return View();

@@ -34,6 +34,8 @@ namespace ComunidadDePracticaMVC.Models
 
         public int NotaRevision { get; set; }
 
+        public int CantidadVisitas { get; set; }
+
         public string FechaPublicacion { get; set; }
 
         public string TipoArchivo { get; set; }

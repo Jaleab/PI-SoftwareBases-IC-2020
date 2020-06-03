@@ -134,7 +134,7 @@ namespace ComunidadDePracticaMVC.Services
                         Titulo = Convert.ToString(dr["titulo"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
                         PuntajeLectores = Convert.ToInt32(dr["cantidadLikes"]),
-                        CantidadVistas = Convert.ToInt32(dr["cantidadVisitas"]),
+                        CantidadVisitas = Convert.ToInt32(dr["cantidadVisitas"]),
                         NotaRevision = Convert.ToInt32(dr["notaRevision"])
                     });
             }
@@ -154,13 +154,12 @@ namespace ComunidadDePracticaMVC.Services
             con.Open();
             sd.Fill(dt);
             con.Close();
-            DataRow dr = dt.Rows[0];
-            string[] datos;            
+            string[] datos;
+            DataRow dr = dt.Rows[0];                
             string str1 = Convert.ToString(dr["categoriaMiembro"]);
             string str2 = Convert.ToString(dr["merito"]);
             string str3 = Convert.ToString(dr["peso"]);
-            datos = new string[3] { str1, str2, str3 };           
-           
+            datos = new string[3] { str1, str2, str3 };
             return datos;
         }
 
