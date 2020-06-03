@@ -359,6 +359,7 @@
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Articulo\ArticulosCalificados.cshtml" />
     <Content Include="Views\ArticuloLargo\Index.cshtml" />
+    <Content Include="Views\Articulo\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

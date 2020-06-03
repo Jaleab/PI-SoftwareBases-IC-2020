@@ -1,0 +1,9 @@
+﻿@{
+    List<List<string>> miLista = ViewBag.lista;
+}
+
+@foreach (var item in miLista)
+{
+    <p> @item[0] </p>
+    <p> @item[1] </p>
+}

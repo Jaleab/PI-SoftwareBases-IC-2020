@@ -45,6 +45,8 @@ namespace PassParameter.Controllers
         // GET: Articulo/Details/5
         public ActionResult Details()
         {
+            ArticuloService aserv = new ArticuloService();
+            ViewBag.lista = aserv.ObtenerAutoresCorreos();
             return View();
         }
 
