@@ -148,7 +148,38 @@ namespace ComunidadDePracticaMVC.Services
 
             con.Open();
             cmd.ExecuteNonQuery();
+            con.Close();
 
+            DataTable dt = new DataTable();
+
+            connection();
+            SqlCommand cmd2 = new SqlCommand();
+            cmd2 = new SqlCommand(
+                "SELECT articuloId" + " " +
+                "FROM Articulo" + " " +
+                "WHERE titulo = @TituloArticulo" + " ", con);
+            cmd2.Parameters.AddWithValue("@TituloArticulo", articulo.Titulo);
+            cmd2.CommandType = CommandType.Text;
+            SqlDataAdapter sd2 = new SqlDataAdapter(cmd2);
+            con.Open();
+            sd2.Fill(dt);
+            con.Close();
+
+            DataRow dr = dt.Rows[0];
+            int articuloIdGuardado = Convert.ToInt32(dr["articuloId"]);
+
+            connection();
+            cmd2 = new SqlCommand();
+            cmd2 = new SqlCommand(
+                "INSERT INTO Revisa" + " " +
+                "VALUES(@CorreoMiembro, @ArticuloIdEnviado, 0, -1)" + " ", con);
+            cmd2.Parameters.AddWithValue("@ArticuloIdEnviado", articuloIdGuardado);
+            cmd2.Parameters.AddWithValue("@CorreoMiembro", "edwin.brenes.c@gmail.com");
+            cmd2.CommandType = CommandType.Text;
+            //sd2 = new SqlDataAdapter(cmd2);
+            con.Open();
+            cmd2.ExecuteNonQuery();
+            //sd2.Fill(dt);
             con.Close();
 
         }
@@ -229,20 +260,36 @@ namespace ComunidadDePracticaMVC.Services
             return articulolist;
         }
 
-        public void EditarArticuloCorto(int id, ArticuloModel articulo)
+        public void EditarArticuloCorto(int id, ArticuloModel articulo, string hilera)
         {
             connection();
             SqlCommand cmd = new SqlCommand("UPDATE Articulo SET titulo = @Titulo, topico = @Topico, resumen = @Resumen, contenido = @Contenido  WHERE articuloId = @Id", con);
             //cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
-            cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
+            cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
             cmd.Parameters.AddWithValue("@Id", id);
             
             con.Open();
             cmd.ExecuteNonQuery();
             con.Close();
+
+            connection();
+            cmd = new SqlCommand(
+                "UPDATE Topico" + " " +
+                "SET topico = @Hilera"+ " " +
+                "WHERE topico = @TopicoAnterior" + " " +
+                "AND articuloIdFk = @ArticuloId", con);
+
+            cmd.Parameters.AddWithValue("@TopicoAnterior", articulo.Topico);
+            cmd.Parameters.AddWithValue("@Hilera", hilera);
+            cmd.Parameters.AddWithValue("@ArticuloId", articulo.ArticuloId);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+
+
         }
 
         public bool BorrarArticulo(int id)
@@ -313,13 +360,44 @@ namespace ComunidadDePracticaMVC.Services
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Archivo", bytes); // completar resto de parametros
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
-            cmd.Parameters.AddWithValue("@Topico", "Matemática Largo");
+            cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
             cmd.Parameters.AddWithValue("@TipoArchivo",  articulo.Archivo1.ContentType);
 
-
             con.Open();
             cmd.ExecuteNonQuery();
+            con.Close();
+
+            DataTable dt = new DataTable();
+             
+            connection();
+            SqlCommand cmd2 = new SqlCommand();            
+            cmd2 = new SqlCommand(
+                "SELECT articuloId"+ " "+
+                "FROM Articulo"+" "+
+                "WHERE titulo = @TituloArticulo"+ " ", con);
+            cmd2.Parameters.AddWithValue("@TituloArticulo", articulo.Titulo);
+            cmd2.CommandType = CommandType.Text;
+            SqlDataAdapter sd2 = new SqlDataAdapter(cmd2);
+            con.Open();
+            sd2.Fill(dt);
+            con.Close();
+
+            DataRow dr = dt.Rows[0];
+            int articuloIdGuardado = Convert.ToInt32(dr["articuloId"]);
+
+            connection();
+            cmd2 = new SqlCommand();
+            cmd2 = new SqlCommand(
+                "INSERT INTO Publica" + " " +
+                "VALUES (@CorreoMiembro,@ArticuloEnviado)" + " " , con);
+            cmd2.Parameters.AddWithValue("@CorreoMiembro", articulo.Correo);
+            cmd2.Parameters.AddWithValue("@ArticuloEnviado", articuloIdGuardado);
+            cmd2.CommandType = CommandType.Text;
+            //sd2 = new SqlDataAdapter(cmd2);
+            con.Open();
+            cmd2.ExecuteNonQuery();
+            //sd2.Fill(dt);
             con.Close();
 
         }
@@ -343,8 +421,7 @@ namespace ComunidadDePracticaMVC.Services
             con.Open();
             sd.Fill(dt);
             con.Close();
-
-            
+                       
             foreach (DataRow dr in dt.Rows)
             {
                 List<string> listaInterna = new List<string>();
@@ -359,6 +436,31 @@ namespace ComunidadDePracticaMVC.Services
             }
 
             return listaNombreCorreos;
+        }
+
+        public List<string> ObtenerTopicos()
+        {
+            List<string> listaTopicos = new List<string>();
+
+            connection();
+            string consulta =
+                "SELECT DISTINCT * " +
+                "FROM Topico";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                listaTopicos.Add(Convert.ToString(dr["topico"]));
+            }
+            return listaTopicos;
         }
 
     }

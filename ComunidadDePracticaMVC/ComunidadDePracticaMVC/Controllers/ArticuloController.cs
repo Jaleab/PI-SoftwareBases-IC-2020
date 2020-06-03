@@ -55,45 +55,58 @@ namespace PassParameter.Controllers
         // GET: Articulo/Create
         public ActionResult Create()
         {
-            if (TempData["Message"] != null)
-            {
-                ViewBag.Message = TempData["Message"].ToString();
-            }
+            ArticuloService servicioArt = new ArticuloService();
+            ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
+            ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
+            //ViewBag.Message = TempData["Message"].ToString();                        
             return View();
         }
 
         [HttpPost]
         public ActionResult Create(ArticuloModel model)
         {
-            if (!ModelState.IsValid)
+            if (model == null)
             {
+                ArticuloService servicioArt = new ArticuloService();
+                ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
+                ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
                 return View("Create", model);
             }
             else
             {
                 ArticuloService servicioArt = new ArticuloService();
-                @TempData["Message"] = "Artículo enviado a revisión";
+                ViewBag.mensaje = "Artículo ha sido guardado";
                 servicioArt.CrearArticulo(model);
-                return RedirectToAction("Create");
+                ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
+                ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
+                return View();
             }
         }
 
-        public ActionResult EditarArticuloCorto(int id)
+        public ActionResult EditarArticuloCorto(int id, string mensaje)
         {
-            ArticuloService dbArticulo = new ArticuloService();
-            return View(dbArticulo.GetInfoArticulo(id));
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
+            if (mensaje == "Se guardo el articulo") {
+                ViewBag.mensaje = "Se guardo el articulo";
+            }
+            ArticuloService servicioArticulo = new ArticuloService();
+            ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
+            ViewBag.listaTopicos = servicioArticulo.ObtenerTopicos();
+            return View(servicioArticulo.GetInfoArticulo(id));
         }
 
         [HttpPost]
-        public ActionResult Editar(int id, ArticuloModel model)
+        public ActionResult Editar(int id, ArticuloModel model, string hilera)
         {
             ArticuloService servicioArticulo = new ArticuloService();
-            servicioArticulo.EditarArticuloCorto(id, model);
+            servicioArticulo.EditarArticuloCorto(id, model, hilera);
 
             int articuloId = id;
-            ViewBag.mensaje = "Se cargaron los archivos";
-            return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloId});
-        }
+            return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloId, mensaje = "Se guardo el articulo"});
+            }
 
         // GET: Articulo/BorrarArticulo/5
         public ActionResult BorrarArticulo(int id)

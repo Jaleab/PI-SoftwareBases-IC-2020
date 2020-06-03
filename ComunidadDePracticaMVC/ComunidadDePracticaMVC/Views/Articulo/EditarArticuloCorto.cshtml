@@ -5,17 +5,29 @@
 <script type="text/javascript" src="~/Scripts/tinyMCEContenidoConfig.js"></script>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
-
-@if (!string.IsNullOrEmpty(ViewBag.mensaje))
+<h1>Editar Articulo corto</h1>
+@if (ViewBag.mensaje != null)
 {
-    <script type="text/javascript">
-            alert("@ViewBag.mensaje");
-    </script>
+    <div class="alert-success">
+        @ViewBag.mensaje
+    </div>
 }
 
-<h1>Editar Articulo corto</h1>
+@{
+    List<SelectListItem> listaNombreCorreo = new List<SelectListItem>();
+    foreach (var item in ViewBag.listaAutoresCorreos)
+    {
+        listaNombreCorreo.Add(new SelectListItem { Value = item[1], Text = item[0] });
+    }
 
-@using (Html.BeginForm("Editar", "Articulo", new { id = Model.ArticuloId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    List<SelectListItem> listaTopicos = new List<SelectListItem>();
+    foreach (var item in ViewBag.listaTopicos)
+    {
+        listaTopicos.Add(new SelectListItem { Text = item });
+    }
+}
+
+@using (Html.BeginForm("Editar", "Articulo", new { id = Model.ArticuloId, hilera = Model.Topico }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -26,29 +38,35 @@
                 @Html.TextBoxFor(model => model.Titulo, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
             </div>
-            @* Titulo, Topico,  *@
+
             <div class="form-group">
-                @Html.LabelFor(model => model.Topico)
-                @Html.TextBoxFor(model => model.Topico, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Topico, "", new { @class = "text-danger" })
+                @Html.LabelFor(d => d.Topico)
+                @Html.DropDownListFor(d => d.Topico, listaTopicos, "Escoger topico", new { @value = Model.Topico, @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.Topico, "", new { @class = "text-danger" })
+            </div>
+
+            @*<div class="form-group">
+                    @Html.LabelFor(d => d.Autor)
+                    @Html.DropDownListFor(model => model.Autor, listaNombreCorreo, "Escoger autor", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(d => d.Autor, "", new { @class = "text-danger" })
+                </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(d => d.Resumen)
+                @Html.TextAreaFor(d => d.Resumen, new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.Resumen, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
-                    @Html.LabelFor(d => d.Resumen)
-                    @Html.TextAreaFor(d => d.Resumen, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(d => d.Resumen, "", new { @class = "text-danger" })
+                @Html.LabelFor(d => d.Contenido)
+                @Html.TextAreaFor(d => d.Contenido, new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.Contenido, "", new { @class = "text-danger" })
             </div>
 
-            <div class="form-group">
-                    @Html.LabelFor(d => d.Contenido)
-                    @Html.TextAreaFor(d => d.Contenido, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(d => d.Contenido, "", new { @class = "text-danger" })
+            <div class="form-group" style="text-align:right">
+                <input type="submit" class="btn btn-success" value="Editar" />
             </div>
-
-                <div class="form-group" style="text-align:right">
-                    <input type="submit" class="btn btn-success" value="Editar" />
-                </div>
-            </div>
+        </div>
     </div>
 }
 

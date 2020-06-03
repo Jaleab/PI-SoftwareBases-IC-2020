@@ -54,12 +54,12 @@
                         var editUrl = '@Url.Action("EditarArticuloCorto", "Articulo",new { id= "VAL"},null)';
                         editUrl = editUrl.replace("VAL", idS);
                         //url para borrar
-                        var deleteUrl = '@Url.Action("BorrarArticulo", "Articulo",new { id= "VAL"},null)';
-                        deleteUrl = deleteUrl.replace("VAL", idS);
+                        @*var deleteUrl = '@Url.Action("BorrarArticulo", "Articulo",new { id= "VAL"},null)';
+                        deleteUrl = deleteUrl.replace("VAL", idS);*@
 
                         var articleInstance = document.importNode(artTemp, true);
 
-                        var title, author, info, lookLink, editLink, deleteLink;
+                        var title, author, info, lookLink, editLink;
 
                         //get the DIV element from the template Instance:
                         title = articleInstance.querySelector(".title_template");
@@ -67,14 +67,14 @@
                         //info = articleInstance.querySelector("#info");
                         lookLink = articleInstance.querySelector(".look-template");
                         editLink = articleInstance.querySelector(".edit-template");
-                        deleteLink = articleInstance.querySelector(".delete-template");
+                        //deleteLink = articleInstance.querySelector(".delete-template");
 
                         title.textContent = articulo.Titulo;
                         author.textContent = articulo.Autor;
                         //info.textContent = articulo.Autor;
                         lookLink.href = lookUrl;
                         editLink.href = editUrl;
-                        deleteLink.href = deleteUrl;
+                        //deleteLink.href = deleteUrl;
 
                         articleList.append(articleInstance);
 
@@ -132,7 +132,6 @@
             <ul>
                 <li><a class="look-template" href="">ver</a></li>
                 <li><a class="edit-template" href="">editar</a></li>
-                <li><a class="delete-template" href="">eliminar</a></li>
             </ul>
         </div>
     </div>

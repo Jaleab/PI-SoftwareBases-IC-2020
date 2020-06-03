@@ -18,15 +18,21 @@ namespace ComunidadDePracticaMVC.Controllers
             if (TempData["Message"] != null) {
                 ViewBag.Message = TempData["Message"].ToString();
             }
+            ArticuloService servicioArticulo = new ArticuloService();
+            ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
+            ViewBag.listaTopicos = servicioArticulo.ObtenerTopicos();
             return View();
         }
 
         [HttpPost]
         public ActionResult Guardar(ArticuloLargoViewModel model) {
 
-            if (!ModelState.IsValid)
-            {
-                return View("Index", model);
+            if (model == null)
+            {                
+                ArticuloService servicioArticulo = new ArticuloService();
+                ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
+                ViewBag.listaTopicos = servicioArticulo.ObtenerTopicos();
+                return View("Index", "ArticuloLargo");
             }
             else {
                 string RutaSitio = Server.MapPath("~/"); //guardar local
@@ -34,10 +40,14 @@ namespace ComunidadDePracticaMVC.Controllers
                 model.Archivo1.SaveAs(PathArchivo1);
                 ArticuloService servicioArt = new ArticuloService();
                 servicioArt.GuardarArticuloLargo(model);
-                @TempData["Message"] = "Su archivo ha sido enviado a revisión";
-                return RedirectToAction("Index");
+                //@TempData["Message"] = "Su archivo ha sido enviado a revisión";           
+                ViewBag.mensaje = "Su archivo ha sido enviado a revisión";
+                ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
+                ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
+                return View("Index");
             }
 
         }
+
     }
 }

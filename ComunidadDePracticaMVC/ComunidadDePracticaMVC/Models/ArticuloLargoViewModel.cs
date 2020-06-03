@@ -19,8 +19,16 @@ namespace ComunidadDePracticaMVC.ViewModels
         public string Titulo { get; set; }
 
         [Required]
+        [DisplayName("Topico")]
+        public string Topico { get; set; }
+
+        [Required]
         [DisplayName("Autor")]
         public string Autor { get; set; }
+
+        [Required]
+        [DisplayName("Correo")]
+        public string Correo { get; set; }
 
         [Required]
         [AllowHtml]

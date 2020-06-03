@@ -74,7 +74,7 @@ namespace ComunidadDePracticaMVC.Controllers
             MailMessage mailMessage = new MailMessage
                 ("comunidadDePracticaGrupo3@gmail.com", hilera);
             mailMessage.IsBodyHtml = true;
-            mailMessage.Body = "Su rango fue degradado a una categoria menor.";
+            mailMessage.Body = "Su rango fue degradado a una categoria menor.   Comunidad de practica Grupo 3";
             mailMessage.Subject = "Fue degradado";
 
             SmtpClient smtpClient;
@@ -87,14 +87,14 @@ namespace ComunidadDePracticaMVC.Controllers
             smtpClient.UseDefaultCredentials = false;
             smtpClient.Port = 587;
             smtpClient.Credentials = new System.Net.NetworkCredential(nombreGrupo3, passwordGrupo3);
-            smtpClient.Send(mailMessage);
-            smtpClient.Dispose();
 
-            if (String.Equals(datos[0], "Nucleo",
+            if (String.Equals(datos[0], "Núcleo",
                    StringComparison.OrdinalIgnoreCase))
             {
                 usuario.DegradarPeso(hilera, "Activo", Int32.Parse(datos[1])-2, Int32.Parse(datos[2])-2);
                 mensajeEvento = "Se ha degradado correctamente";
+                smtpClient.Send(mailMessage);
+                smtpClient.Dispose();
             }
             else {
                 if (String.Equals(datos[0], "Activo",
@@ -102,6 +102,8 @@ namespace ComunidadDePracticaMVC.Controllers
                 {
                     usuario.DegradarPeso(hilera, "Periferico", Int32.Parse(datos[1])-2, Int32.Parse(datos[2])-2);
                     mensajeEvento = "Se ha degradado correctamente";
+                    smtpClient.Send(mailMessage);
+                    smtpClient.Dispose();
                 }
             }
                 //MailMessage mailMessage = new MailMessage
