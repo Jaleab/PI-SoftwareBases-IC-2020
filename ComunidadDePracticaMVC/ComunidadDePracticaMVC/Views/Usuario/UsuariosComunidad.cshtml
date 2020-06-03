@@ -11,21 +11,30 @@
         </script>
     }
 
+<h2>Miembros de la comunidad</h2>
+<hr />
+<br />
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Correo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th></th>
-    </tr>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th> </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Correo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th> </th>
+        </tr>
 
+    </thead>
+    
+    <tbody>
     @foreach (var item in Model)
     {
         <tr>
+            <th scope="row"></th>
             <td>
                 @Html.DisplayFor(modelItem => item.Correo)
             </td>
@@ -35,9 +44,10 @@
                 @Html.DisplayFor(modelItem => item.Apellido2)
             </td>
             <td>
-                @Html.ActionLink("Meritos", "VerMeritosUsuario", "Usuario", new { hilera = item.Correo }, null) |
-                @Html.ActionLink("Degradar", "DegradarUsuario", "Usuario", new { hilera = item.Correo }, null)
+                @Html.ActionLink("Meritos", "VerMeritosUsuario", "Usuario", new { hilera = item.Correo }, htmlAttributes: new { title = "Ver meritos" }) |
+                @Html.ActionLink("Degradar", "DegradarUsuario", "Usuario", new { hilera = item.Correo }, htmlAttributes: new { title = "Degradar usuario" })
             </td>
         </tr>
     }
+    </tbody>
 </table>
