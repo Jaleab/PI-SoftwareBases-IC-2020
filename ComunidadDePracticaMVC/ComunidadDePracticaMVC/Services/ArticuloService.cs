@@ -135,9 +135,10 @@ namespace ComunidadDePracticaMVC.Services
         public void CrearArticulo(ArticuloModel articulo)
         {
             //establecer la conexion con la base de datos
-            connection();  
-            
-            SqlCommand cmd = new SqlCommand("AgregarNuevoArticulo", con);
+            connection();
+
+
+            SqlCommand cmd = new SqlCommand("AgregarNuevoArticuloCorto", con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);

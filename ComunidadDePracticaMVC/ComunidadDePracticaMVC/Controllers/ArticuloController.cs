@@ -50,20 +50,31 @@ namespace PassParameter.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public ActionResult CrearArticulo(ArticuloModel articulo)
-        //{
-        //    // TODO: Add insert logic here
-        //    ArticuloService dbhandle = new ArticuloService();
-        //    dbhandle.CrearArticulo(articulo);
-        //    Console.Write(articulo);
-        //    string autorValue = articulo.Autor;
-        //    return RedirectToAction("InicioArticulos");
-        //}
-
-        public ActionResult EditarArticuloCorto(int id)
+        // GET: Articulo/Create
+        public ActionResult Create()
         {
-            ArticuloService dbArticulo = new ArticuloService(); 
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(ArticuloModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Create", model);
+            }
+            else
+            {
+                ArticuloService servicioArt = new ArticuloService();
+                @TempData["Message"] = "Artículo enviado a revisión";
+                servicioArt.CrearArticulo(model);
+                return RedirectToAction("Create");
+            }
+        }
 
             return View(dbArticulo.GetInfoArticulo(id)); 
         }
