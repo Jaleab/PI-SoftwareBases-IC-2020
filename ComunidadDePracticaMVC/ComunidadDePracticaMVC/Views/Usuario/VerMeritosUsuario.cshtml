@@ -4,9 +4,14 @@
     ViewBag.Title = "Meritos del miembro";
 }
 
-<h1>Puntos totales de meritos: @ViewBag.merito</h1>
 
-<h3>Categoria miembro: @ViewBag.categoriaMiembro (@ViewBag.peso pts)</h3>
+<h1>Meritos de @ViewBag.nombre</h1>
+<hr />
+
+<h4>Puntos totales de meritos: @ViewBag.merito</h4>
+
+<h4>Categoria: @ViewBag.categoriaMiembro (@ViewBag.peso pts)</h4>
+<br />
 <table class="table">
     <tr>
         <th>
@@ -35,25 +40,22 @@
         foreach (var item in Model)
         {
 
-            if (item != null)
-            {
-                int puntos = item.PuntajeLectores + item.CantidadVisitas + item.NotaRevision;
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Titulo)
-                    </td>
-                    <td>
-                        @*@Html.DisplayFor(modelItem => item.PuntajeLectores)
-                            @Html.DisplayFor(modelItem => item.NotaRevision)
-                            @Html.DisplayFor(modelItem => item.CantidadVistas)*@
-                        @puntos
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FechaPublicacion)
-                    </td>
-                </tr>
-                }
-            }
-        }
+    @foreach (var item in Model)
+    {
+        int puntos = item.PuntajeLectores + item.CantidadVistas + item.NotaRevision;
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.PuntajeLectores)
+                    @Html.DisplayFor(modelItem => item.NotaRevision)
+                    @Html.DisplayFor(modelItem => item.CantidadVistas)*@
+                @puntos
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaPublicacion)
+            </td>
+        </tr>
     }
 </table>

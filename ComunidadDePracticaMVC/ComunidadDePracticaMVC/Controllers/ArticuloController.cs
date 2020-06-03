@@ -188,6 +188,14 @@ namespace PassParameter.Controllers
 
         }
 
+        public JsonResult ArticulosAutor(string correo)
+        {
+
+            ArticuloService serviceArt = new ArticuloService();
+            List<ArticuloModel> articuloList = serviceArt.GetArticulosByAutor(correo);
+            return Json(articuloList, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult puntuar(int id, int puntaje)
         {
             ArticuloService artServ = new ArticuloService();
