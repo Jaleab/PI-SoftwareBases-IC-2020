@@ -16,7 +16,6 @@ namespace ComunidadDePracticaMVC.Models
         [Required(ErrorMessage = "El destinatario es requerido.")]
         public string EmailTo { get; set; }
 
-        [Required(ErrorMessage = "El asunto es requerido.")]
         [Display(Name = "Asunto")]
         public string Subject { get; set; }
 
