@@ -179,10 +179,10 @@ namespace ComunidadDePracticaMVC.Services
             try
             {
                 exito = cmd.ExecuteNonQuery() >= 1;
-
             }
             catch (Exception e)
             {
+
             }
             con.Close();
             if (exito == false)
@@ -207,19 +207,7 @@ namespace ComunidadDePracticaMVC.Services
 
             DataRow dr = dt.Rows[0];
             int articuloIdGuardado = Convert.ToInt32(dr["articuloId"]);
-
-            connection();
-            cmd2 = new SqlCommand();
-            cmd2 = new SqlCommand(
-                "INSERT INTO Revisa" + " " +
-                "VALUES(@CorreoMiembro, @ArticuloIdEnviado, 0, -1)" + " ", con);
-            cmd2.Parameters.AddWithValue("@ArticuloIdEnviado", articuloIdGuardado);
-            cmd2.Parameters.AddWithValue("@CorreoMiembro", "edwin.brenes.c@gmail.com");
-            cmd2.CommandType = CommandType.Text;
-            //sd2 = new SqlDataAdapter(cmd2);
-            con.Open();
-            cmd2.ExecuteNonQuery();
-            //sd2.Fill(dt);
+            AgregarArticuloAPublicacion(articuloIdGuardado, articulo.Correo);
             con.Close();
             return exito;
         }
@@ -598,6 +586,21 @@ namespace ComunidadDePracticaMVC.Services
             cmd.ExecuteNonQuery();
             con.Close();
 
+        }
+
+        public bool AgregarArticuloAPublicacion(int articuloId, string correoAutor) {
+            bool agregado = false;
+            connection();
+            string consulta = "INSERT INTO Publica VALUES(@correoAutor, @articuloId)";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+            cmd.Parameters.AddWithValue("@correoAutor", correoAutor);
+
+            con.Open();
+            agregado=cmd.ExecuteNonQuery() >= 1;
+            con.Close();
+
+            return agregado;
         }
 
     }
