@@ -67,20 +67,16 @@
                         fecha = articleInstance.querySelector(".fecha_template");
                         title = articleInstance.querySelector(".title_template");
                         author = articleInstance.querySelector(".author_template");
-                        //info = articleInstance.querySelector("#info");
                         lookLink = articleInstance.querySelector(".look-template");
                         editLink = articleInstance.querySelector(".edit-template");
-                        //deleteLink = articleInstance.querySelector(".delete-template");
 
                         title.textContent = articulo.Titulo;
                         like.textContent = like.textContent + articulo.Likes;
                         dislike.textContent = dislike.textContent + articulo.Dislikes;
                         fecha.textContent = fecha.textContent + (articulo.FechaPublicacion).split(' ')[0];
                         author.textContent = articulo.Autor;
-                        //info.textContent = articulo.Autor;
                         lookLink.href = lookUrl;
                         editLink.href = editUrl;
-                        //deleteLink.href = deleteUrl;
 
                         articleList.append(articleInstance);
 

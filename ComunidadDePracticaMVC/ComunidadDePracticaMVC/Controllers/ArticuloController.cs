@@ -33,13 +33,7 @@ namespace PassParameter.Controllers
             servicioParaverResumen.AumentarVisitas(id);
             ModelState.Clear();
             var articuloModel = servicioParaverResumen.GetInfoArticulo(id);
-            if (articuloModel.TipoArchivo == "corto")
-            {
-                return View(articuloModel);
-            }
-            else {
-                return RedirectToAction("AccederArticuloLargo", new { idArt=id });
-            }
+            return View(articuloModel);
         }
 
         // GET: Buscar por id Articulo

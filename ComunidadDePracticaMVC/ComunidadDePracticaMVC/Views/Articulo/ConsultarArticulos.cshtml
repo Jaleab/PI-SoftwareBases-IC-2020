@@ -8,6 +8,7 @@
     string titulo = Model.Titulo;
     string topico = Model.Topico;
     string contenido = Model.Contenido;
+    string tipoArchivo = Model.TipoArchivo;
     int articuloId = Model.ArticuloId;
     string voto = "2"; // debe ser un parametro
     string idArtStr = "\'" + articuloId.ToString() + "\'";
@@ -18,71 +19,90 @@
 
 <html>
 <body onload="botonesHabilitados(@voto, event)">
-    @*<header>
-            <script src="~/Content/FuncionesBotones.js"></script>
-        </header>*@
 
     <div>
         <h2>@ViewBag.Title </h2>
     </div>
 
+
+    @if (tipoArchivo != "corto")
+    {
+        <h3>Usted está visitando un artículo largo</h3>
+
+        <hr />
+        <h4> <strong>Título</strong> </h4>
+
+        <h5>@titulo</h5>
+
+        <h4> <strong>Autor</strong> </h4>
+
+        <h5>@autor</h5>
+
+        <h4> <strong>Tópicos: </strong> </h4>
+        <h5> @topico</h5>
+
+        <hr />
+
+        <h4> <strong> Resumen del articulo </strong> </h4>
+        <div>
+            @Html.Raw(HttpUtility.HtmlDecode(resumen))
+        </div>
+
+        <hr />
+
+
+        <a class="btn box-btn" href="/Articulo/AccederArticuloLargo?idArt=@articuloId" target="_blank"> Ver archivo</a>
+    }
+    else
+    {
+        <h3>Usted está visitando un artículo corto</h3>
+
+        <hr />
+        <h4> <strong>Título</strong> </h4>
+
+        <h5>@titulo</h5>
+
+        <h4> <strong>Autor</strong> </h4>
+
+        <h5>@autor</h5>
+
+        <h4> <strong>Tópicos: </strong> </h4>
+        <h5> @topico</h5>
+
+        <hr />
+
+        <h4> <strong> Resumen del articulo </strong> </h4>
+        <div>
+            @Html.Raw(HttpUtility.HtmlDecode(resumen))
+        </div>
+        <hr />
+
+        <h4> <strong> Contenido </strong> </h4>
+        <div>
+            @Html.Raw(HttpUtility.HtmlDecode(contenido))
+        </div>
+    }
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <hr />
+        <div class="seccion_Votar">
+            <h4> Brinde su opinión respecto a este artículo</h4>
+            <br />
+            <button value="1" id="b0" class="btn box-btn" onclick="activarOtros(@idArtStr,1)"><i class="fa fa-thumbs-up"></i> Me gusta </button>
+            <button value="0" id="b1" class="btn box-btn" onclick="activarOtros(@idArtStr,0)"> Neutral </button>
+            <button value="-1" id="b2" class="btn box-btn" onclick="activarOtros(@idArtStr,-1)"><i class="fa fa-thumbs-down"></i> No me gusta </button> <br />
+            <p id="ArtID" value="@articuloId"></p>
+        </div>
+    }
+
     <hr />
 
-
-    <div>
-
-        <table class="table table-bordered table-striped">
-            <tr>
-                <td><strong> Autor </strong></td>
-                <td>   @autor </td>
-            </tr>
-
-            <tr>
-                <td> <strong> Título</strong> </td>
-                <td> @titulo </td>
-            </tr>
-
-            <tr>
-                <td id="Topico"> <strong> Tópico </strong> </td>
-                <td> @topico </td>
-            </tr>
-
-            <tr>
-                <td> <strong> Resumen </strong> </td>
-                <td>
-                    <p>
-                        @Html.Raw(HttpUtility.HtmlDecode(resumen))
-                    </p>
-                </td>
-            </tr>
-
-            <tr>
-                <td> <strong> Contenido </strong> </td>
-                <td>
-                    <p>
-                        @Html.Raw(HttpUtility.HtmlDecode(contenido))
-                    </p>
-                </td>
-            </tr>
-
-        </table>
-    </div>
-
-    <div class="seccion_Votar">
-        <h4> Brinde su opinión respecto a este artículo</h4>
-        <br />
-        <button value="1" id="b0" class="btn box-btn" onclick="activarOtros(@idArtStr,1)"><i class="fa fa-thumbs-up"></i> Me gusta </button>
-        <button value="0" id="b1" class="btn box-btn" onclick="activarOtros(@idArtStr,0)"> Neutral </button>
-        <button value="-1" id="b2" class="btn box-btn" onclick="activarOtros(@idArtStr,-1)"><i class="fa fa-thumbs-down"></i> No me gusta </button> <br />
-        <p id="ArtID" value="@articuloId"></p>
-        @*Falta agregar la acciOn que envia estos valores seleccionados a la base de datos*@
-    </div>
-    <hr />
     <div>
         <a class="btn box-btn" href="/Articulo/InicioArticulos"> Volver al listado de artículos</a>
     </div>
 
-    <script src="~/Content/FuncionesBotones.js"></script>
+    <script src="~/Scripts/FuncionesBotones.js"></script>
 
 </body>
 </html>
