@@ -15,12 +15,8 @@ namespace ComunidadDePracticaMVC.Controllers
 {
     public class ArticuloLargoController : Controller
     {
-        // GET: ArticuloLargo
         public ActionResult Index()
         {
-            //if (TempData["Message"] != null) {
-            //    ViewBag.Message = TempData["Message"].ToString();
-            //}
             ArticuloService servicioArticulo = new ArticuloService();
             ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
             ViewBag.listaTopicos = servicioArticulo.ObtenerTopicos();
@@ -28,23 +24,21 @@ namespace ComunidadDePracticaMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult Guardar(ArticuloLargoViewModel model) {
+        public ActionResult Guardar(ArticuloLargoViewModel model)
+        {
 
             if (model.Titulo == null || model.Topico == null || model.Correo == null || model.Resumen == null || model.Archivo1 == null)
-            {                
+            {
                 ArticuloService servicioArticulo = new ArticuloService();
                 ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
                 ViewBag.listaTopicos = servicioArticulo.ObtenerTopicos();
-                return View("Index", "ArticuloLargo");
+                return View("Index",model);
             }
-            else {
-               
-                string RutaSitio = Server.MapPath("~/"); //guardar local
-                string PathArchivo1 = Path.Combine(RutaSitio + "/Files/") + model.Archivo1.FileName; //guardar local
-                model.Archivo1.SaveAs(PathArchivo1);
+            else
+            {
                 ArticuloService servicioArt = new ArticuloService();
                 bool exito = servicioArt.GuardarArticuloLargo(model);
-                if (exito == true)
+                if (exito)
                 {
                     ViewBag.mensaje = "Artículo ha sido guardado";
                 }
@@ -52,10 +46,9 @@ namespace ComunidadDePracticaMVC.Controllers
                 {
                     ViewBag.mensaje = "Articulo no ha sido guardado por titulo duplicado";
                 }
-                //@TempData["Message"] = "Su archivo ha sido enviado a revisión";
                 ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
                 ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
-                return View("Index");
+                return View("Index", model);
             }
 
         }

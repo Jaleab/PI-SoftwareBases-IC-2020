@@ -189,25 +189,8 @@ namespace ComunidadDePracticaMVC.Services
             {
                 return exito;
             }
-
-            DataTable dt = new DataTable();
-
-            connection();
-            SqlCommand cmd2 = new SqlCommand();
-            cmd2 = new SqlCommand(
-                "SELECT articuloId" + " " +
-                "FROM Articulo" + " " +
-                "WHERE titulo = @TituloArticulo" + " ", con);
-            cmd2.Parameters.AddWithValue("@TituloArticulo", articulo.Titulo);
-            cmd2.CommandType = CommandType.Text;
-            SqlDataAdapter sd2 = new SqlDataAdapter(cmd2);
-            con.Open();
-            sd2.Fill(dt);
-            con.Close();
-
-            DataRow dr = dt.Rows[0];
-            int articuloIdGuardado = Convert.ToInt32(dr["articuloId"]);
-            AgregarArticuloAPublicacion(articuloIdGuardado, articulo.Correo);
+            int articuloIdGuardado = ObtenerIdArticuloPorTitulo(articulo.Titulo);
+            exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, articulo.Correo);
             con.Close();
             return exito;
         }
@@ -337,7 +320,6 @@ namespace ComunidadDePracticaMVC.Services
             connection();
             bool exito = false;
             SqlCommand cmd = new SqlCommand("UPDATE Articulo SET titulo = @Titulo, topico = @Topico, resumen = @Resumen, contenido = @Contenido  WHERE articuloId = @Id", con);
-            //cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
             cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
@@ -460,38 +442,8 @@ namespace ComunidadDePracticaMVC.Services
             {
                 return exito;
             }
-
-            DataTable dt = new DataTable();
-             
-            connection();
-            SqlCommand cmd2 = new SqlCommand();            
-            cmd2 = new SqlCommand(
-                "SELECT articuloId"+ " "+
-                "FROM Articulo"+" "+
-                "WHERE titulo = @TituloArticulo"+ " ", con);
-            cmd2.Parameters.AddWithValue("@TituloArticulo", articulo.Titulo);
-            cmd2.CommandType = CommandType.Text;
-            SqlDataAdapter sd2 = new SqlDataAdapter(cmd2);
-            con.Open();
-            sd2.Fill(dt);
-            con.Close();
-
-            DataRow dr = dt.Rows[0];
-            int articuloIdGuardado = Convert.ToInt32(dr["articuloId"]);
-
-            connection();
-            cmd2 = new SqlCommand();
-            cmd2 = new SqlCommand(
-                "INSERT INTO Publica" + " " +
-                "VALUES (@CorreoMiembro,@ArticuloEnviado)" + " " , con);
-            cmd2.Parameters.AddWithValue("@CorreoMiembro", articulo.Correo);
-            cmd2.Parameters.AddWithValue("@ArticuloEnviado", articuloIdGuardado);
-            cmd2.CommandType = CommandType.Text;
-            //sd2 = new SqlDataAdapter(cmd2);
-            con.Open();
-            cmd2.ExecuteNonQuery();
-            //sd2.Fill(dt);
-            con.Close();
+            int articuloIdGuardado = ObtenerIdArticuloPorTitulo(articulo.Titulo);
+            exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, articulo.Correo);
             return exito;
         }
 
@@ -588,7 +540,26 @@ namespace ComunidadDePracticaMVC.Services
 
         }
 
-        public bool AgregarArticuloAPublicacion(int articuloId, string correoAutor) {
+        private int ObtenerIdArticuloPorTitulo(string titulo) {
+            int articuloId = -1; // si retorna -1 es porque ocurre un error al intentar obtener el valor
+            connection();
+            SqlCommand cmd = new SqlCommand(
+                "SELECT articuloId" + " " +
+                "FROM Articulo" + " " +
+                "WHERE titulo = @TituloArticulo" + " ", con);
+            cmd.Parameters.AddWithValue("@TituloArticulo", titulo);
+            cmd.CommandType = CommandType.Text;
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+            DataRow dr = dt.Rows[0];
+            articuloId = Convert.ToInt32(dr["articuloId"]);
+            return articuloId;
+        }
+
+        private bool AgregarArticuloAPublicacion(int articuloId, string correoAutor) {
             bool agregado = false;
             connection();
             string consulta = "INSERT INTO Publica VALUES(@correoAutor, @articuloId)";

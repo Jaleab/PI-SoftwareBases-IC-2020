@@ -82,7 +82,7 @@ namespace PassParameter.Controllers
             {
                 ArticuloService servicioArt = new ArticuloService();
                 bool exito = servicioArt.CrearArticulo(model);
-                if (exito == true)
+                if (exito)
                 {
                     ViewBag.mensaje = "Artículo ha sido guardado";
                 }
