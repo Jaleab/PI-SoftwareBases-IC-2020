@@ -368,6 +368,7 @@
     <Content Include="Views\Usuario\UsuariosComunidad.cshtml" />
     <Content Include="Views\Usuario\VerMeritosUsuario.cshtml" />
     <Content Include="Views\Usuario\DegradarUsuario.cshtml" />
+    <Content Include="Views\ArticuloLargo\EditarArticuloLargo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

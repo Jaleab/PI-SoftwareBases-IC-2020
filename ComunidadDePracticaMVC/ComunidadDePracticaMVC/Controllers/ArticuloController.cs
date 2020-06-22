@@ -95,6 +95,23 @@ namespace PassParameter.Controllers
             }
         }
 
+        public ActionResult EditarArticulos(int id)
+        {
+            ViewBag.Message = "Usted está editando un artículo";
+            ArticuloService articuloService = new ArticuloService();
+            ModelState.Clear();
+            ArticuloModel articuloModel = articuloService.GetInfoArticulo(id);
+            if (articuloModel.TipoArchivo == "corto")
+            {
+                int articuloId = id;
+                return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloModel.ArticuloId });
+            }
+            else
+            {
+                return RedirectToAction("EditarArticuloLargo", "ArticuloLargo", new { id = articuloModel.ArticuloId });                
+            }
+        }  
+
         public ActionResult EditarArticuloCorto(int id, string mensaje)
         {
             if (TempData["Message"] != null)
@@ -127,7 +144,7 @@ namespace PassParameter.Controllers
             int articuloId = id;
             //return View(new { id = articuloId });
             return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloId, mensaje = ViewBag.mensaje});
-            }
+        }
 
         // GET: Articulo/BorrarArticulo/5
         public ActionResult BorrarArticulo(int id)

@@ -1,0 +1,90 @@
+﻿@model ComunidadDePracticaMVC.ViewModels.ArticuloLargoViewModel
+
+<script type="text/javascript" src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="~/Scripts/tinyMCEResumenConfig.js"></script>
+<script type="text/javascript" src="~/Scripts/tinyMCEContenidoConfig.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+
+<title>Editar Artículo Largo</title>
+
+<h1>Editar Artículo Largo</h1>
+
+<hr />
+
+
+@if (ViewBag.mensaje == "Artículo ha sido guardado")
+{
+    <div class="alert-success">
+        @ViewBag.mensaje
+    </div>
+}
+
+@if (ViewBag.mensaje == "Articulo no ha sido guardado por titulo duplicado")
+{
+    <div class="text-danger">
+        @ViewBag.mensaje
+    </div>
+}
+
+
+
+@{
+    List<SelectListItem> listaNombreCorreo = new List<SelectListItem>();
+    foreach (var item in ViewBag.listaAutoresCorreos)
+    {
+        listaNombreCorreo.Add(new SelectListItem { Value = item[1], Text = item[0] });
+    }
+
+    List<SelectListItem> listaTopicos = new List<SelectListItem>();
+    foreach (var item in ViewBag.listaTopicos)
+    {
+        listaTopicos.Add(new SelectListItem { Text = item });
+    }
+}
+
+
+@using (Html.BeginForm("Editar", "ArticuloLargo", new { id = Model.ArticuloId, hilera = Model.Topico }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-6 col-lg-offset-3">
+            <div class="form-group">
+                @Html.LabelFor(d => d.Titulo)
+                @Html.TextBoxFor(d => d.Titulo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.Titulo, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(d => d.Topico)
+                @Html.DropDownListFor(d => d.Topico, listaTopicos, "Escoger topico", new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.Topico, "", new { @class = "text-danger" })
+            </div>
+
+            @*<div class="form-group">
+                @Html.LabelFor(d => d.Autor)
+                @Html.DropDownListFor(model => model.Correo, listaNombreCorreo, "Escoger autor", new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.Correo, "", new { @class = "text-danger" })
+            </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(d => d.Resumen)
+                @Html.TextAreaFor(d => d.Resumen, new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.Resumen, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(d => d.Archivo1)
+                @Html.TextBoxFor(d => d.Archivo1, new { type = "file", @class = "btn btn-default" })
+                @Html.ValidationMessageFor(d => d.Archivo1, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group" style="text-align:right">
+                <input type="submit" class="btn btn-success" value="Editar" />
+            </div>
+
+        </div>
+    </div>
+} 

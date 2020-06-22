@@ -100,38 +100,12 @@ namespace ComunidadDePracticaMVC.Controllers
                 if (String.Equals(datos[0], "Activo",
                    StringComparison.OrdinalIgnoreCase))
                 {
-                    usuario.DegradarPeso(hilera, "Periferico", Int32.Parse(datos[1])-2, Int32.Parse(datos[2])-2);
+                    usuario.DegradarPeso(hilera, "Periferico", Int32.Parse(datos[1])-3, Int32.Parse(datos[2])-3);
                     mensajeEvento = "Se ha degradado correctamente";
                     smtpClient.Send(mailMessage);
                     smtpClient.Dispose();
                 }
-            }
-                //MailMessage mailMessage = new MailMessage
-                //("comunidadDePracticaGrupo3@gmail.com", correo.EmailTo);
-                //mailMessage.IsBodyHtml = true;
-                //mailMessage.Body = correo.EmailBody;
-                //mailMessage.Subject = "*Insertar usuario* en Comunidad De Práctica: " + correo.Subject;
-
-
-
-                //SmtpClient smtpClient;
-
-                //string nombreGrupo3 = "comunidadDePracticaGrupo3@gmail.com";
-                //string passwordGrupo3 = "comunidadPractica3.pass";
-
-                //try
-                //{
-                //    // No need to specify the SMTP settings as these 
-                //    // are already specified in web.config
-                //    smtpClient = new SmtpClient("smtp.gmail.com");
-                //    smtpClient.EnableSsl = true;
-                //    smtpClient.UseDefaultCredentials = false;
-                //    smtpClient.Port = 587;
-                //    smtpClient.Credentials = new System.Net.NetworkCredential(nombreGrupo3, passwordGrupo3);
-                //    smtpClient.Send(mailMessage);
-                //    smtpClient.Dispose();
-                //}
-                
+            }                
             return RedirectToAction("UsuariosComunidad", "Usuario", new { mensaje = mensajeEvento });
         }
 

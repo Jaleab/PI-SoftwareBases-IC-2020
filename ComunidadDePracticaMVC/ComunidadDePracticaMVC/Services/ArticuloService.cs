@@ -214,7 +214,21 @@ namespace ComunidadDePracticaMVC.Services
                 "INSERT INTO Revisa" + " " +
                 "VALUES(@CorreoMiembro, @ArticuloIdEnviado, 0, -1)" + " ", con);
             cmd2.Parameters.AddWithValue("@ArticuloIdEnviado", articuloIdGuardado);
-            cmd2.Parameters.AddWithValue("@CorreoMiembro", "edwin.brenes.c@gmail.com");
+            cmd2.Parameters.AddWithValue("@CorreoMiembro", articulo.Correo);
+            cmd2.CommandType = CommandType.Text;
+            //sd2 = new SqlDataAdapter(cmd2);
+            con.Open();
+            cmd2.ExecuteNonQuery();
+            //sd2.Fill(dt);
+            con.Close();
+
+            connection();
+            cmd2 = new SqlCommand();
+            cmd2 = new SqlCommand(
+                "INSERT INTO Publica" + " " +
+                "VALUES(@CorreoMiembro, @ArticuloIdEnviado)" + " ", con);
+            cmd2.Parameters.AddWithValue("@ArticuloIdEnviado", articuloIdGuardado);
+            cmd2.Parameters.AddWithValue("@CorreoMiembro", articulo.Correo);
             cmd2.CommandType = CommandType.Text;
             //sd2 = new SqlDataAdapter(cmd2);
             con.Open();
@@ -252,6 +266,35 @@ namespace ComunidadDePracticaMVC.Services
             articulo.Likes= Convert.ToInt32(dr["cantidadLikes"]);
             articulo.Dislikes = Convert.ToInt32(dr["cantidadNoMeGusta"]);
             articulo.FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]);
+
+
+            Console.WriteLine(articulo.ArticuloId);
+            return articulo;
+        }
+
+        public ArticuloLargoViewModel GetInfoArticuloLargo(int id) //OK
+        {
+            //establecer la conexion con la base de datos
+            connection();
+            //Ejecutar la consulta de un articulo segun su id
+            SqlCommand cmd = new SqlCommand("GetArticuloPorId", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@ArticuloId", id);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            DataRow dr = dt.Rows[0];
+            ArticuloLargoViewModel articulo = new ArticuloLargoViewModel();
+
+            articulo.ArticuloId = Convert.ToInt32(dr["articuloId"]);
+            articulo.Autor = Convert.ToString(dr["autor"]);
+            articulo.Resumen = Convert.ToString(dr["resumen"]);
+            articulo.Titulo = Convert.ToString(dr["titulo"]);
+            articulo.Topico = Convert.ToString(dr["topico"]);
 
 
             Console.WriteLine(articulo.ArticuloId);
@@ -319,6 +362,62 @@ namespace ComunidadDePracticaMVC.Services
             cmd.Parameters.AddWithValue("@Id", id);
 
             con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+
+            //con.Open();
+            //try
+            //{
+            //    exito = cmd.ExecuteNonQuery() >= 1;
+
+            //}
+            //catch (Exception e)
+            //{
+            //}
+            //con.Close();
+            //if (exito == false)
+            //{
+            //    return exito;
+            //}
+
+            connection();
+            cmd = new SqlCommand(
+                "UPDATE Topico" + " " +
+                "SET topico = @Hilera"+ " " +
+                "WHERE topico = @TopicoAnterior" + " " +
+                "AND articuloIdFk = @ArticuloId", con);
+
+            cmd.Parameters.AddWithValue("@TopicoAnterior", articulo.Topico);
+            cmd.Parameters.AddWithValue("@Hilera", hilera);
+            cmd.Parameters.AddWithValue("@ArticuloId", articulo.ArticuloId);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+            return exito;
+        }
+
+        public bool EditarArticuloLargo(int id, ArticuloLargoViewModel articulo, string hilera)
+        {
+            byte[] bytes;
+            bool exito = false;
+            BinaryReader br = new BinaryReader(articulo.Archivo1.InputStream); //
+            bytes = br.ReadBytes(articulo.Archivo1.ContentLength);
+            connection();
+            SqlCommand cmd = new SqlCommand("UPDATE Articulo SET titulo = @Titulo, topico = @Topico, resumen = @Resumen, archivo = @Archivo, tipoArchivo = @TipoArchivo WHERE articuloId = @Id", con);
+            //cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Archivo", bytes); // completar resto de parametros
+            cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
+            cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
+            cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
+            cmd.Parameters.AddWithValue("@TipoArchivo", articulo.Archivo1.ContentType);
+            cmd.Parameters.AddWithValue("@Id", id);
+
+
+            //con.Open();
+            //cmd.ExecuteNonQuery();
+            //con.Close();
+
+            con.Open();
             try
             {
                 exito = cmd.ExecuteNonQuery() >= 1;
@@ -336,7 +435,7 @@ namespace ComunidadDePracticaMVC.Services
             connection();
             cmd = new SqlCommand(
                 "UPDATE Topico" + " " +
-                "SET topico = @Hilera"+ " " +
+                "SET topico = @Hilera" + " " +
                 "WHERE topico = @TopicoAnterior" + " " +
                 "AND articuloIdFk = @ArticuloId", con);
 
@@ -456,10 +555,24 @@ namespace ComunidadDePracticaMVC.Services
             connection();
             cmd2 = new SqlCommand();
             cmd2 = new SqlCommand(
-                "INSERT INTO Publica" + " " +
-                "VALUES (@CorreoMiembro,@ArticuloEnviado)" + " " , con);
+                "INSERT INTO Revisa" + " " +
+                "VALUES(@CorreoMiembro, @ArticuloIdEnviado, 0, -1)" + " ", con);
+            cmd2.Parameters.AddWithValue("@ArticuloIdEnviado", articuloIdGuardado);
             cmd2.Parameters.AddWithValue("@CorreoMiembro", articulo.Correo);
-            cmd2.Parameters.AddWithValue("@ArticuloEnviado", articuloIdGuardado);
+            cmd2.CommandType = CommandType.Text;
+            //sd2 = new SqlDataAdapter(cmd2);
+            con.Open();
+            cmd2.ExecuteNonQuery();
+            //sd2.Fill(dt);
+            con.Close();
+
+            connection();
+            cmd2 = new SqlCommand();
+            cmd2 = new SqlCommand(
+                "INSERT INTO Publica" + " " +
+                "VALUES(@CorreoMiembro, @ArticuloIdEnviado)" + " ", con);
+            cmd2.Parameters.AddWithValue("@ArticuloIdEnviado", articuloIdGuardado);
+            cmd2.Parameters.AddWithValue("@CorreoMiembro", articulo.Correo);
             cmd2.CommandType = CommandType.Text;
             //sd2 = new SqlDataAdapter(cmd2);
             con.Open();

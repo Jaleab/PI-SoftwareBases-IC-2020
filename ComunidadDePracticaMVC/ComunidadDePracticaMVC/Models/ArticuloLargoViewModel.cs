@@ -35,5 +35,7 @@ namespace ComunidadDePracticaMVC.ViewModels
         [DisplayName("Resumen")]
         public string Resumen { get; set; }
 
+        public int ArticuloId { get; set; }
+
     }
 }
