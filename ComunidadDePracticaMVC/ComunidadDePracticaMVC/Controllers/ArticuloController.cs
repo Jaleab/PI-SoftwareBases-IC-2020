@@ -29,10 +29,16 @@ namespace PassParameter.Controllers
         public ActionResult ConsultarArticulos(int id)
         {
             ViewBag.Message = "Usted está visitando un artículo";
+            ViewBag.Reaccion = 2;
             ArticuloService servicioParaverResumen = new ArticuloService();
+            UsuarioService servicioUsuarios = new UsuarioService();
             servicioParaverResumen.AumentarVisitas(id);
             ModelState.Clear();
             var articuloModel = servicioParaverResumen.GetInfoArticulo(id);
+            if (User.Identity.IsAuthenticated) {
+                string correo = User.Identity.Name.ToString();
+                ViewBag.Reaccion = servicioUsuarios.ReaccionDeUsuario(correo,id);
+            }
             return View(articuloModel);
         }
 
@@ -205,11 +211,11 @@ namespace PassParameter.Controllers
             return Json(articuloList, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult puntuar(int id, int puntaje)
+        public JsonResult Puntuar(int id, int puntaje, string correo, int reaccionVieja)
         {
-            ArticuloService artServ = new ArticuloService();
-            artServ.modificarLikes(id, puntaje);
-
+            UsuarioService usuarioServ = new UsuarioService();
+            usuarioServ.UsuarioReacciona(correo, id, puntaje);
+            //reaccionaVieja solo se estaba enviando para debuggear
             JsonResult result = Json(new
             {
                 message = "Gracias por brindar su opinión "
@@ -253,6 +259,10 @@ namespace PassParameter.Controllers
 
 
             return result;
+        }
+
+        public ActionResult ArticulosRequierenRevision() {
+            return View();
         }
 
     }

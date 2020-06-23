@@ -262,6 +262,90 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
         }
 
+        public void ModificarReacciones(int articuloId) //OK
+        {
+            Connection();
+
+            string consulta =
+                "DECLARE @likes INTEGER, @dislikes INTEGER "+
+                "SELECT @likes = COUNT(*) FROM Reacciona WHERE puntaje = 1 AND articuloIdFK = @articuloId " +
+                "SELECT @dislikes = COUNT(*) FROM Reacciona WHERE puntaje = -1 AND articuloIdFK = @articuloId " +
+                "UPDATE Articulo "+
+                "SET cantidadNoMeGusta = @dislikes, cantidadLikes = @likes "+
+                "WHERE articuloId = @articuloId ";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+
+        }
+
+        public bool HaReaccionado(string correo, int articuloId)
+        {
+            Connection();
+            SqlCommand cmd = new SqlCommand("SELECT COUNT(*) AS NumTuplas FROM Reacciona WHERE correoMiembroFK = @Correo AND articuloIdFK=@ArticuloId", con);
+            cmd.Parameters.AddWithValue("@Correo", correo);
+            cmd.Parameters.AddWithValue("@ArticuloId", articuloId);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+            DataRow dr = dt.Rows[0];
+            return Convert.ToInt32(dr["NumTuplas"])>0;
+
+        }
+
+        public int ReaccionDeUsuario(string correo, int articuloId) {
+
+            int puntos = 2; // el voto puede ser solo -1,0,1 --> si no ha reaccionado, entonces se retorna un 2
+
+            if (HaReaccionado(correo, articuloId)) {
+                Connection();
+                SqlCommand cmd = new SqlCommand("SELECT puntaje FROM Reacciona WHERE correoMiembroFK = @Correo AND articuloIdFK=@ArticuloId", con);
+                cmd.Parameters.AddWithValue("@Correo", correo);
+                cmd.Parameters.AddWithValue("@ArticuloId", articuloId);
+
+                SqlDataAdapter sd = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+
+                con.Open();
+                sd.Fill(dt);
+                con.Close();
+                DataRow dr = dt.Rows[0];
+                puntos = Convert.ToInt32(dr["puntaje"]);
+            }
+            return puntos;
+        }
+
+        public void UsuarioReacciona(string correo, int articuloId,int valor)
+        {
+            Connection();
+            if (HaReaccionado(correo, articuloId))
+            {
+                SqlCommand cmd = new SqlCommand("UPDATE Reacciona SET puntaje = @Valor WHERE correoMiembroFK = @Correo AND articuloIdFK=@ArticuloId", con);
+                cmd.Parameters.AddWithValue("@Correo", correo);
+                cmd.Parameters.AddWithValue("@ArticuloId", articuloId);
+                cmd.Parameters.AddWithValue("@Valor", valor);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            else
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO Reacciona VALUES (@Correo,@ArticuloId,@Valor)", con);
+                cmd.Parameters.AddWithValue("@Correo", correo);
+                cmd.Parameters.AddWithValue("@ArticuloId", articuloId);
+                cmd.Parameters.AddWithValue("@Valor", valor);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            ModificarReacciones(articuloId);
+        }
+
 
     }
 }

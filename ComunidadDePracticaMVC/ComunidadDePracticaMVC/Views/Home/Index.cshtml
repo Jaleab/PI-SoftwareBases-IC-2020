@@ -18,8 +18,17 @@
 @{
 
 }
-
+<title>Página de inicio: Comunidades de práctica</title>
 <body>
+
+    @*esto es para articulos pendientes de revisión que solo puede ver el coordinador, falta acomodar d1 que se vea lindo..*@
+    @if (ViewBag.categoria == "Coordinador")
+    {
+
+        <h2> Artículos que requieren revisión </h2>
+        <p> Aquí podrá encontrar artículos para los cuales nuestros miembros han solitado revisión</p>
+        <a class="btn box-btn" href="/Articulo/ArticulosRequierenRevision"> Ver Articulos </a>
+    }
 
     <div class="row" style="height:100%;">
         <div class="col-md-6">
@@ -27,7 +36,7 @@
                 <div class="box-header row">
                     <div class="box-header-title">Artículos publicados</div>
                 </div>
-                <div class="box-content" style="padding: 20px;">    
+                <div class="box-content" style="padding: 20px;">
                     <p>
                         Aquí puede acceder a la lista de artículos publicados por nuestros autores en la plataforma
                     </p>
@@ -35,8 +44,8 @@
                 <div class="box-footer">
                     <p><a class="btn box-btn" href="https://localhost:44392/Articulo/InicioArticulos">Ver artículos &raquo;</a></p>
                 </div>
-                
-  
+
+
             </div>
 
             <div class="box-container-generic shadow">
@@ -55,9 +64,9 @@
 
             </div>
         </div>
-        <div class="col-md-6" >
+        <div class="col-md-6">
 
-            <div class="box-container-generic shadow" >
+            <div class="box-container-generic shadow">
                 <div class="box-header row">
                     <div class="box-header-title">Anuncios</div>
                 </div>
@@ -65,16 +74,16 @@
                     Aqui se notifcaran eventos nuevos.
                 </div>
                 <div class="box-footer">
-                    
+
                 </div>
 
 
-            </div>  
+            </div>
 
         </div>
+
     </div>
 
-    
 </body>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

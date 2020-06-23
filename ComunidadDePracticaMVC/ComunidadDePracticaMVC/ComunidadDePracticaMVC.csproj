@@ -374,6 +374,7 @@
     <Content Include="Views\Usuario\VerMeritosUsuario.cshtml" />
     <Content Include="Views\Usuario\DegradarUsuario.cshtml" />
     <Content Include="Views\Usuario\MisArticulos.cshtml" />
+    <Content Include="Views\Articulo\ArticulosRequierenRevision.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

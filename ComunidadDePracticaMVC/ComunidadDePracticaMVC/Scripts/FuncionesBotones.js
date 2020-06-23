@@ -13,24 +13,26 @@ function botonesHabilitados(elemento, event) {
     let valor;
     if (elemento != null) {
         valor = elemento.toString();
-        if (valor == '1') {
+        if (valor === '1') {
             btn0.disabled = true;
             btn1.disabled = false;
             btn2.disabled = false;
-        } else if (valor == '-1')
-        {
+        } else if (valor === '-1') {
             btn0.disabled = false;
             btn1.disabled = false;
             btn2.disabled = true;
+        } else if (valor === '0') {
+            btn0.disabled = false;
+            btn1.disabled = true;
+            btn2.disabled = false;
         }
     }
 }
 
-function activarOtros(articuloID,valor) {
+function activarOtros(articuloID, valor, correoUsuario, reaccionPasada) {
     var btn0 = document.getElementById('b0');
     var btn1 = document.getElementById('b1');
     var btn2 = document.getElementById('b2');
-
     if (valor === 1) {
         btn0.disabled = true;
         btn1.disabled = false;
@@ -47,16 +49,18 @@ function activarOtros(articuloID,valor) {
         btn0.disabled = false;
         //alert(valor);
     }
-    enviarPuntos(articuloID, valor);
+    var email = correoUsuario.toString();
+    //alert(email);
+    enviarPuntos(articuloID, valor, email, reaccionPasada);
 }
 
-function enviarPuntos(articuloID, valor) {
+function enviarPuntos(articuloID, valor,correoUsuario,reaccionPasada) {
     $.ajax({
         type: "GET",
-        url: '/Articulo/puntuar/',
+        url: '/Articulo/Puntuar/',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        data: { id: articuloID, puntaje: valor },
+        data: { id: articuloID, puntaje: valor, correo: correoUsuario, reaccionVieja: reaccionPasada},
         success: function (response) {
             alert(response.message)
         },

@@ -87,46 +87,6 @@ namespace ComunidadDePracticaMVC.Services
         }
 
         //TODO METODO PROVISIONAL
-        public void modificarLikes(int idArticulo, int puntaje) //OK
-        {
-            connection();
-
-            //SqlCommand cmd = new SqlCommand("ModificarLikes", con);
-            //cmd.CommandType = CommandType.StoredProcedure;
-            //cmd.Parameters.AddWithValue("@IdArticulo", idArticulo);
-            //cmd.Parameters.AddWithValue("@Puntaje", puntaje);
-            //con.Open();
-            //cmd.ExecuteNonQuery();
-            //con.Close();
-
-            string consulta1 = 
-                "UPDATE Articulo "+
-                "SET cantidadLikes=cantidadLikes+1 "+
-                "WHERE articuloId=@articuloId"
-                ;
-            string consulta2 =
-                    "UPDATE Articulo " +
-                    "SET cantidadNoMeGusta=cantidadNoMeGusta+1 " +
-                    "WHERE articuloId=@articuloId"
-                    ;
-            SqlCommand cmd1;
-            if (puntaje == 1)
-            {
-                cmd1 = new SqlCommand(consulta1, con);
-                cmd1.Parameters.AddWithValue("@articuloId", idArticulo);
-                con.Open();
-                cmd1.ExecuteNonQuery();
-                con.Close();
-            }
-            else if (puntaje == -1) {
-                cmd1 = new SqlCommand(consulta2, con);
-                cmd1.Parameters.AddWithValue("@articuloId", idArticulo);
-                con.Open();
-                cmd1.ExecuteNonQuery();
-                con.Close();
-            }
-
-        }
 
 
         // ******************** ADD NEW ARTICULO ********************
