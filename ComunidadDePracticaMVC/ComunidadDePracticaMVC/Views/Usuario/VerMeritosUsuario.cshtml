@@ -4,20 +4,25 @@
     ViewBag.Title = "Meritos del miembro";
 }
 
-<h1>Puntos totales de meritos: @ViewBag.merito</h1>
+<h2>Méritos de: @ViewBag.nombre</h2>
+<hr />
 
-<h3>Categoria miembro: @ViewBag.categoriaMiembro (@ViewBag.peso pts)</h3>
-<table class="table">
-    <tr>
-        <th>
-            @*@Html.DisplayNameFor(model => model.Titulo)*@
-            Aporte
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.PuntajeLectores)*@
-            Puntos
-        </th>
-        @*<th>
+<h4>Puntos totales de méritos: @ViewBag.merito</h4>
+
+<h4>Categoria: @ViewBag.categoriaMiembro (@ViewBag.peso pts)</h4>
+<br />
+<table class="table table-striped"  >
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Titulo)*@
+                Aporte
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.PuntajeLectores)*@
+                Puntos
+            </th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.NotaRevision)
             </th>
             <th>
@@ -26,11 +31,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.CantidadVistas)
             </th>*@
-        <th>
-            Fecha
-        </th>
-        <th></th>
-    </tr>
+            <th>
+                Fecha
+            </th>
+        </tr>
+    </thead>
+    <tbody>
     @{
         foreach (var item in Model)
         {
@@ -38,22 +44,27 @@
             if (item != null)
             {
                 int puntos = item.PuntajeLectores + item.CantidadVisitas + item.NotaRevision;
-                <tr>
+                
+                    <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Titulo)
                     </td>
                     <td>
-                        @*@Html.DisplayFor(modelItem => item.PuntajeLectores)
-                            @Html.DisplayFor(modelItem => item.NotaRevision)
-                            @Html.DisplayFor(modelItem => item.CantidadVistas)*@
+                            @*@Html.DisplayFor(modelItem => item.PuntajeLectores)
+                        @Html.DisplayFor(modelItem => item.NotaRevision)
+                        @Html.DisplayFor(modelItem => item.CantidadVistas)*@
                         @puntos
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.FechaPublicacion)
                     </td>
-                </tr>
-                }
+                 </tr>
+             
+                
             }
         }
     }
+    </tbody>
 </table>
+<br />
+<a class="btn box-btn" href="/Usuario/UsuariosComunidad"> Volver a usuarios</a>

@@ -36,25 +36,36 @@ namespace ComunidadDePracticaMVC.Services
 
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
-
             UsuarioModel usuario = new UsuarioModel();
 
 
             con.Open();
             sd.Fill(dt);
             con.Close();
+            //Revisar si no esta vacio
+            if (dt.Rows.Count > 0)
+            {
+                //TODO por ahora solo escoge una entrada
+                DataRow dr = dt.Rows[0];
+                usuario.Correo = Convert.ToString(dr["correo"]);
+                usuario.Nombre = Convert.ToString(dr["nombre"]);
+                usuario.Apellido1 = Convert.ToString(dr["apellido1"]);
+                usuario.Apellido2 = Convert.ToString(dr["apellido2"]);
+                usuario.Ciudad = Convert.ToString(dr["ciudad"]);
+                usuario.Pais = Convert.ToString(dr["pais"]);
+                usuario.Idioma = Convert.ToString(dr["idiomaUsuario"]);
+                usuario.Merito = Convert.ToString(dr["merito"]);
+                usuario.Peso = Convert.ToString(dr["peso"]);
+                usuario.Categoria = Convert.ToString(dr["categoriaMiembro"]);
+                usuario.Habilidad = Convert.ToString(dr["habilidadUsuario"]);
+                usuario.Hobbie = Convert.ToString(dr["hobbieUsuario"]);
 
-            DataRow dr = dt.Rows[0];
-            usuario.Correo = Convert.ToString(dr["correo"]);
-            usuario.Nombre = Convert.ToString(dr["nombre"]);
-            usuario.Apellido1 = Convert.ToString(dr["apellido1"]);
-            usuario.Apellido2 = Convert.ToString(dr["apellido2"]);
-            usuario.Ciudad = Convert.ToString(dr["ciudad"]);
-            usuario.Pais = Convert.ToString(dr["pais"]);
-            usuario.Foto = Convert.ToString(dr["foto"]);
-            usuario.Categoria = Convert.ToString(dr["categoriaMiembro"]);
-            usuario.Habilidad = Convert.ToString(dr["habilidadUsuario"]);
-            usuario.Hobbie = Convert.ToString(dr["hobbieUsuario"]);
+
+            }
+            else {
+
+                usuario.Nombre = "Error de usuario";
+            }
             return usuario;
         }
 
@@ -64,23 +75,95 @@ namespace ComunidadDePracticaMVC.Services
 
             Connection();
 
-            SqlCommand cmd = new SqlCommand("EditarUsuario", con);
-            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            SqlCommand cmd = new SqlCommand("EditUsuarioProvisional", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@correo", usuario.Correo);
-            cmd.Parameters.AddWithValue("@nombre", usuario.Nombre);
-            cmd.Parameters.AddWithValue("@apellido1", usuario.Apellido1);
-            cmd.Parameters.AddWithValue("@apellido2", usuario.Apellido2);
-            cmd.Parameters.AddWithValue("@ciudad", usuario.Ciudad);
-            cmd.Parameters.AddWithValue("@foto", usuario.Foto);
-            cmd.Parameters.AddWithValue("@pais", usuario.Pais);
-            cmd.Parameters.AddWithValue("@categoria", usuario.Categoria);
+            cmd.Parameters.AddWithValue("@Correo", usuario.Correo);
+            cmd.Parameters.AddWithValue("@Nombre", usuario.Nombre);
+            cmd.Parameters.AddWithValue("@Apellido1", usuario.Apellido1);
+            cmd.Parameters.AddWithValue("@Apellido2", usuario.Apellido2);
+            cmd.Parameters.AddWithValue("@Ciudad", usuario.Ciudad);
+            cmd.Parameters.AddWithValue("@Pais", usuario.Pais);
 
             con.Open();
             cmd.ExecuteNonQuery();
-            con.Close();
 
+            //Ve si hay entradas de idioma si no agrega una nueva entrada
+            string queryIdiomaCount = "SELECT COUNT(*) FROM Idioma WHERE correoUsuarioFK=@correo;";
+            SqlCommand commandIdiomaCount = new SqlCommand(queryIdiomaCount, con);
+            commandIdiomaCount.Parameters.AddWithValue("@Correo", usuario.Correo);
+
+            Int32 countIdioma = (Int32)commandIdiomaCount.ExecuteScalar();
+            if (countIdioma > 0)
+            {
+                string queryIdiomaUpdate = "UPDATE Idioma SET idiomaUsuario = @Idioma WHERE correoUsuarioFK=@correo;";
+                SqlCommand commandIdiomaUpdate = new SqlCommand(queryIdiomaUpdate, con);
+                commandIdiomaUpdate.Parameters.AddWithValue("@Correo", usuario.Correo);
+                commandIdiomaUpdate.Parameters.AddWithValue("@Idioma", usuario.Idioma);
+                commandIdiomaUpdate.ExecuteNonQuery();
+            }
+            else {
+                string queryIdiomaInsert = "INSERT INTO Idioma (correoUsuarioFK, idiomaUsuario) VALUES(@Correo, @Idioma); ";
+                SqlCommand commandIdiomaInsert = new SqlCommand(queryIdiomaInsert, con);
+                commandIdiomaInsert.Parameters.AddWithValue("@Correo", usuario.Correo);
+                commandIdiomaInsert.Parameters.AddWithValue("@Idioma", usuario.Idioma);
+                commandIdiomaInsert.ExecuteNonQuery();
+
+            }
+
+
+            //Ve si hay entradas de HABILIDAD si no agrega una nueva entrada
+            string queryHabilidadCount = "SELECT COUNT(*) FROM Habilidad WHERE correoUsuarioFK=@correo;";
+            SqlCommand commandHabilidadCount = new SqlCommand(queryHabilidadCount, con);
+            commandHabilidadCount.Parameters.AddWithValue("@Correo", usuario.Correo);
+
+            Int32 countHabilidad = (Int32)commandHabilidadCount.ExecuteScalar();
+            if (countHabilidad > 0)
+            {
+                string queryHabilidadUpdate = "UPDATE Habilidad SET habilidadUsuario = @Habilidad WHERE correoUsuarioFK=@correo;";
+                SqlCommand commandHabilidadUpdate = new SqlCommand(queryHabilidadUpdate, con);
+                commandHabilidadUpdate.Parameters.AddWithValue("@Correo", usuario.Correo);
+                commandHabilidadUpdate.Parameters.AddWithValue("@Habilidad", usuario.Habilidad);
+                commandHabilidadUpdate.ExecuteNonQuery();
+            }
+            else
+            {
+                string queryHabilidadInsert = "INSERT INTO Habilidad (correoUsuarioFK, habilidadUsuario) VALUES(@Correo, @Habilidad); ";
+                SqlCommand commandHabilidadInsert = new SqlCommand(queryHabilidadInsert, con);
+                commandHabilidadInsert.Parameters.AddWithValue("@Correo", usuario.Correo);
+                commandHabilidadInsert.Parameters.AddWithValue("@Habilidad", usuario.Habilidad);
+                commandHabilidadInsert.ExecuteNonQuery();
+
+            }
+
+            
+            //Ve si hay entradas de Hobbie si no agrega una nueva entrada de lo contrario updatea
+            string queryHobbieCount = "SELECT COUNT(*) FROM Hobbie WHERE correoUsuarioFK=@correo;";
+            SqlCommand commandHobbieCount = new SqlCommand(queryHobbieCount, con);
+            commandHobbieCount.Parameters.AddWithValue("@Correo", usuario.Correo);
+
+            Int32 countHobbie = (Int32)commandHobbieCount.ExecuteScalar();
+            if (countHobbie > 0)
+            {
+                string queryHobbieUpdate = "UPDATE Hobbie SET hobbieUsuario = @Hobbie WHERE correoUsuarioFK=@correo;";
+                SqlCommand commandHobbieUpdate = new SqlCommand(queryHobbieUpdate, con);
+                commandHobbieUpdate.Parameters.AddWithValue("@Correo", usuario.Correo);
+                commandHobbieUpdate.Parameters.AddWithValue("@Hobbie", usuario.Hobbie);
+                commandHobbieUpdate.ExecuteNonQuery();
+            }
+            else
+            {
+                string queryHobbieInsert = "INSERT INTO Hobbie (correoUsuarioFK, hobbieUsuario) VALUES(@Correo, @Hobbie); ";
+                SqlCommand commandHobbieInsert = new SqlCommand(queryHobbieInsert, con);
+                commandHobbieInsert.Parameters.AddWithValue("@Correo", usuario.Correo);
+                commandHobbieInsert.Parameters.AddWithValue("@Hobbie", usuario.Hobbie);
+                commandHobbieInsert.ExecuteNonQuery();
+
+            }
+            //cmd.Parameters.AddWithValue("@Habilidad", usuario.Habilidad);
+            //cmd.Parameters.AddWithValue("@Hobbie", usuario.Hobbie);
+
+            con.Close();
         }
 
         public List<UsuarioModel> GetNombreUsuarios() //OK
@@ -159,7 +242,9 @@ namespace ComunidadDePracticaMVC.Services
             string str1 = Convert.ToString(dr["categoriaMiembro"]);
             string str2 = Convert.ToString(dr["merito"]);
             string str3 = Convert.ToString(dr["peso"]);
-            datos = new string[3] { str1, str2, str3 };
+            string str4 = Convert.ToString(dr["nombreCompleto"]);
+            datos = new string[4] { str1, str2, str3, str4 };           
+           
             return datos;
         }
 
@@ -176,5 +261,91 @@ namespace ComunidadDePracticaMVC.Services
             cmd.ExecuteNonQuery();
             con.Close();
         }
+
+        public void ModificarReacciones(int articuloId) //OK
+        {
+            Connection();
+
+            string consulta =
+                "DECLARE @likes INTEGER, @dislikes INTEGER "+
+                "SELECT @likes = COUNT(*) FROM Reacciona WHERE puntaje = 1 AND articuloIdFK = @articuloId " +
+                "SELECT @dislikes = COUNT(*) FROM Reacciona WHERE puntaje = -1 AND articuloIdFK = @articuloId " +
+                "UPDATE Articulo "+
+                "SET cantidadNoMeGusta = @dislikes, cantidadLikes = @likes "+
+                "WHERE articuloId = @articuloId ";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+
+        }
+
+        public bool HaReaccionado(string correo, int articuloId)
+        {
+            Connection();
+            SqlCommand cmd = new SqlCommand("SELECT COUNT(*) AS NumTuplas FROM Reacciona WHERE correoMiembroFK = @Correo AND articuloIdFK=@ArticuloId", con);
+            cmd.Parameters.AddWithValue("@Correo", correo);
+            cmd.Parameters.AddWithValue("@ArticuloId", articuloId);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+            DataRow dr = dt.Rows[0];
+            return Convert.ToInt32(dr["NumTuplas"])>0;
+
+        }
+
+        public int ReaccionDeUsuario(string correo, int articuloId) {
+
+            int puntos = 2; // el voto puede ser solo -1,0,1 --> si no ha reaccionado, entonces se retorna un 2
+
+            if (HaReaccionado(correo, articuloId)) {
+                Connection();
+                SqlCommand cmd = new SqlCommand("SELECT puntaje FROM Reacciona WHERE correoMiembroFK = @Correo AND articuloIdFK=@ArticuloId", con);
+                cmd.Parameters.AddWithValue("@Correo", correo);
+                cmd.Parameters.AddWithValue("@ArticuloId", articuloId);
+
+                SqlDataAdapter sd = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+
+                con.Open();
+                sd.Fill(dt);
+                con.Close();
+                DataRow dr = dt.Rows[0];
+                puntos = Convert.ToInt32(dr["puntaje"]);
+            }
+            return puntos;
+        }
+
+        public void UsuarioReacciona(string correo, int articuloId,int valor)
+        {
+            Connection();
+            if (HaReaccionado(correo, articuloId))
+            {
+                SqlCommand cmd = new SqlCommand("UPDATE Reacciona SET puntaje = @Valor WHERE correoMiembroFK = @Correo AND articuloIdFK=@ArticuloId", con);
+                cmd.Parameters.AddWithValue("@Correo", correo);
+                cmd.Parameters.AddWithValue("@ArticuloId", articuloId);
+                cmd.Parameters.AddWithValue("@Valor", valor);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            else
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO Reacciona VALUES (@Correo,@ArticuloId,@Valor)", con);
+                cmd.Parameters.AddWithValue("@Correo", correo);
+                cmd.Parameters.AddWithValue("@ArticuloId", articuloId);
+                cmd.Parameters.AddWithValue("@Valor", valor);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            ModificarReacciones(articuloId);
+        }
+
+
     }
 }

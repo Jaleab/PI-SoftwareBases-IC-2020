@@ -1,0 +1,175 @@
+﻿@model ComunidadDePracticaMVC.Models.UsuarioModel
+
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#form").on('submit', function (e) {
+
+            //Previene el verdadero submit de la b
+            e.preventDefault();
+            //valida el form
+
+            $('#form').validate();
+
+            var isFormValid = $('#form').valid();
+            //Elementos para retroalimentacion al usuario
+
+            if (isFormValid) {
+                $.ajax(
+                    {
+                        type: "POST", //HTTP POST Method
+                        url: "EditarUsuario/",
+                        dataType: "json",
+                        data: { //Passing data
+                            Correo: "@User.Identity.Name",
+                            Nombre: $("#nombre").val(),
+                            Apellido1: $("#apellido1").val(),
+                            Apellido2: $("#apellido2").val(),
+                            Ciudad: $("#ciudad").val(),
+                            Pais: $("#pais").val(),
+                            Idioma: $("#idioma").val(),
+                            Merito: $("#merito").text(),
+                            Peso: $("#peso").text(),
+                            Categoria: $("#categoria").text(),
+                            Habilidad: $("#habilidad").val(),
+                            Hobbie: $("#hobbie").val()
+                        },
+                        success: function (data) {
+
+                            alert("Se modifico el perfil.");
+                            window.location.replace("@Url.Action("DesplegarUsuario", "Usuario", new { correo = "@User.Identity.Name" })");
+                        },
+                        failure: function (response) {
+                            alert("Hubo un error al modificar el perfil");
+                        },
+                        error: function (response) {
+                            alert("Hubo un error al modificar el perfil");
+                        }
+                    });
+            }
+            else {
+                alertValidation.style.display = "block";
+            }
+        });
+    });
+    </script>
+
+
+@{
+    ViewBag.Title = "Editar Usuario";
+}
+
+<h2>Editar perfil</h2>
+<hr />
+<form id="form" class="form-horizontal" novalidate="novalidate">
+    @Html.AntiForgeryToken()
+    <h5>
+        Edite el contenido de su perfil, porfavor rellene los espacios incompletos.
+    </h5>
+    <br />
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group" style="display:none;">
+            @Html.LabelFor(model => model.Correo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div id="correo" class="col-md-6">@Html.DisplayFor(model => model.Correo)</div>
+        </div>
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", @id = "nombre" } })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Apellido1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Apellido1, new { htmlAttributes = new { @class = "form-control", @id = "apellido1" } })
+                @Html.ValidationMessageFor(model => model.Apellido1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Apellido2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Apellido2, new { htmlAttributes = new { @class = "form-control", @id = "apellido2" } })
+                @Html.ValidationMessageFor(model => model.Apellido2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ciudad, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Ciudad, new { htmlAttributes = new { @class = "form-control", @id = "ciudad" } })
+                @Html.ValidationMessageFor(model => model.Ciudad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Pais, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Pais, new { htmlAttributes = new { @class = "form-control", @id = "pais" } })
+                @Html.ValidationMessageFor(model => model.Pais, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Idioma, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Idioma, new { htmlAttributes = new { @class = "form-control", @id = "idioma" } })
+                @Html.ValidationMessageFor(model => model.Idioma, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group" style="display:none;">
+            @Html.LabelFor(model => model.Merito, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div id="merito" class="col-md-6">@Html.DisplayFor(model => model.Merito)</div>
+        </div>
+        <div class="form-group" style="display:none;">
+            @Html.LabelFor(model => model.Peso, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div id="peso" class="col-md-6">@Html.DisplayFor(model => model.Peso)</div>
+        </div>
+
+        <div class="form-group" style="display:none;">
+            @Html.LabelFor(model => model.Categoria, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div id="categoria" class="col-md-6">@Html.DisplayFor(model => model.Categoria)</div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Habilidad, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Habilidad, new { htmlAttributes = new { @class = "form-control", @id = "habilidad" } })
+                @Html.ValidationMessageFor(model => model.Habilidad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Hobbie, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Hobbie, new { htmlAttributes = new { @class = "form-control", @id = "hobbie" } })
+                @Html.ValidationMessageFor(model => model.Hobbie, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="form-group row ">
+            <div class="col-md-offset-2 col-md-2">
+                <input type="submit" value="Guardar datos" class="btn btn-success" />
+            </div>
+            <div class="col-md-2">
+                @Html.ActionLink("Cancelar", "DesplegarUsuario", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Devolverse a mi perfil", @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+
+
+
+
+</form>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

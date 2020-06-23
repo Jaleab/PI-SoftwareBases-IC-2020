@@ -87,46 +87,6 @@ namespace ComunidadDePracticaMVC.Services
         }
 
         //TODO METODO PROVISIONAL
-        public void modificarLikes(int idArticulo, int puntaje) //OK
-        {
-            connection();
-
-            //SqlCommand cmd = new SqlCommand("ModificarLikes", con);
-            //cmd.CommandType = CommandType.StoredProcedure;
-            //cmd.Parameters.AddWithValue("@IdArticulo", idArticulo);
-            //cmd.Parameters.AddWithValue("@Puntaje", puntaje);
-            //con.Open();
-            //cmd.ExecuteNonQuery();
-            //con.Close();
-
-            string consulta1 = 
-                "UPDATE Articulo "+
-                "SET cantidadLikes=cantidadLikes+1 "+
-                "WHERE articuloId=@articuloId"
-                ;
-            string consulta2 =
-                    "UPDATE Articulo " +
-                    "SET cantidadNoMeGusta=cantidadNoMeGusta+1 " +
-                    "WHERE articuloId=@articuloId"
-                    ;
-            SqlCommand cmd1;
-            if (puntaje == 1)
-            {
-                cmd1 = new SqlCommand(consulta1, con);
-                cmd1.Parameters.AddWithValue("@articuloId", idArticulo);
-                con.Open();
-                cmd1.ExecuteNonQuery();
-                con.Close();
-            }
-            else if (puntaje == -1) {
-                cmd1 = new SqlCommand(consulta2, con);
-                cmd1.Parameters.AddWithValue("@articuloId", idArticulo);
-                con.Open();
-                cmd1.ExecuteNonQuery();
-                con.Close();
-            }
-
-        }
 
 
         // ******************** ADD NEW ARTICULO ********************
@@ -179,61 +139,18 @@ namespace ComunidadDePracticaMVC.Services
             try
             {
                 exito = cmd.ExecuteNonQuery() >= 1;
-
             }
             catch (Exception e)
             {
+
             }
             con.Close();
             if (exito == false)
             {
                 return exito;
             }
-
-            DataTable dt = new DataTable();
-
-            connection();
-            SqlCommand cmd2 = new SqlCommand();
-            cmd2 = new SqlCommand(
-                "SELECT articuloId" + " " +
-                "FROM Articulo" + " " +
-                "WHERE titulo = @TituloArticulo" + " ", con);
-            cmd2.Parameters.AddWithValue("@TituloArticulo", articulo.Titulo);
-            cmd2.CommandType = CommandType.Text;
-            SqlDataAdapter sd2 = new SqlDataAdapter(cmd2);
-            con.Open();
-            sd2.Fill(dt);
-            con.Close();
-
-            DataRow dr = dt.Rows[0];
-            int articuloIdGuardado = Convert.ToInt32(dr["articuloId"]);
-
-            connection();
-            cmd2 = new SqlCommand();
-            cmd2 = new SqlCommand(
-                "INSERT INTO Revisa" + " " +
-                "VALUES(@CorreoMiembro, @ArticuloIdEnviado, 0, -1)" + " ", con);
-            cmd2.Parameters.AddWithValue("@ArticuloIdEnviado", articuloIdGuardado);
-            cmd2.Parameters.AddWithValue("@CorreoMiembro", articulo.Correo);
-            cmd2.CommandType = CommandType.Text;
-            //sd2 = new SqlDataAdapter(cmd2);
-            con.Open();
-            cmd2.ExecuteNonQuery();
-            //sd2.Fill(dt);
-            con.Close();
-
-            connection();
-            cmd2 = new SqlCommand();
-            cmd2 = new SqlCommand(
-                "INSERT INTO Publica" + " " +
-                "VALUES(@CorreoMiembro, @ArticuloIdEnviado)" + " ", con);
-            cmd2.Parameters.AddWithValue("@ArticuloIdEnviado", articuloIdGuardado);
-            cmd2.Parameters.AddWithValue("@CorreoMiembro", articulo.Correo);
-            cmd2.CommandType = CommandType.Text;
-            //sd2 = new SqlDataAdapter(cmd2);
-            con.Open();
-            cmd2.ExecuteNonQuery();
-            //sd2.Fill(dt);
+            int articuloIdGuardado = ObtenerIdArticuloPorTitulo(articulo.Titulo);
+            exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, articulo.Correo);
             con.Close();
             return exito;
         }
@@ -271,15 +188,18 @@ namespace ComunidadDePracticaMVC.Services
             Console.WriteLine(articulo.ArticuloId);
             return articulo;
         }
-
-        public ArticuloLargoViewModel GetInfoArticuloLargo(int id) //OK
+        public List<ArticuloModel> GetArticulosByAutor(int pageNumber, int pageSize, string autorCorreo) //OK
         {
-            //establecer la conexion con la base de datos
             connection();
-            //Ejecutar la consulta de un articulo segun su id
-            SqlCommand cmd = new SqlCommand("GetArticuloPorId", con);
+            List<ArticuloModel> articulolist = new List<ArticuloModel>();
+
+
+            SqlCommand cmd = new SqlCommand("GetArticulosDeAutorByPage", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@ArticuloId", id);
+            cmd.Parameters.AddWithValue("@correo", autorCorreo);
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
 
@@ -287,20 +207,26 @@ namespace ComunidadDePracticaMVC.Services
             sd.Fill(dt);
             con.Close();
 
-            DataRow dr = dt.Rows[0];
-            ArticuloLargoViewModel articulo = new ArticuloLargoViewModel();
+            foreach (DataRow dr in dt.Rows)
+            {
+                articulolist.Add(
+                    new ArticuloModel
+                    {
+                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Autor = Convert.ToString(dr["autor"]),
+                        Titulo = Convert.ToString(dr["titulo"]),
+                        Resumen = Convert.ToString(dr["resumen"]),
+                        Topico = Convert.ToString(dr["topico"]),
+                        Contenido = Convert.ToString(dr["contenido"]),
+                        NotaRevision = Convert.ToInt32(dr["notaRevision"]),
+                        FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
+                        Estado = Convert.ToString(dr["estado"])
+                    });
+            }
 
-            articulo.ArticuloId = Convert.ToInt32(dr["articuloId"]);
-            articulo.Autor = Convert.ToString(dr["autor"]);
-            articulo.Resumen = Convert.ToString(dr["resumen"]);
-            articulo.Titulo = Convert.ToString(dr["titulo"]);
-            articulo.Topico = Convert.ToString(dr["topico"]);
 
-
-            Console.WriteLine(articulo.ArticuloId);
-            return articulo;
+            return articulolist;
         }
-
 
         public List<ArticuloModel> GetArticuloConditional(int pageNumber, int pageSize) //OK
         {
@@ -354,7 +280,6 @@ namespace ComunidadDePracticaMVC.Services
             connection();
             bool exito = false;
             SqlCommand cmd = new SqlCommand("UPDATE Articulo SET titulo = @Titulo, topico = @Topico, resumen = @Resumen, contenido = @Contenido  WHERE articuloId = @Id", con);
-            //cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
             cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
@@ -533,52 +458,8 @@ namespace ComunidadDePracticaMVC.Services
             {
                 return exito;
             }
-
-            DataTable dt = new DataTable();
-             
-            connection();
-            SqlCommand cmd2 = new SqlCommand();            
-            cmd2 = new SqlCommand(
-                "SELECT articuloId"+ " "+
-                "FROM Articulo"+" "+
-                "WHERE titulo = @TituloArticulo"+ " ", con);
-            cmd2.Parameters.AddWithValue("@TituloArticulo", articulo.Titulo);
-            cmd2.CommandType = CommandType.Text;
-            SqlDataAdapter sd2 = new SqlDataAdapter(cmd2);
-            con.Open();
-            sd2.Fill(dt);
-            con.Close();
-
-            DataRow dr = dt.Rows[0];
-            int articuloIdGuardado = Convert.ToInt32(dr["articuloId"]);
-
-            connection();
-            cmd2 = new SqlCommand();
-            cmd2 = new SqlCommand(
-                "INSERT INTO Revisa" + " " +
-                "VALUES(@CorreoMiembro, @ArticuloIdEnviado, 0, -1)" + " ", con);
-            cmd2.Parameters.AddWithValue("@ArticuloIdEnviado", articuloIdGuardado);
-            cmd2.Parameters.AddWithValue("@CorreoMiembro", articulo.Correo);
-            cmd2.CommandType = CommandType.Text;
-            //sd2 = new SqlDataAdapter(cmd2);
-            con.Open();
-            cmd2.ExecuteNonQuery();
-            //sd2.Fill(dt);
-            con.Close();
-
-            connection();
-            cmd2 = new SqlCommand();
-            cmd2 = new SqlCommand(
-                "INSERT INTO Publica" + " " +
-                "VALUES(@CorreoMiembro, @ArticuloIdEnviado)" + " ", con);
-            cmd2.Parameters.AddWithValue("@ArticuloIdEnviado", articuloIdGuardado);
-            cmd2.Parameters.AddWithValue("@CorreoMiembro", articulo.Correo);
-            cmd2.CommandType = CommandType.Text;
-            //sd2 = new SqlDataAdapter(cmd2);
-            con.Open();
-            cmd2.ExecuteNonQuery();
-            //sd2.Fill(dt);
-            con.Close();
+            int articuloIdGuardado = ObtenerIdArticuloPorTitulo(articulo.Titulo);
+            exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, articulo.Correo);
             return exito;
         }
 
@@ -663,6 +544,52 @@ namespace ComunidadDePracticaMVC.Services
             return listaTopicos;
         }
 
+        public void PonerEnRevision(int id) {
+            connection();
+            string consulta = "UPDATE Articulo SET estado= 'Revision' WHERE articuloId=@articuloId";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            cmd.Parameters.AddWithValue("@articuloId", id);
+
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+
+        }
+
+        private int ObtenerIdArticuloPorTitulo(string titulo) {
+            int articuloId = -1; // si retorna -1 es porque ocurre un error al intentar obtener el valor
+            connection();
+            SqlCommand cmd = new SqlCommand(
+                "SELECT articuloId" + " " +
+                "FROM Articulo" + " " +
+                "WHERE titulo = @TituloArticulo" + " ", con);
+            cmd.Parameters.AddWithValue("@TituloArticulo", titulo);
+            cmd.CommandType = CommandType.Text;
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+            DataRow dr = dt.Rows[0];
+            articuloId = Convert.ToInt32(dr["articuloId"]);
+            return articuloId;
+        }
+
+        private bool AgregarArticuloAPublicacion(int articuloId, string correoAutor) {
+            bool agregado = false;
+            connection();
+            string consulta = "INSERT INTO Publica VALUES(@correoAutor, @articuloId)";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+            cmd.Parameters.AddWithValue("@correoAutor", correoAutor);
+
+            con.Open();
+            agregado=cmd.ExecuteNonQuery() >= 1;
+            con.Close();
+
+            return agregado;
+        }
+
     }
 
     public class questionService
@@ -682,8 +609,8 @@ namespace ComunidadDePracticaMVC.Services
             SqlCommand cmd = new SqlCommand("AddNewQuestion", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@pregunta", preg.pregunta);
-            cmd.Parameters.AddWithValue("@respuesta", preg.respuesta);
+            cmd.Parameters.AddWithValue("@pregunta", preg.Pregunta);
+            cmd.Parameters.AddWithValue("@respuesta", preg.Respuesta);
 
 
             con.Open();
@@ -717,9 +644,9 @@ namespace ComunidadDePracticaMVC.Services
                 studentlist.Add(
                     new faqModel
                     {
-                        id = Convert.ToInt32(dr["id"]),
-                        pregunta = Convert.ToString(dr["pregunta"]),
-                        respuesta = Convert.ToString(dr["respuesta"]),
+                        Id = Convert.ToInt32(dr["id"]),
+                        Pregunta = Convert.ToString(dr["pregunta"]),
+                        Respuesta = Convert.ToString(dr["respuesta"]),
 
                     });
             }
@@ -733,9 +660,9 @@ namespace ComunidadDePracticaMVC.Services
             SqlCommand cmd = new SqlCommand("UpdateQuestion", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@id", preg.id);
-            cmd.Parameters.AddWithValue("@pregunta", preg.pregunta);
-            cmd.Parameters.AddWithValue("@respuesta", preg.respuesta);
+            cmd.Parameters.AddWithValue("@id", preg.Id);
+            cmd.Parameters.AddWithValue("@pregunta", preg.Pregunta);
+            cmd.Parameters.AddWithValue("@respuesta", preg.Respuesta);
 
             con.Open();
             int i = cmd.ExecuteNonQuery();

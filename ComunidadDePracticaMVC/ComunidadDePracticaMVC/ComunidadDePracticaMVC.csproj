@@ -152,13 +152,13 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\editor.css" />
-    <Content Include="Content\estilos.css" />
+    <Content Include="Content\estilos\estilos.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fontawesome.css" />
     <Content Include="Content\fontawesome.min.css" />
-    <Content Include="Content\FuncionesBotones.js" />
+    <Content Include="Scripts\FuncionesBotones.js" />
     <Content Include="Content\site.min.css" />
-    <Content Include="Content\style.css" />
+    <Content Include="Content\estilos\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -196,6 +196,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\tinyMCEMailConfig.js" />
     <Content Include="Scripts\tinyMCEContenidoConfig.js" />
     <Content Include="Scripts\tinyMCEResumenConfig.js" />
     <Content Include="Scripts\tinymce\jquery.tinymce.min.js" />
@@ -365,9 +366,15 @@
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Articulo\ArticulosCalificados.cshtml" />
     <Content Include="Views\ArticuloLargo\Index.cshtml" />
+    <Content Include="Views\Usuario\DesplegarEditarUsuario.cshtml" />
+    <Content Include="Views\Usuario\DesplegarUsuario.cshtml" />
+    <Content Include="Views\Usuario\Formulario.cshtml" />
+    <Content Include="Views\Correo\Index.cshtml" />
     <Content Include="Views\Usuario\UsuariosComunidad.cshtml" />
     <Content Include="Views\Usuario\VerMeritosUsuario.cshtml" />
     <Content Include="Views\Usuario\DegradarUsuario.cshtml" />
+    <Content Include="Views\Usuario\MisArticulos.cshtml" />
+    <Content Include="Views\Articulo\ArticulosRequierenRevision.cshtml" />
     <Content Include="Views\ArticuloLargo\EditarArticuloLargo.cshtml" />
   </ItemGroup>
   <ItemGroup>

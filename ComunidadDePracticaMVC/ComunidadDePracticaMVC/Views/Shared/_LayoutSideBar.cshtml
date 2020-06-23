@@ -1,9 +1,10 @@
 ﻿
 @if (User.Identity.IsAuthenticated)
 {
-    <li class="sidebar-title"> @Html.ActionLink("Mi perfil", "MyProfile", "Account", new { Name = "JAOSDJJOSAD" }, null) </li>
+    <li class="sidebar-title"> @Html.ActionLink("Mi perfil", "DesplegarUsuario", "Usuario", new { correo = User.Identity.Name }, null) </li>
     <!--<li> <a href="#"> Crear Articulo </a> </li>-->
-    <li> <a href="#"> Mis Articulos </a> </li>
+    <li>@Html.ActionLink("Mis Articulos", "MisArticulos", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Mi perfil" })</li>
     <!--<li class="sidebar-divider"></li>-->
+    <li class="sidebar-divider"></li>
 }
 

@@ -33,8 +33,8 @@ namespace ComunidadDePracticaMVC.Controllers
             try
             {
                 faqModel pregunta = new faqModel();
-                pregunta.pregunta = preguntaStr;
-                pregunta.respuesta = respuestaStr;
+                pregunta.Pregunta = preguntaStr;
+                pregunta.Respuesta = respuestaStr;
                 questionService serviceFaq = new questionService();
                 if (serviceFaq.AddQuestion(pregunta))
                 {
@@ -66,9 +66,9 @@ namespace ComunidadDePracticaMVC.Controllers
             try
             {
                 faqModel pregunta = new faqModel();
-                pregunta.id = id;
-                pregunta.pregunta = preguntaStr;
-                pregunta.respuesta = respuestaStr;
+                pregunta.Id = id;
+                pregunta.Pregunta = preguntaStr;
+                pregunta.Respuesta = respuestaStr;
                 questionService serviceFaq = new questionService();
                 serviceFaq.UpdateQuestion(pregunta);
                 return RedirectToAction("faq");

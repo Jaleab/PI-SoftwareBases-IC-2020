@@ -29,17 +29,17 @@ namespace PassParameter.Controllers
         public ActionResult ConsultarArticulos(int id)
         {
             ViewBag.Message = "Usted está visitando un artículo";
+            ViewBag.Reaccion = 2;
             ArticuloService servicioParaverResumen = new ArticuloService();
+            UsuarioService servicioUsuarios = new UsuarioService();
             servicioParaverResumen.AumentarVisitas(id);
             ModelState.Clear();
             var articuloModel = servicioParaverResumen.GetInfoArticulo(id);
-            if (articuloModel.TipoArchivo == "corto")
-            {
-                return View(articuloModel);
+            if (User.Identity.IsAuthenticated) {
+                string correo = User.Identity.Name.ToString();
+                ViewBag.Reaccion = servicioUsuarios.ReaccionDeUsuario(correo,id);
             }
-            else {
-                return RedirectToAction("AccederArticuloLargo", new { idArt=id });
-            }
+            return View(articuloModel);
         }
 
         // GET: Buscar por id Articulo
@@ -82,7 +82,7 @@ namespace PassParameter.Controllers
             {
                 ArticuloService servicioArt = new ArticuloService();
                 bool exito = servicioArt.CrearArticulo(model);
-                if (exito == true)
+                if (exito)
                 {
                     ViewBag.mensaje = "Artículo ha sido guardado";
                 }
@@ -206,6 +206,7 @@ namespace PassParameter.Controllers
 
             //char[] hilera = hileraBusqueda.ToCharArray();
             ModelState.Clear();
+            ViewBag.busqueda = hilera;
             //return View(noDupsList);
             return View(dbhandle.GetArticulosTopico(hilera));
         }
@@ -219,11 +220,19 @@ namespace PassParameter.Controllers
 
         }
 
-        public JsonResult puntuar(int id, int puntaje)
+        public JsonResult ArticulosAutor(int pageNumber, int pageSize, string correo)
         {
-            ArticuloService artServ = new ArticuloService();
-            artServ.modificarLikes(id, puntaje);
 
+            ArticuloService serviceArt = new ArticuloService();
+            List<ArticuloModel> articuloList = serviceArt.GetArticulosByAutor(pageNumber, pageSize,correo);
+            return Json(articuloList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Puntuar(int id, int puntaje, string correo, int reaccionVieja)
+        {
+            UsuarioService usuarioServ = new UsuarioService();
+            usuarioServ.UsuarioReacciona(correo, id, puntaje);
+            //reaccionaVieja solo se estaba enviando para debuggear
             JsonResult result = Json(new
             {
                 message = "Gracias por brindar su opinión "
@@ -244,6 +253,32 @@ namespace PassParameter.Controllers
         }
 
         public ActionResult ArticulosCalificados() {
+            return View();
+        }
+
+        public JsonResult EnviarRevision(int id) {
+            JsonResult result;
+            try
+            {
+                ArticuloService artServ = new ArticuloService();
+                artServ.PonerEnRevision(id);
+                result = Json(new
+                {
+                    message = "Se envio a revisar."
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch {
+                result = Json(new
+                {
+                    message  = "No se pudo enviar a revisar."
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+
+            return result;
+        }
+
+        public ActionResult ArticulosRequierenRevision() {
             return View();
         }
 

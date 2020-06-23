@@ -19,17 +19,14 @@ namespace ComunidadDePracticaMVC.Controllers
             return View();
         }
 
-        public JsonResult EnviarCorreo(CorreoModel correo)
-        {
+        public JsonResult EnviarCorreo(CorreoModel correo) {
             // Specify the from and to email address
             MailMessage mailMessage = new MailMessage
                 ("comunidadDePracticaGrupo3@gmail.com", correo.EmailTo);
             mailMessage.IsBodyHtml = true;
-            mailMessage.Body = correo.EmailBody;
-            mailMessage.Subject = "*Insertar usuario* en Comunidad De Práctica: " + correo.Subject;
-
-
-
+            mailMessage.Body = "<div>"+ correo.EmailBody + "</div>"+"<p> -Enviado desde Comunidad de Práctica Grupo 3</p>";
+            mailMessage.Subject = correo.Sender + " en Comunidad De Práctica: " + correo.Subject;
+            
             SmtpClient smtpClient;
 
             string nombreGrupo3 = "comunidadDePracticaGrupo3@gmail.com";
@@ -62,7 +59,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 );
                 return errorMessage;
             }
-
+           
             JsonResult result = Json(new
             {
                 to = correo.EmailTo,

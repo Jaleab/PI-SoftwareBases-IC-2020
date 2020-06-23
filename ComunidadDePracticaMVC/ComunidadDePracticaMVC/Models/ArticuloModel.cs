@@ -43,5 +43,8 @@ namespace ComunidadDePracticaMVC.Models
         public int Likes { get; set; }
 
         public int Dislikes { get; set; }
+
+        public string Estado { get; set; }
+
     }
 }

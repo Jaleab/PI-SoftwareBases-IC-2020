@@ -1,0 +1,132 @@
+﻿@using ComunidadDePracticaMVC.Models
+@model CorreoModel
+@{
+    ViewBag.Title = "Index";
+}
+<script type="text/javascript" src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="~/Scripts/tinyMCEMailConfig.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Cerrar modal y devolverse a inicio
+        var span = document.getElementById("close");
+        span.onclick = function () {
+            window.location.replace("@Url.Action("Index", "Home")");
+        }
+
+
+
+        //TODO show por ahora
+        $("#mail").show();
+
+        $("#form").on('submit', function (e) {
+            //Previene el verdadero submit de la b
+            e.preventDefault();
+
+            //valida el form
+            $('#form').validate();
+            var isFormValid = $('#form').valid();
+            //Elementos para retroalimentacion al usuario
+            var alertValidation = document.getElementById("alert-validation");
+            alertValidation.style.display = "none";
+            var alertResponse = document.getElementById("alert-response");
+            alertResponse.style.display = "none";
+            var alertResponseTitle = document.getElementById("alert-response-title");
+
+
+
+            if (isFormValid) {
+                var content = tinymce.activeEditor.getContent();
+                $.ajax(
+                    {
+                        type: "POST", //HTTP POST Method
+                        url: "/Correo/EnviarCorreo/",
+                        dataType: "json",
+                        data: { //Passing data
+                            EmailTo: $("#EmailTo").val(),
+                            Subject: $("#Subject").val(),
+                            EmailBody: content,
+                            Sender: "@User.Identity.Name"
+                        },
+                        success: function (data) {
+                            //document.getElementById('form').reset();
+
+                            alert(data.responseMessage);
+                            window.location.replace(data.newUrl);
+
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+            }
+            else {
+                alertValidation.style.display = "block";
+            }
+
+        });
+
+    });
+
+
+</script>
+
+<div id="mail" class="modal">
+
+    <!-- Contenido modal -->
+    <div class="box-container">
+        <div class="box-header row">
+            <div class="col-md-3 box-header-title">Nuevo mensaje</div>
+            <span id="close" class="close box-header-links">&times;</span>
+        </div>
+        <div class="box-content">
+            <form id="form" novalidate="novalidate">
+
+                @Html.AntiForgeryToken()
+
+
+                <div id="alert-response" class="alert alert-danger" style="display:none">
+                    <strong id="alert-response-title"></strong>
+                </div>
+                <div id="alert-validation" class="alert alert-danger" style="display:none">
+                    <strong>Porfavor, arregle estos errores antes de enviar un correo.</strong>
+                    @Html.ValidationSummary()
+                </div>
+
+                <div class="box-group-line">
+                    <div class="line-divider">
+                        @Html.TextBoxFor(model => model.EmailTo, new { @placeholder = "Destinatarios", @class = "box-group-line-area", @id = "EmailTo" })
+                    </div>
+                </div>
+                <div class="box-group-line">
+                    <div class="line-divider">
+                        @Html.TextBoxFor(model => model.Subject, new { @placeholder = "Asunto", @class = "box-group-line-area", @id = "Subject" })
+                    </div>
+                </div>
+
+                <div class="box-content">
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(model => model.EmailBody, new { htmlAttributes = new { @class = "form-control editorHtml", @id = "EmailBodyId" } })
+                    </div>
+
+                </div>
+                <input type="submit" value="Enviar" class="btn box-btn" style=" margin-left: 15px; margin-top: 10px"/>
+
+            </form>
+        </div>
+        <div class="box-footer">
+
+        </div>
+
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
