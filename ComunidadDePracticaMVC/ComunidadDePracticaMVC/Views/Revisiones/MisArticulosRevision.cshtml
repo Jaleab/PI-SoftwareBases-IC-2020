@@ -35,7 +35,7 @@
                 data: {},
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: { pageNumber: currentPageNumber, pageSize: 5, correo: '@ViewBag.correo' },
+                data: { pageNumber: currentPageNumber, pageSize: 5, correo: '@User.Identity.Name' },
                 success: function (response) {
                     //get the template element:
                     var artTemp = document.getElementsByTagName("template")[0].content;
@@ -45,10 +45,10 @@
                     $.each(response, function (index, articulo) {
                         var idS = new String(articulo.ArticuloId);
                         //url para ver
-                        var aceptarUrl = '@Url.Action("ConsultarArticulos", "Articulo",new { id= "VAL"},null)';
+                        var aceptarUrl = '@Url.Action("AceptarColaboracion", "Revisiones", new { articuloId = "VAL", correoNucleo = User.Identity.Name }, null)';
                         aceptarUrl = aceptarUrl.replace("VAL", idS);
                         //url para editar
-                        var rechazarUrl = '@Url.Action("EditarArticuloCorto", "Articulo",new { id= "VAL"},null)';
+                        var rechazarUrl = '@Url.Action("RechazarColaboracion", "Revisiones", new { articuloId = "VAL", correoNucleo = User.Identity.Name }, null)';
                         rechazarUrl = rechazarUrl.replace("VAL", idS);
                         //url para borrar
                         @*var deleteUrl = '@Url.Action("BorrarArticulo", "Articulo",new { id= "VAL"},null)';
@@ -101,15 +101,31 @@
 
 <body>
 
+
     <div class="col-xl-12 col-md-12 mb-12">
         <div class="row page-title main-font ">
-            <h2>Articulos de Revisión @ViewBag.correo</h2>
+            <h2>Articulos de Revisión @User.Identity.Name</h2>
+            @if (ViewBag.Message != null && (ViewBag.Message == "Se aceptó la colaboración." || ViewBag.Message == "Se rechazó la colaboración."))
+            {
+                <div class="alert-success">
+                    @ViewBag.Message
+                </div>
+            }
+            else if (ViewBag.Message == "Falló la operación.")
+            {
+                <div class="alert-danger">
+                    @ViewBag.Message
+                </div>
+            }
             <hr />
         </div>
+
         @*<div class="row main-font search-bar">
                 <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
             </div>*@
     </div>
+    
+
     <div>
         <div id="articleList">
 

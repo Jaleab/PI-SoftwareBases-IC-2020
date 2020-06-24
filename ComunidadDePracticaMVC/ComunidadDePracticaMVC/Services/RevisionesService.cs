@@ -73,7 +73,7 @@ namespace ComunidadDePracticaMVC.Services
             return listaUsuarios;
         }
 
-        public bool ColaboracionDeunMiembro(string correo,int articuloId) {
+        public bool ColaboracionDeUnMiembro(string correo,int articuloId) {
             bool exito = true;
             string operacion = "INSERT INTO Revisa (correoMiembroFK,articuloIdFK,estadoRevision,calificacion) VALUES(@correo,@articuloId,'Colaboracion',0)";
             Connection();
@@ -83,7 +83,7 @@ namespace ComunidadDePracticaMVC.Services
             cmd.Parameters.AddWithValue("@articuloId", articuloId);
 
             con.Open();
-            exito = exito & cmd.ExecuteNonQuery() > 0;
+            exito = cmd.ExecuteNonQuery() > 0;
             con.Close();
             return exito;
         }
@@ -94,7 +94,7 @@ namespace ComunidadDePracticaMVC.Services
             revision.Colaboradores = ObtenerMiembrosNucleo();
         
             foreach (var miembro in revision.Colaboradores) {
-               exito=exito && ColaboracionDeunMiembro(miembro.Correo, articuloId);
+               exito=exito && ColaboracionDeUnMiembro(miembro.Correo, articuloId);
             }
             return exito;
         }
@@ -138,6 +138,37 @@ namespace ComunidadDePracticaMVC.Services
 
 
             return articulolist;
+        }
+
+        //Actualiza la colaboracion de la revision a aceptada
+        public bool AceptarColaboracion(int articuloId, string correoNucleo) {
+            bool exito = true;
+            string operacion = "UPDATE Revisa SET Revisa.estadoRevision = 'Acepta colaborar' WHERE Revisa.correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
+            Connection();
+            SqlCommand cmd = new SqlCommand(operacion, con);
+            cmd.Parameters.AddWithValue("@correo", correoNucleo);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+
+            con.Open();
+            exito = cmd.ExecuteNonQuery() > 0;
+            con.Close();
+            return exito;
+        }
+
+        //Actualiza la colaboracion de la revision a rechazada
+        public bool RechazarColaboracion(int articuloId, string correoNucleo) {
+
+            bool exito = true;
+            string operacion = "UPDATE Revisa SET Revisa.estadoRevision = 'Rechaza colaborar' WHERE Revisa.correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
+            Connection();
+            SqlCommand cmd = new SqlCommand(operacion, con);
+            cmd.Parameters.AddWithValue("@correo", correoNucleo);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+
+            con.Open();
+            exito = cmd.ExecuteNonQuery() > 0;
+            con.Close();
+            return exito;
         }
     }
 }
