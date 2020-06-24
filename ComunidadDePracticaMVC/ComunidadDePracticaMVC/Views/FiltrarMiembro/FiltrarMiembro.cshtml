@@ -1,0 +1,30 @@
+﻿@model ComunidadDePracticaMVC.Models.FiltrarMiembroModel
+
+<style>
+    .form-control {
+        margin: 12px 14px;
+        width: 180px;
+        display: inline-table;
+    }
+
+    button{
+        margin-left: 697px; 
+        margin-top: 40px; 
+        height: 47px; 
+
+    }
+</style>
+
+<h1>Filtrar miembro por: </h1>
+<div>
+    @Html.DropDownListFor(m => m.paisSeleccionado, Model.Paises, "Seleccionar país", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.habilidadSeleccionado, Model.Habilidades, "Seleccionar habilidad", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.idiomaSeleccionado, Model.Idiomas, "Seleccionar idioma", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.hobbieSeleccionado, Model.Hobbies, "Seleccionar hobbie", new { @class = "form-control" })
+
+   <button class="btn btn-primary" type="submit" onclick="">
+       Realizar consulta
+   </button>    
+</div>
+
+

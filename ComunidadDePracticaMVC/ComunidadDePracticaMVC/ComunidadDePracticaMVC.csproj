@@ -127,6 +127,7 @@
     <Compile Include="Controllers\ExampleController.cs" />
     <Compile Include="Controllers\ArticuloController.cs" />
     <Compile Include="Controllers\faqController.cs" />
+    <Compile Include="Controllers\FiltrarMiembroController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
@@ -136,6 +137,7 @@
     <Compile Include="Models\ArticuloModel.cs" />
     <Compile Include="Models\CorreoModel.cs" />
     <Compile Include="Models\faqModel.cs" />
+    <Compile Include="Models\FiltrarMiembroModel.cs" />
     <Compile Include="Models\StudentDBHandle.cs" />
     <Compile Include="Models\StudentExample.cs" />
     <Compile Include="Models\AccountDBHandle.cs" />
@@ -363,6 +365,7 @@
     <Content Include="Views\Usuario\UsuariosComunidad.cshtml" />
     <Content Include="Views\Usuario\VerMeritosUsuario.cshtml" />
     <Content Include="Views\Usuario\DegradarUsuario.cshtml" />
+    <Content Include="Views\FiltrarMiembro\FiltrarMiembro.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
