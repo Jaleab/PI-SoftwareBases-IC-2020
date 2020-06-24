@@ -150,6 +150,12 @@ namespace ComunidadDePracticaMVC.Services
                 return exito;
             }
             int articuloIdGuardado = ObtenerIdArticuloPorTitulo(articulo.Titulo);
+
+            //string correosConcatenados;
+            //foreach(var i in articulo.Correos)
+            //{
+            //    correosConcatenados += i;
+            //}
             exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, articulo.Correo);
             con.Close();
             return exito;

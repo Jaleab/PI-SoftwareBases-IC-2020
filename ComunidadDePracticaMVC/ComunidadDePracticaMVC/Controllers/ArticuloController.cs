@@ -69,7 +69,7 @@ namespace PassParameter.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ArticuloModel model)
+        public ActionResult Create(ArticuloModel model, FormCollection frmcollection)
         {
             if (model.Titulo == null || model.Topico == null || model.Correo == null || model.Resumen == null || model.Contenido == null)
             {

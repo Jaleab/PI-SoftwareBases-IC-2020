@@ -66,7 +66,7 @@ namespace ComunidadDePracticaMVC.Controllers
             ArticuloService servicioArticulo = new ArticuloService();
             ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
             ViewBag.listaTopicos = servicioArticulo.ObtenerTopicos();
-            return View(servicioArticulo.GetInfoArticuloLargo(id));
+            return View(servicioArticulo.GetInfoArticulo(id));
         }
 
         [HttpPost]
