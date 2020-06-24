@@ -15,7 +15,21 @@
 
                 <h2> Solicite a los miembros de núcleo colaboración </h2>
 
+                if (ViewBag.Message != null && ViewBag.Message == "Se ha enviado la solicitud")
+                {
+                    <div class="alert-success">
+                        @ViewBag.Message
+                    </div>
+                }
+                else if (ViewBag.Message == "Falló la operación, intente más tarde")
+                {
+                    <div class="alert-danger">
+                        @ViewBag.Message
+                    </div>
+                }
+
                 <hr />
+
 
                 foreach (var articulo in ViewBag.revisiones.ArticulosEnRevision)
                 {
@@ -41,7 +55,7 @@
                         <div class="col-md-2 mr-2">
                             <div class="row">
                                 <div class="row main-font article-h2"></div>
-                                <a class="btn box-btn" href="/Home/Index"> Pedir colaboración</a>
+                                <a class="btn box-btn" href="/Revisiones/SolicitarColaboracion?articuloId=@articulo.ArticuloId"> Pedir colaboración</a>
                             </div>
                         </div>
 

@@ -18,10 +18,11 @@ namespace ComunidadDePracticaMVC.Services
             con = new SqlConnection(constring);
         }
 
+        //Obtener todos los articulos que han sido enviados a revision
         public RevisionesModel ObtenerArticulosEnRevision() {
             Connection();
             string consulta =
-                "SELECT articuloId, titulo, fechaPublicacion FROM Articulo WHERE estado='Revision' ORDER BY fechaPublicacion "
+                "SELECT A.articuloId, A.titulo, A.fechaPublicacion FROM Articulo A WHERE A.estado='Revision' AND NOT EXISTS (SELECT * FROM Revisa R WHERE R.articuloIdFK=A.articuloID ) ORDER BY fechaPublicacion "
                 ;
             SqlCommand cmd = new SqlCommand(consulta, con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
@@ -46,6 +47,56 @@ namespace ComunidadDePracticaMVC.Services
             }
 
             return revisiones;
+        }
+
+        public List<UsuarioModel> ObtenerMiembrosNucleo() {
+            List<UsuarioModel> listaUsuarios = new List<UsuarioModel>();
+            Connection();
+            string consulta = "SELECT correoUsuarioFK FROM Miembro WHERE categoriaMiembro='Núcleo'";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                listaUsuarios.Add(
+                    new UsuarioModel
+                    {
+                        //aqui pueden ir mas atributos en caso de ser necesario
+                        Correo = Convert.ToString(dr["correoUsuarioFK"])
+                    });
+            }
+            return listaUsuarios;
+        }
+
+        public bool ColaboracionDeunMiembro(string correo,int articuloId) {
+            bool exito = true;
+            string operacion = "INSERT INTO Revisa (correoMiembroFK,articuloIdFK,estadoRevision,calificacion) VALUES(@correo,@articuloId,'Colaboracion',0)";
+            Connection();
+            SqlCommand cmd = new SqlCommand(operacion, con);
+
+            cmd.Parameters.AddWithValue("@correo", correo);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+
+            con.Open();
+            exito = exito & cmd.ExecuteNonQuery() > 0;
+            con.Close();
+            return exito;
+        }
+
+        public bool PedirColaboracionATodos(int articuloId) {
+            bool exito = true;
+            RevisionesModel revision = new RevisionesModel();
+            revision.Colaboradores = ObtenerMiembrosNucleo();
+        
+            foreach (var miembro in revision.Colaboradores) {
+               exito=exito && ColaboracionDeunMiembro(miembro.Correo, articuloId);
+            }
+            return exito;
         }
 
         //obtiene los articulos que fueron solicitados por el coordinador para un miembro del nucleo
