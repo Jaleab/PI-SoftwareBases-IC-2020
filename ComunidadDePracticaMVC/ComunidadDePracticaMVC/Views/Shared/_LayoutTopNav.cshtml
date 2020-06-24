@@ -1,13 +1,19 @@
 ﻿
 @if (User.Identity.IsAuthenticated)
 {
+    // Retrieves the cookie that contains your custom FormsAuthenticationTicket.
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+    // Decrypts the FormsAuthenticationTicket that is held in the cookie's .Value property.
+    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+    string nombreUsuario = (Json.Decode(authTicket.UserData))["Nombre"];
     var correo = User.Identity.Name;
 
     <script type="text/javascript">
 
         $(document).ready(function () {
+
             var email = '@User.Identity.Name';
-            var initials ="DF";
+            var initials ="*";
             if (email.length > 1) {
                 initials = (email.substring(0, 2)).toUpperCase();
             }
@@ -26,15 +32,16 @@
         -->
         <li><a class="fa fa-envelope" title="Redactar correo" href="@Url.Action("Index", "Correo")"></a></li>
         <li><a class="vertical-divider"></a></li>
-        <li><a href="@Url.Action("DesplegarUsuario", "Usuario", new { correo = User.Identity.Name })" id="name" title="Tu perfil">@User.Identity.Name</a></li>
+        <li><a href="@Url.Action("DesplegarUsuario", "Usuario", new { correo = User.Identity.Name })" id="name" title="Tu perfil">@nombreUsuario</a></li>
         <li class="dropdown" >
             <div class="dropdown-toggle" data-toggle="dropdown" style="display: flex; justify-content: flex-end">
                 <a href="#" id="avatar" class="avatar"></a><a href="#" class="fa fa-caret-down" style="margin-left: -6px; margin-top: 2px;"></a>
             </div>
             <ul class="dropdown-menu">
-    
-                <li>@Html.ActionLink("Cerrar sesión", "LogOut", "Account", routeValues: null, htmlAttributes: new { title = "Cerrar sesión" })</li>
+
                 <li>@Html.ActionLink("Perfil", "DesplegarUsuario", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Mi perfil" })</li>
+                <li>@Html.ActionLink("Cerrar sesión", "LogOut", "Account", routeValues: null, htmlAttributes: new { title = "Cerrar sesión" })</li>
+                
             </ul>
         </li>
         

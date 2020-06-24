@@ -38,7 +38,7 @@
                         success: function (data) {
 
                             alert("Se modifico el perfil.");
-                            window.location.replace("@Url.Action("DesplegarUsuario", "Usuario", new { correo = "@User.Identity.Name" })");
+                            window.location.replace("@Url.Action("DesplegarUsuario", "Usuario", new { correo = @User.Identity.Name })");
                         },
                         failure: function (response) {
                             alert("Hubo un error al modificar el perfil");

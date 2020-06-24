@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
+using Newtonsoft.Json;
 
 namespace ComunidadDePracticaMVC.Models
 {
@@ -77,6 +78,24 @@ namespace ComunidadDePracticaMVC.Models
             // ToString("x2")  converts byte in hexadecimal value
             string encryptedVal = string.Concat(hash.Select(b => b.ToString("x2"))).ToUpperInvariant();
             return encryptedVal;
+        }
+    }
+
+    public class AuthorizeClass {
+        public static bool AuthorizeRole(HttpCookie authCookie, string rolesString) {
+            FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+            CookieModel cookieInfo = JsonConvert.DeserializeObject<CookieModel>(authTicket.UserData);
+            bool isInRole = false;
+
+            string[] roles = rolesString.Split(',');
+            foreach (string role in roles)
+            {
+                if (cookieInfo.Categoria.Equals(role)) { 
+                    isInRole = true;
+                }
+            }
+
+            return isInRole;
         }
     }
 }

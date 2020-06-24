@@ -9,8 +9,6 @@ namespace ComunidadDePracticaMVC.Models
 {
     public class CorreoModel
     {
-
-
         [EmailAddress]
         [Display(Name = "Para")]
         [Required(ErrorMessage = "El destinatario es requerido.")]

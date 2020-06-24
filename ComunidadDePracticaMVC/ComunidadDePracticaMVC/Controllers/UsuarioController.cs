@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace ComunidadDePracticaMVC.Controllers
 {
@@ -75,13 +76,22 @@ namespace ComunidadDePracticaMVC.Controllers
             return "JOSTYN";
         }
 
+        [Authorize]
         public ActionResult UsuariosComunidad(string mensaje)
         {
-            UsuarioService usuario = new UsuarioService();
-            if (mensaje != "") {
-                ViewBag.mensaje = mensaje;
+            if (AuthorizeClass.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Coordinador"))
+            {
+                UsuarioService usuario = new UsuarioService();
+                if (mensaje != "")
+                {
+                    ViewBag.mensaje = mensaje;
+                }
+                return View(usuario.GetNombreUsuarios());
             }
-            return View(usuario.GetNombreUsuarios());
+            else {
+                return new RedirectResult("~/Account/AccessDenied");
+            }
+            
         }
 
         public ActionResult VerMeritosUsuario(string hilera)

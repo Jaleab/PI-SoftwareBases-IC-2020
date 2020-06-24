@@ -77,10 +77,12 @@
 }
 
 .sidebar-title {
-    font-size: 1.875em;
-    font-weight: 200;   
-    margin-bottom: 10px;
-    margin-top: 20px;
+    font-size: 1.3em;
+    font-weight: 200;
+    margin-bottom: 0px;
+    margin-top: 15px;
+    color: #999999;
+    padding: 1rem;
 }
 
 .sidebar-item {

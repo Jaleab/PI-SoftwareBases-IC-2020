@@ -248,6 +248,18 @@ namespace ComunidadDePracticaMVC.Services
             return datos;
         }
 
+        public CookieModel GetCookieInfo (string correo)
+        {
+            CookieModel datosUsuario = new CookieModel();
+            string[] datos = GetDatosMiembro(correo);
+            datosUsuario.Categoria = datos[0];
+            datosUsuario.Merito = datos[1];
+            datosUsuario.Peso = datos[2];
+            datosUsuario.Nombre = datos[3];
+
+            return datosUsuario;
+        }
+
         public void DegradarPeso(string hilera, string categoria, int merito, int peso)
         {
             Connection();

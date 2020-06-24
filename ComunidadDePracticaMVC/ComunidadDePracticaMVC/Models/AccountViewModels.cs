@@ -123,4 +123,12 @@ namespace ComunidadDePracticaMVC.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+    public class CookieModel {
+        public string Categoria { get; set; }
+        public string Merito { get; set; }
+        public string Peso { get; set; }
+        public string Nombre { get; set; }
+
+    }
 }
