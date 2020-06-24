@@ -1,0 +1,31 @@
+﻿
+<html>
+
+    <head>
+        <title> Solicitar colaboradores para revisión </title>
+    </head>
+
+    <body>
+
+        <h1>Solicitar colaboradores para revisión</h1>
+
+        <hr />
+        <div>
+            @if (ViewBag.categoria == "Coordinador")
+            {
+
+                <h2> Los siguientes artículos requieren revisión </h2>
+                <h3> Solicite a los miembros de núcleo colaboración </h3>
+                <a class="btn box-btn" href="/Home/Index"> Volver a página principal</a>
+
+            }
+            else
+            {
+
+                <h2>Lo sentimos, usted no puede interacturar en esta sección</h2>
+                <a class="btn box-btn" href="/Home/Index"> Volver a página principal</a>
+            }
+        </div>
+        </body>
+</html>
+

@@ -273,13 +273,7 @@ namespace PassParameter.Controllers
                     message  = "No se pudo enviar a revisar."
                 }, JsonRequestBehavior.AllowGet);
             }
-
-
             return result;
-        }
-
-        public ActionResult ArticulosRequierenRevision() {
-            return View();
         }
 
     }
