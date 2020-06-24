@@ -215,11 +215,11 @@ namespace ComunidadDePracticaMVC.Services
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
                         Autor = Convert.ToString(dr["autor"]),
                         Titulo = Convert.ToString(dr["titulo"]),
-                        Resumen = Convert.ToString(dr["resumen"]),
                         Topico = Convert.ToString(dr["topico"]),
-                        Contenido = Convert.ToString(dr["contenido"]),
                         NotaRevision = Convert.ToInt32(dr["notaRevision"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
+                        Likes = Convert.ToInt32(dr["cantidadLikes"]),
+                        Dislikes = Convert.ToInt32(dr["cantidadNoMeGusta"]),
                         Estado = Convert.ToString(dr["estado"])
                     });
             }
@@ -261,9 +261,7 @@ namespace ComunidadDePracticaMVC.Services
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
                         Autor = Convert.ToString(dr["autor"]),
                         Titulo = Convert.ToString(dr["titulo"]),
-                        Resumen = Convert.ToString(dr["resumen"]),
                         Topico = Convert.ToString(dr["topico"]),
-                        Contenido = Convert.ToString(dr["contenido"]),
                         NotaRevision= Convert.ToInt32(dr["notaRevision"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
                         Likes= Convert.ToInt32(dr["cantidadLikes"]),

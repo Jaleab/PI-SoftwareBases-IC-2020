@@ -1,6 +1,5 @@
-﻿
-@{
-    ViewBag.Title = "MisArticulos";
+﻿@{
+    ViewBag.Title = "MisArticulosRevision";
 }
 
 <html>
@@ -28,10 +27,11 @@
 
         });
 
+
         function loadArticlesData(currentPageNumber) {
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("ArticulosAutor", "Articulo")',
+                url: '@Url.Action("ArticulosAutorColaboracion", "Revisiones")',
                 data: {},
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -45,18 +45,18 @@
                     $.each(response, function (index, articulo) {
                         var idS = new String(articulo.ArticuloId);
                         //url para ver
-                        var lookUrl = '@Url.Action("ConsultarArticulos", "Articulo",new { id= "VAL"},null)';
-                        lookUrl = lookUrl.replace("VAL", idS);
+                        var aceptarUrl = '@Url.Action("ConsultarArticulos", "Articulo",new { id= "VAL"},null)';
+                        aceptarUrl = aceptarUrl.replace("VAL", idS);
                         //url para editar
-                        var editUrl = '@Url.Action("EditarArticuloCorto", "Articulo",new { id= "VAL"},null)';
-                        editUrl = editUrl.replace("VAL", idS);
+                        var rechazarUrl = '@Url.Action("EditarArticuloCorto", "Articulo",new { id= "VAL"},null)';
+                        rechazarUrl = rechazarUrl.replace("VAL", idS);
                         //url para borrar
                         @*var deleteUrl = '@Url.Action("BorrarArticulo", "Articulo",new { id= "VAL"},null)';
                         deleteUrl = deleteUrl.replace("VAL", idS);*@
 
                         var articleInstance = document.importNode(artTemp, true);
 
-                        var title, author, info, lookLink, editLink;
+                        var title, author, info, aceptarLink, rechazarLink;
 
                         //get the DIV element from the template Instance:
                         like = articleInstance.querySelector(".likes_template");
@@ -65,8 +65,8 @@
                         title = articleInstance.querySelector(".title_template");
                         author = articleInstance.querySelector(".author_template");
                         //info = articleInstance.querySelector("#info");
-                        lookLink = articleInstance.querySelector(".look-template");
-                        editLink = articleInstance.querySelector(".edit-template");
+                        aceptarLink = articleInstance.querySelector(".aceptar-template");
+                        rechazarLink = articleInstance.querySelector(".rechazar-template");
                         //deleteLink = articleInstance.querySelector(".delete-template");
 
                         title.textContent = articulo.Titulo;
@@ -76,31 +76,13 @@
                         author.textContent = articulo.Autor;
                         //info.textContent = articulo.Autor;
 
-                        lookLink.href = lookUrl;
-                        editLink.href = editUrl;
-                        //Boton para revisar
-                        var revision = articleInstance.querySelector(".revision-template");
-                        revision.id = articulo.ArticuloId;
-                        if (articulo.Estado == "Revision") {
-
-                            revision.setAttribute("disabled", "disabled");
-                            revision.textContent = "Revision";
-                        }
-                        else {
-                            revision.textContent = "A Revisar";
-                            revision.title= "Enviar artículo a revisar.";
-
-                        }
+                        aceptarLink.href = aceptarUrl;
+                        rechazarLink.href = rechazarUrl;
 
                         //deleteLink.href = deleteUrl;
 
                         articleList.append(articleInstance);
-                        /*
-                        actionLink = actionLink.replace("VAL", idS);
-                        tblExample.append('<tr> <td>' + articulo.ArticuloId + '</td> <td>'
-                            + articulo.Autor + '</td><td>' + articulo.Titulo + '</td><td>'
-                            + '<span>' + actionLink + '</span>' + '</td></tr>');
-                        */
+
                     });
                 },
                 error: function (err) {
@@ -113,29 +95,6 @@
             });
         }
 
-        function enviarRevision(selector) {
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("EnviarRevision", "Articulo")',
-                data: {},
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: { id: selector.id },
-                success: function (response) {
-                    alert(response.message);
-                    location.reload();
-                },
-                failure:  function(err) {
-                    alert("Fallo al enviar revisión");
-
-                }
-
-
-
-            });
-
-        }
-
     </script>
 
 </head>
@@ -144,7 +103,7 @@
 
     <div class="col-xl-12 col-md-12 mb-12">
         <div class="row page-title main-font ">
-            <h2>Articulos de @ViewBag.correo</h2>
+            <h2>Articulos de Revisión @ViewBag.correo</h2>
             <hr />
         </div>
         @*<div class="row main-font search-bar">
@@ -187,13 +146,10 @@
 
         <div class="col-md-2 mr-2">
             <div class="row">
-                <a class="look-template row btn box-btn" style="margin-left:15px; margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""> <i class="fa fa-eye"></i> ver  </a>
+                <a class="aceptar-template row btn btn-success" style="margin-left:15px; margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""> <i class="fa fa-check"></i></a>
             </div>
             <div class="row">
-                <a class="edit-template row btn box-btn" style="margin-left:15px ;margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""><i class="fa fa-edit"></i> editar</a>
-            </div>
-            <div class="row">
-                <a class="revision-template row btn box-btn" style="margin-left:15px; width: 100%; padding-left: -15px;" href="" onclick="enviarRevision (this)">asd</a>
+                <a class="rechazar-template row btn btn-danger" style="margin-left:15px ;margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""><i class="fa fa-remove"></i></a>
             </div>
 
         </div>

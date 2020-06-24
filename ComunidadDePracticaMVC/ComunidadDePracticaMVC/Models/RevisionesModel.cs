@@ -13,4 +13,5 @@ namespace ComunidadDePracticaMVC.Models
         public int cantidadRevisores { get; set; }
         
     }
+
 }

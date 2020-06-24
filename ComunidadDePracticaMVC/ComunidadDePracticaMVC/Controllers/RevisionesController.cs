@@ -31,6 +31,14 @@ namespace ComunidadDePracticaMVC.Controllers
             ViewBag.correo = correo;
             return View();
         }
+
+
+        public JsonResult ArticulosAutorColaboracion(int pageNumber, int pageSize, string correo)
+        {
+            RevisionesService serviceRev = new RevisionesService();
+            List<ArticuloModel> articuloList = serviceRev.GetSolicitudesDeColaboracion(pageNumber, pageSize, correo);
+            return Json(articuloList, JsonRequestBehavior.AllowGet);
+        }
     }
 
 
