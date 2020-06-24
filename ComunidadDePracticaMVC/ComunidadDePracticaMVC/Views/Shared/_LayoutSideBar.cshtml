@@ -1,7 +1,14 @@
 ﻿
 @if (User.Identity.IsAuthenticated)
 {
-    <li class="sidebar-title"> @Html.ActionLink("Mi perfil", "DesplegarUsuario", "Usuario", new { correo = User.Identity.Name }, null) </li>
+    // Retrieves the cookie that contains your custom FormsAuthenticationTicket.
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+    // Decrypts the FormsAuthenticationTicket that is held in the cookie's .Value property.
+    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+    string nombreUsuario = (Json.Decode(authTicket.UserData))["Nombre"];
+
+    <p class="sidebar-title">@nombreUsuario</p>
+    <li> @Html.ActionLink("Mi perfil", "DesplegarUsuario", "Usuario", new { correo = User.Identity.Name }, null) </li>
     <!--<li> <a href="#"> Crear Articulo </a> </li>-->
     <li>@Html.ActionLink("Mis Articulos", "MisArticulos", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Mi perfil" })</li>
     <!--<li class="sidebar-divider"></li>-->
