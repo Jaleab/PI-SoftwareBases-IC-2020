@@ -27,7 +27,7 @@ namespace ComunidadDePracticaMVC.Controllers
         public ActionResult Guardar(ArticuloLargoViewModel model)
         {
 
-            if (model.Titulo == null || model.Topico == null || model.Correo == null || model.Resumen == null || model.Archivo1 == null)
+            if (model.Titulo == null || model.Topico == null || model.Correos == null || model.Resumen == null || model.Archivo1 == null)
             {
                 ArticuloService servicioArticulo = new ArticuloService();
                 ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();

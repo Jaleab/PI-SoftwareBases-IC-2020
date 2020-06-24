@@ -65,9 +65,9 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(d => d.Autor)
-                @Html.DropDownListFor(model => model.Correo, listaNombreCorreo, "Escoger autor", new { @class = "form-control" })
-                @Html.ValidationMessageFor(d => d.Correo, "", new { @class = "text-danger" })
+                @Html.LabelFor(model => model.Autor)
+                @Html.ListBoxFor(m => m.Correos, new MultiSelectList(listaNombreCorreo, "Value", "Text"), new { @class = "chosen-select form-control", multiple = "multiple", width = "100%" })
+                @Html.ValidationMessageFor(model => model.Correos, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
@@ -93,3 +93,28 @@
         </div>
     </div>
 } 
+    <script type="text/javascript">
+        window.onmousedown = function (e) {
+            var el = e.target;
+            if (el.tagName.toLowerCase() == 'option' && el.parentNode.hasAttribute('multiple')) {
+                e.preventDefault();
+
+                var display = document.getElementById('Correos');
+
+                // toggle selection
+                if (el.hasAttribute('selected')) {
+                    el.removeAttribute('selected');
+                    var str = display.innerHTML;
+                    str = str.replace(new RegExp(el.value + ",?"), '');
+                    display.innerHTML = str;
+                }
+                else { el.setAttribute('selected', ''); display.innerHTML += el.value + ', '; }
+
+                // hack to correct buggy behavior
+                var select = el.parentNode.cloneNode(true);
+                el.parentNode.parentNode.replaceChild(select, el.parentNode);
+
+
+            }
+        }
+    </script>

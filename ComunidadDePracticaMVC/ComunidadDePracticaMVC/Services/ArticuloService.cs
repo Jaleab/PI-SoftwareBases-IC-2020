@@ -151,12 +151,19 @@ namespace ComunidadDePracticaMVC.Services
             }
             int articuloIdGuardado = ObtenerIdArticuloPorTitulo(articulo.Titulo);
 
-            //string correosConcatenados;
-            //foreach(var i in articulo.Correos)
-            //{
-            //    correosConcatenados += i;
-            //}
-            exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, articulo.Correo);
+            string correosConcatenados = "";
+            int contador = 0;
+            foreach(var correo in articulo.Correos)
+            {
+                if (contador != articulo.Correos.Count-1){
+                    correosConcatenados += correo + ',';
+                }
+                else {
+                    correosConcatenados += correo;
+                }
+                contador += 1;
+            }
+            exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, correosConcatenados);
             con.Close();
             return exito;
         }
@@ -465,7 +472,22 @@ namespace ComunidadDePracticaMVC.Services
                 return exito;
             }
             int articuloIdGuardado = ObtenerIdArticuloPorTitulo(articulo.Titulo);
-            exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, articulo.Correo);
+
+            string correosConcatenados = "";
+            int contador = 0;
+            foreach (var correo in articulo.Correos)
+            {
+                if (contador != articulo.Correos.Count - 1)
+                {
+                    correosConcatenados += correo + ',';
+                }
+                else
+                {
+                    correosConcatenados += correo;
+                }
+                contador += 1;
+            }
+            exito = exito && AgregarArticuloAPublicacion(articuloIdGuardado, correosConcatenados);
             return exito;
         }
 
@@ -581,17 +603,21 @@ namespace ComunidadDePracticaMVC.Services
             return articuloId;
         }
 
-        private bool AgregarArticuloAPublicacion(int articuloId, string correoAutor) {
+        private bool AgregarArticuloAPublicacion(int articuloId, string correos) {
             bool agregado = false;
             connection();
-            string consulta = "INSERT INTO Publica VALUES(@correoAutor, @articuloId)";
-            SqlCommand cmd = new SqlCommand(consulta, con);
-            cmd.Parameters.AddWithValue("@articuloId", articuloId);
-            cmd.Parameters.AddWithValue("@correoAutor", correoAutor);
+            string[] hileraCorreos = correos.Split(',');
+            foreach (var correo in hileraCorreos)
+            {
+                string consulta = "INSERT INTO Publica VALUES(@correoAutor, @articuloId)";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                cmd.Parameters.AddWithValue("@articuloId", articuloId);
+                cmd.Parameters.AddWithValue("@correoAutor", correo);
 
-            con.Open();
-            agregado=cmd.ExecuteNonQuery() >= 1;
-            con.Close();
+                con.Open();
+                agregado = cmd.ExecuteNonQuery() >= 1;
+                con.Close();
+            }
 
             return agregado;
         }

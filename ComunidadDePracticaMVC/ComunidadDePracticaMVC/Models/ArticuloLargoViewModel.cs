@@ -30,6 +30,9 @@ namespace ComunidadDePracticaMVC.ViewModels
         [DisplayName("Correo")]
         public string Correo { get; set; }
 
+        [Required(ErrorMessage = "Un correo es requerido.")]
+        public List<string> Correos { get; set; }
+
         [Required]
         [AllowHtml]
         [DisplayName("Resumen")]

@@ -14,10 +14,10 @@ namespace ComunidadDePracticaMVC.Models
         [Required(ErrorMessage = "Un autor es requerido.")]
         public string Autor { get; set; }
 
-        [Required(ErrorMessage = "Un autor es requerido.")]
+        [Required(ErrorMessage = "Un correo es requerido.")]
         public List<string> Correos { get; set; }
 
-    [Required(ErrorMessage = "Ingrese el contenido del articulo.")]
+        [Required(ErrorMessage = "Ingrese el contenido del articulo.")]
         [AllowHtml]
         public string Contenido { get; set; }
 

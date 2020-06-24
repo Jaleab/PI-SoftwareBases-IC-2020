@@ -69,9 +69,9 @@ namespace PassParameter.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ArticuloModel model, FormCollection frmcollection)
+        public ActionResult Create(ArticuloModel model)
         {
-            if (model.Titulo == null || model.Topico == null || model.Correo == null || model.Resumen == null || model.Contenido == null)
+            if (model.Titulo == null || model.Topico == null || model.Correos == null || model.Resumen == null || model.Contenido == null)
             {
                 ArticuloService servicioArt = new ArticuloService();
                 ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
