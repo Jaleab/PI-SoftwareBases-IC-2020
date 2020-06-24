@@ -25,5 +25,13 @@ namespace ComunidadDePracticaMVC.Controllers
             }
             return View();
         }
+
+        [Authorize]
+        public ActionResult MisArticulosRevision(String correo) {
+            ViewBag.correo = correo;
+            return View();
+        }
     }
+
+
 }
