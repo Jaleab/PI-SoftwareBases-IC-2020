@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using ComunidadDePracticaMVC.Models;
+using ComunidadDePracticaMVC.Services;
 
 namespace ComunidadDePracticaMVC.Controllers
 {
@@ -13,10 +14,11 @@ namespace ComunidadDePracticaMVC.Controllers
         // GET: FiltrarMiembro
         public ActionResult FiltrarMiembro(FiltrarMiembroModel filtro)
         {
-            filtro.Paises = new SelectList("Costa Rica", "Panama");
-            filtro.Idiomas = new SelectList("Costa Rica", "Panama");
-            filtro.Habilidades = new SelectList("Costa Rica", "Panama");
-            filtro.Hobbies = new SelectList("Costa Rica", "Panama");
+            FiltrarMiembroService filtrarServicio = new FiltrarMiembroService();
+            ViewBag.listaPaises = filtrarServicio.getPaises(); 
+            ViewBag.listaIdiomas = filtrarServicio.getIdiomas();
+            ViewBag.listaHabilidades = filtrarServicio.getHabilidades();
+            ViewBag.listaHobbies = filtrarServicio.getHobbies();
             return View(filtro);
         }
     }
