@@ -151,7 +151,7 @@ namespace ComunidadDePracticaMVC.Controllers
         }
 
         [Authorize]
-        public ActionResult CalificarArticulo(int id)
+        public ActionResult CalificarArticulo(int articuloId)
         {
 
             if (true /*TODO revisar si el aritculo le corresponde al calificador*/)
@@ -160,13 +160,13 @@ namespace ComunidadDePracticaMVC.Controllers
                 ViewBag.Reaccion = 2;
                 ArticuloService servicioArticulo = new ArticuloService();
                 UsuarioService servicioUsuarios = new UsuarioService();
-                servicioArticulo.AumentarVisitas(id);
+                servicioArticulo.AumentarVisitas(articuloId);
                 ModelState.Clear();
-                var articuloModel = servicioArticulo.GetInfoArticulo(id);
+                var articuloModel = servicioArticulo.GetInfoArticulo(articuloId);
                 if (User.Identity.IsAuthenticated)
                 {
                     string correo = User.Identity.Name.ToString();
-                    ViewBag.Reaccion = servicioUsuarios.ReaccionDeUsuario(correo, id);
+                    ViewBag.Reaccion = servicioUsuarios.ReaccionDeUsuario(correo, articuloId);
                 }
                 return View(articuloModel);
 

@@ -16,97 +16,117 @@
 
 
 <html>
-<body onload="botonesHabilitados(@ViewBag.Reaccion, event)">
+<head>
+    <script type="text/javascript">
 
+        function mostrarContenido() {
+            var contenido = document.getElementById("contenido");
+            var formulario = document.getElementById("formulario");
+            contenido.style.display = "block";
+            formulario.style.display = "none";
+        }
+
+        function mostrarFormulario() {
+            var contenido = document.getElementById("contenido");
+            var formulario = document.getElementById("formulario");
+            formulario.style.display = "block";
+            contenido.style.display = "none";
+        }
+
+
+    </script>
+
+</head>
+
+
+<body>
     <div>
         <h2>@ViewBag.Title </h2>
-    </div>
-
-
-    @if (tipoArchivo != "corto")
-    {
         <h4>Usted está visitando un artículo largo</h4>
-
         <hr />
-        <h3> <strong>Título:</strong> </h3>
+        <div class="row">
+            <nav>
+                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarFormulario()"> <i class="fa fa-paint-brush"></i> Calificar</button>
+                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarContenido()"> <i class="fa fa-book"></i> Contenido </button>
+            </nav>
 
-        <h4>@titulo</h4>
-
-        <h3> <strong>Autor:</strong> </h3>
-
-        <h4>@autor</h4>
-
-        <h3> <strong>Tópicos: </strong> </h3>
-        <h4> @topico</h4>
-
-        <hr />
-
-        <h3> <strong> Resumen del articulo </strong> </h3>
+        </div>
         <br />
-        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-            @Html.Raw(HttpUtility.HtmlDecode(resumen))
-        </div>
-
-        <hr />
-
-
-        <a class="btn box-btn" href="/Articulo/AccederArticuloLargo?idArt=@articuloId" target="_blank"> Ver archivo</a>
-    }
-    else
-    {
-        <h4>Usted está visitando un artículo corto</h4>
-
-        <hr />
-
-        <h3> <strong>Título:</strong> </h3>
-
-        <h4>@titulo</h4>
-
-        <h3> <strong>Autor:</strong> </h3>
-
-        <h4>@autor</h4>
-
-        <h3> <strong>Tópicos: </strong> </h3>
-        <h4> @topico</h4>
-
-        <hr />
-
-        <h3> <strong> Resumen del articulo: </strong> </h3>
-        <br />
-        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-            @Html.Raw(HttpUtility.HtmlDecode(resumen))
-        </div>
-        <hr />
-
-        <h3> <strong> Contenido: </strong></h3>
-        <br />
-        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-            @Html.Raw(HttpUtility.HtmlDecode(contenido))
-        </div>
-    }
-
-    @if (User.Identity.IsAuthenticated)
-    {
-        string correo = "\"" + User.Identity.Name.ToString() + "\"";
-        <hr />
-        <div class="seccion_Votar">
-            <h4> Brinde su opinión respecto a este artículo</h4>
-            <br />
-            <button value="1" id="b0" class="btn box-btn" onclick="activarOtros(@idArtStr,1,@correo,@ViewBag.Reaccion)"><i class="fa fa-thumbs-up"></i> Me gusta </button>
-            <button value="0" id="b1" class="btn box-btn" onclick="activarOtros(@idArtStr,0,@correo,@ViewBag.Reaccion)"> Neutral </button>
-            <button value="-1" id="b2" class="btn box-btn" onclick="activarOtros(@idArtStr,-1,@correo,@ViewBag.Reaccion)"><i class="fa fa-thumbs-down"></i> No me gusta </button> <br />
-            <p id="ArtID" value="@articuloId"></p>
-        </div>
-    }
-
-    <hr />
-
-    <div>
-        <a class="btn box-btn" href="/Articulo/InicioArticulos"> Volver al listado de artículos</a>
     </div>
-    <br />
-    <br />
-    <br />
+
+    <div id="formulario" style="display:block">
+        asdasd
+    </div>
+    <div id="contenido" style="display:none">
+
+        @if (tipoArchivo != "corto")
+        {
+
+            <h3> <strong>Título:</strong> </h3>
+
+            <h4>@titulo</h4>
+
+            <h3> <strong>Autor:</strong> </h3>
+
+            <h4>@autor</h4>
+
+            <h3> <strong>Tópicos: </strong> </h3>
+            <h4> @topico</h4>
+
+            <hr />
+
+            <h3> <strong> Resumen del articulo </strong> </h3>
+            <br />
+            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+                @Html.Raw(HttpUtility.HtmlDecode(resumen))
+            </div>
+
+            <hr />
+
+
+            <a class="btn box-btn" href="/Articulo/AccederArticuloLargo?idArt=@articuloId" target="_blank"> Ver archivo</a>
+        }
+        else
+        {
+
+            <h3> <strong>Título:</strong> </h3>
+
+            <h4>@titulo</h4>
+
+            <h3> <strong>Autor:</strong> </h3>
+
+            <h4>@autor</h4>
+
+            <h3> <strong>Tópicos: </strong> </h3>
+            <h4> @topico</h4>
+
+            <hr />
+
+            <h3> <strong> Resumen del articulo: </strong> </h3>
+            <br />
+            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+                @Html.Raw(HttpUtility.HtmlDecode(resumen))
+            </div>
+            <hr />
+
+            <h3> <strong> Contenido: </strong></h3>
+            <br />
+            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+                @Html.Raw(HttpUtility.HtmlDecode(contenido))
+            </div>
+        }
+
+        <hr />
+
+        <div>
+            <a class="btn box-btn" href="/Articulo/InicioArticulos"> Volver al listado de artículos</a>
+        </div>
+        <br />
+        <br />
+        <br />
+    </div>
+
+
 
     <script src="~/Scripts/FuncionesBotones.js"></script>
 
