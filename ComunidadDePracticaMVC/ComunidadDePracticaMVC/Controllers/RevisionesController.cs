@@ -187,14 +187,11 @@ namespace ComunidadDePracticaMVC.Controllers
                 return RedirectToAction("~/AccessDenied");
             }
         }
-
-            
-        }
-
         //Envia la revision del articulo
         [HttpPost]
         [Authorize]
-        public ActionResult EnviarRevision(int articuloId, FormularioModel model) {
+        public ActionResult EnviarRevision(int articuloId, FormularioModel model)
+        {
 
             HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
             if (authCookie != null)
@@ -215,10 +212,15 @@ namespace ComunidadDePracticaMVC.Controllers
                 }
                 return RedirectToAction("MisArticulosRevision");
             }
-            else {
+            else
+            {
                 return RedirectToAction("~/AccessDenied");
 
             }
+
+        }
+
+        
         public ActionResult ArticulosRequierenRevisores()
         {
             if (TempData["Message"] != null)
