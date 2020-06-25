@@ -101,9 +101,7 @@ namespace ComunidadDePracticaMVC.Controllers
 
         [Authorize]
         public ActionResult AceptarColaboracion(int articuloId)
-        {
-
-        
+        {        
             if (AuthorizeClass.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Núcleo,Coordinador"))
             {
                 RevisionesService servicioRevisiones = new RevisionesService();
@@ -148,6 +146,45 @@ namespace ComunidadDePracticaMVC.Controllers
             {
                 return new RedirectResult("~/AccessDenied");
             }
+        }
+
+        public ActionResult ArticulosRequierenRevisores()
+        {
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
+            ViewBag.categoria = "";
+            ViewBag.revisiones = new RevisionesModel();
+            RevisionesService servicioRevisiones = new RevisionesService();
+            if (User.Identity.IsAuthenticated)
+            {
+                string correo = User.Identity.Name.ToString();
+                UsuarioService servicioUsuarios = new UsuarioService();
+                var datos = servicioUsuarios.GetDatosMiembro(correo);
+                ViewBag.categoria = datos[0];
+                ViewBag.revisiones = servicioRevisiones.ObtenerArticulosRequierenRevisores();
+            }
+            return View();
+        }
+
+        public ActionResult DecidirRevisores(int articuloId)
+        {
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
+            ViewBag.categoria = "";
+            ViewBag.revisiones = new RevisionesModel();
+            RevisionesService servicioRevisiones = new RevisionesService();
+            if (User.Identity.IsAuthenticated)
+            {
+                string correo = User.Identity.Name.ToString();
+                UsuarioService servicioUsuarios = new UsuarioService();
+                var datos = servicioUsuarios.GetDatosMiembro(correo);
+                ViewBag.categoria = datos[0];
+            }
+            return View(servicioRevisiones.ObtenerPosiblesRevisores(articuloId));
         }
     }
 }
