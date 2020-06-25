@@ -149,5 +149,35 @@ namespace ComunidadDePracticaMVC.Controllers
                 return new RedirectResult("~/AccessDenied");
             }
         }
+
+        [Authorize]
+        public ActionResult CalificarArticulo(int id)
+        {
+
+            if (true /*TODO revisar si el aritculo le corresponde al calificador*/)
+            {
+                ViewBag.Message = "Usted está visitando un artículo";
+                ViewBag.Reaccion = 2;
+                ArticuloService servicioArticulo = new ArticuloService();
+                UsuarioService servicioUsuarios = new UsuarioService();
+                servicioArticulo.AumentarVisitas(id);
+                ModelState.Clear();
+                var articuloModel = servicioArticulo.GetInfoArticulo(id);
+                if (User.Identity.IsAuthenticated)
+                {
+                    string correo = User.Identity.Name.ToString();
+                    ViewBag.Reaccion = servicioUsuarios.ReaccionDeUsuario(correo, id);
+                }
+                return View(articuloModel);
+
+            }
+            else 
+            {
+                return new RedirectResult("~/AccessDenied");
+            }
+
+            
+        }
+
     }
 }
