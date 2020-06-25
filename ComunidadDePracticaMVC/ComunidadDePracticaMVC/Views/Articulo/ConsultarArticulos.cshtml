@@ -30,11 +30,11 @@
         <h4>Usted está visitando un artículo largo</h4>
 
         <hr />
-        <h3> <strong>Título</strong> </h3>
+        <h3> <strong>Título:</strong> </h3>
 
         <h4>@titulo</h4>
 
-        <h3> <strong>Autor</strong> </h3>
+        <h3> <strong>Autor:</strong> </h3>
 
         <h4>@autor</h4>
 
@@ -43,8 +43,9 @@
 
         <hr />
 
-        <h3> <strong> Resumen del articulo </strong> </h3>
-        <div>
+        <h3> <strong> Resumen del articulo: </strong> </h3>
+        <br />
+        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
             @Html.Raw(HttpUtility.HtmlDecode(resumen))
         </div>
 
@@ -58,11 +59,12 @@
         <h4>Usted está visitando un artículo corto</h4>
 
         <hr />
-        <h3> <strong>Título</strong> </h3>
+
+        <h3> <strong>Título:</strong> </h3>
 
         <h4>@titulo</h4>
 
-        <h3> <strong>Autor</strong> </h3>
+        <h3> <strong>Autor:</strong> </h3>
 
         <h4>@autor</h4>
 
@@ -71,21 +73,23 @@
 
         <hr />
 
-        <h3> <strong> Resumen del articulo </strong> </h3>
-        <div>
+        <h3> <strong> Resumen del articulo: </strong> </h3>
+        <br />
+        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
             @Html.Raw(HttpUtility.HtmlDecode(resumen))
         </div>
         <hr />
 
-        <h4> <strong> Contenido </strong> </h4>
-        <div>
+        <h3> <strong> Contenido: </strong></h3>
+        <br />
+        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
             @Html.Raw(HttpUtility.HtmlDecode(contenido))
         </div>
     }
 
     @if (User.Identity.IsAuthenticated)
     {
-        string correo = "\""+User.Identity.Name.ToString()+"\"";
+        string correo = "\"" + User.Identity.Name.ToString() + "\"";
         <hr />
         <div class="seccion_Votar">
             <h4> Brinde su opinión respecto a este artículo</h4>
@@ -102,6 +106,9 @@
     <div>
         <a class="btn box-btn" href="/Articulo/InicioArticulos"> Volver al listado de artículos</a>
     </div>
+    <br />
+    <br />
+    <br />
 
     <script src="~/Scripts/FuncionesBotones.js"></script>
 
