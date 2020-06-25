@@ -49,6 +49,34 @@ namespace ComunidadDePracticaMVC.Services
             return revisiones;
         }
 
+        public RevisionesModel ObtenerArticulosRequierenRevisores()
+        {
+            Connection();
+            string consulta = "SELECT A.articuloId, A.titulo, A.fechaPublicacion FROM Articulo A WHERE A.estado = 'Revision' AND EXISTS(SELECT* FROM Revisa R WHERE R.articuloIdFK= A.articuloID) ORDER BY fechaPublicacion ";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            RevisionesModel revisiones = new RevisionesModel();
+            List<ArticuloModel> listaArticulos = new List<ArticuloModel>();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                revisiones.ArticulosEnRevision.Add(
+                    new ArticuloModel
+                    {
+                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Titulo = Convert.ToString(dr["titulo"]),
+                        FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
+                    });
+            }
+            return revisiones;
+        }
+
         public List<UsuarioModel> ObtenerMiembrosNucleo() {
             List<UsuarioModel> listaUsuarios = new List<UsuarioModel>();
             Connection();
@@ -229,5 +257,34 @@ namespace ComunidadDePracticaMVC.Services
             return exito;
         }
 
+
+        public List<UsuarioModel> ObtenerPosiblesRevisores(int articuloId)
+        {
+            Connection();
+            string consulta = "SELECT U.nombre, U.apellido1, U.apellido2, U.correo FROM Usuario U WHERE U.correo = ANY( SELECT R.correoMiembroFK FROM Revisa R WHERE R.articuloIdFK = @articuloId AND R.estadoRevision = 'Acepta colaborar' OR R.estadoRevision = 'Rechaza colaborar' OR R.estadoRevision = 'Colaboracion' AND U.correo = R.correoMiembroFK)";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            List<UsuarioModel> posiblesRevisores = new List<UsuarioModel>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                posiblesRevisores.Add(
+                    new UsuarioModel
+                    {
+                        //aqui pueden ir mas atributos en caso de ser necesario
+                        Correo = Convert.ToString(dr["correo"]),
+                        Nombre = Convert.ToString(dr["nombre"]),
+                        Apellido1 = Convert.ToString(dr["apellido1"]),
+                        Apellido2 = Convert.ToString(dr["apellido2"])
+                    });
+            }
+            return posiblesRevisores;
+        }
     }
 }

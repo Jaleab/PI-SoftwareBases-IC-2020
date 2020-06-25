@@ -114,7 +114,8 @@ namespace ComunidadDePracticaMVC.Services
                         Titulo = Convert.ToString(dr["titulo"]),
                         Resumen = Convert.ToString(dr["resumen"]),
                         Topico = Convert.ToString(dr["topico"]),
-                        Contenido = Convert.ToString(dr["contenido"])
+                        Contenido = Convert.ToString(dr["contenido"]),
+                        Estado = Convert.ToString(dr["estado"])
                     });
             }
             return Articulolist;
