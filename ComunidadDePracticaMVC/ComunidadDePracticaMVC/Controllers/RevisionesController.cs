@@ -34,11 +34,17 @@ namespace ComunidadDePracticaMVC.Controllers
         [Authorize]
         public ActionResult MisArticulosRevision()
         {
-            if (TempData["Message"] != null)
+            ViewBag.exitoAutorizacion = false;
+            ViewBag.revisiones = new RevisionesModel();
+            RevisionesService servicioRevisiones = new RevisionesService();
+            if (AuthorizeClass.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Núcleo,Coordinador"))
             {
-                ViewBag.Message = TempData["Message"].ToString();
+                ViewBag.exitoAutorizacion = true;
+                string correo = User.Identity.Name.ToString();
+                ViewBag.correo = User.Identity.Name.ToString();
+                ViewBag.revisiones = servicioRevisiones.ObtenerArticulosAsignadosRevisionAMiembro(correo);
+
             }
-            ViewBag.categoria = "";
             return View();
         }
 
@@ -114,7 +120,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 {
                     @TempData["Message"] = "Falló la operación.";
                 }
-                return RedirectToAction("MisArticulosRevision");
+                return RedirectToAction("MisArticulosColaboracion");
             }
             else
             {
@@ -140,9 +146,36 @@ namespace ComunidadDePracticaMVC.Controllers
                 {
                     @TempData["Message"] = "Falló la operación.";
                 }
-                return RedirectToAction("MisArticulosRevision");
+                return RedirectToAction("MisArticulosColaboracion");
             }
             else
+            {
+                return new RedirectResult("~/AccessDenied");
+            }
+        }
+
+        [Authorize]
+        public ActionResult CalificarArticulo(int articuloId)
+        {
+
+            if (true /*TODO revisar si el aritculo le corresponde al calificador*/)
+            {
+                ViewBag.Message = "Usted está visitando un artículo";
+                ViewBag.Reaccion = 2;
+                ArticuloService servicioArticulo = new ArticuloService();
+                UsuarioService servicioUsuarios = new UsuarioService();
+                servicioArticulo.AumentarVisitas(articuloId);
+                ModelState.Clear();
+                var articuloModel = servicioArticulo.GetInfoArticulo(articuloId);
+                if (User.Identity.IsAuthenticated)
+                {
+                    string correo = User.Identity.Name.ToString();
+                    ViewBag.Reaccion = servicioUsuarios.ReaccionDeUsuario(correo, articuloId);
+                }
+                return View(articuloModel);
+
+            }
+            else 
             {
                 return new RedirectResult("~/AccessDenied");
             }
@@ -186,5 +219,6 @@ namespace ComunidadDePracticaMVC.Controllers
             }
             return View(servicioRevisiones.ObtenerPosiblesRevisores(articuloId));
         }
+
     }
 }

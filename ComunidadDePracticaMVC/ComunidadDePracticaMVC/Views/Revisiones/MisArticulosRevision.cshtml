@@ -1,127 +1,26 @@
 ﻿
-@{
-    ViewBag.Title = "MisArticulosRevision";
-}
+
+
 
 <html>
 
 <head>
-    <script type="text/javascript">
-
-        function enviarResumen(mensaje) {
-            alert(mensaje);
-        }
-
-        $(document).ready(function () {
-            var currentPage = 1;
-            loadArticlesData(currentPage);
-
-            $(window).scroll(function () {
-                var windowComparison = ($(document).height() - $(window).height()) - $(window).scrollTop();
-                if (Math.abs(windowComparison) <= 1) {
-                    currentPage += 1;
-                    loadArticlesData(currentPage);
-                }
-
-            });
-
-
-        });
-
-
-        function loadArticlesData(currentPageNumber) {
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("ArticulosAutorColaboracion", "Revisiones")',
-                data: {},
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: { pageNumber: currentPageNumber, pageSize: 5, correo: '@User.Identity.Name' },
-                success: function (response) {
-                    //get the template element:
-                    var artTemp = document.getElementsByTagName("template")[0].content;
-                    var articleList = $('#articleList');
-
-                    // Looping over emloyee list and display it
-                    $.each(response, function (index, articulo) {
-                        var idS = new String(articulo.ArticuloId);
-                        //url para ver
-                        var aceptarUrl = '@Url.Action("AceptarColaboracion", "Revisiones", new { articuloId = "VAL", correoNucleo = User.Identity.Name }, null)';
-                        aceptarUrl = aceptarUrl.replace("VAL", idS);
-                        //url para editar
-                        var rechazarUrl = '@Url.Action("RechazarColaboracion", "Revisiones", new { articuloId = "VAL", correoNucleo = User.Identity.Name }, null)';
-                        rechazarUrl = rechazarUrl.replace("VAL", idS);
-                        //url para borrar
-                        @*var deleteUrl = '@Url.Action("BorrarArticulo", "Articulo",new { id= "VAL"},null)';
-                        deleteUrl = deleteUrl.replace("VAL", idS);*@
-
-                        var articleInstance = document.importNode(artTemp, true);
-
-                        var title, author, info, aceptarLink, rechazarLink;
-
-                        //get the DIV element from the template Instance:
-                        like = articleInstance.querySelector(".likes_template");
-                        dislike = articleInstance.querySelector(".dislikes_template");
-                        fecha = articleInstance.querySelector(".fecha_template");
-                        title = articleInstance.querySelector(".title_template");
-                        author = articleInstance.querySelector(".author_template");
-                        //info = articleInstance.querySelector("#info");
-                        aceptarLink = articleInstance.querySelector(".aceptar-template");
-                        rechazarLink = articleInstance.querySelector(".rechazar-template");
-                        //deleteLink = articleInstance.querySelector(".delete-template");
-
-                        title.textContent = articulo.Titulo;
-                        like.textContent = like.textContent + articulo.Likes;
-                        dislike.textContent = dislike.textContent + articulo.Dislikes;
-                        fecha.textContent = fecha.textContent + (articulo.FechaPublicacion).split(' ')[0];
-                        author.textContent = articulo.Autor;
-                        //info.textContent = articulo.Autor;
-
-                        aceptarLink.href = aceptarUrl;
-                        rechazarLink.href = rechazarUrl;
-
-                        //deleteLink.href = deleteUrl;
-
-                        articleList.append(articleInstance);
-
-                    });
-                },
-                error: function (err) {
-                    alert("Error");
-                },
-                failure: function (err) {
-                    alert("Error");
-                }
-
-            });
-        }
-
-    </script>
-
+    <title> Solicitar colaboradores para revisión </title>
 </head>
 
 <body>
 
+    <hr />
+    <div>
 
-    <div class="col-xl-12 col-md-12 mb-12">
-        <div class="row page-title main-font ">
-            <h2>Mis Articulos Revisión @User.Identity.Name</h2>
-            @if (ViewBag.Message != null && (ViewBag.Message == "Se aceptó la colaboración." || ViewBag.Message == "Se rechazó la colaboración."))
-            {
-                <div class="alert-success">
-                    @ViewBag.Message
-                </div>
-            }
-            else if (ViewBag.Message == "Falló la operación.")
-            {
-                <div class="alert-danger">
-                    @ViewBag.Message
-                </div>
-            }
-            <hr />
+        @if (ViewBag.exitoAutorizacion)
+        {
+
+            <h2> Solicite a los miembros de núcleo colaboración </h2>
+
             <div class="row">
                 <nav>
-                    
+
                     <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulos", "Usuario", new { correo = User.Identity.Name } )"> <i class="fa fa-book"></i> Mis Artículos</a>
                     <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulosRevision", "Revisiones")"> <i class="fa fa-paint-brush"></i> Revisión</a>
                     <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulosColaboracion", "Revisiones")"> <i class="fa fa-user"></i> Colaboración</a>
@@ -129,58 +28,54 @@
 
             </div>
 
+            <hr />
 
-        </div>
 
-        @*<div class="row main-font search-bar">
-                <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
-            </div>*@
+            foreach (var articulo in ViewBag.revisiones.ArticulosEnRevision)
+            {
+                <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
+
+                    <div class="col-md-6 mr-2">
+                        <div class="row main-font article-h2"> Titulo </div>
+                        <div class="row main-font article-h1"> @articulo.Titulo </div>
+
+                    </div>
+
+                    <div class="box-vertical-divider col-md-1   "></div>
+
+                    <div class="col-md-3 mr-2">
+
+                        <div class="row main-font article-h2">Fecha de publicación</div>
+                        <div class="row main-font article-h2">&#128197 @articulo.FechaPublicacion</div>
+
+                    </div>
+
+                    <div class="box-vertical-divider col-md-1   "></div>
+
+                    <div class="col-md-2 mr-2">
+                        <div class="row">
+                            <div class="row main-font article-h2"></div>
+                            <a class="btn box-btn" href="/Revisiones/CalificarArticulo?articuloId=@articulo.ArticuloId"> Revisar </a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+        }
+        else
+        {
+
+            <h2>Lo sentimos, usted no puede interacturar en esta sección</h2>
+
+        }
     </div>
 
 
-    <div>
-        <div id="articleList">
-
-        </div>
+    <div class="row">
+        <a class="btn box-btn" href="/Home/Index"> Volver a página principal</a>
     </div>
+
 
 </body>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
-
-
 </html>
-
-<template>
-
-    <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
-
-        <div class="col-md-6 mr-2">
-            <div class=" title_template row main-font article-h1">La Descomposición del Estudiante</div>
-            <div class=" author_template row main-font article-h2">Edwin Brenes</div>
-
-        </div>
-        <div class="box-vertical-divider col-md-1   "></div>
-        <div class="col-md-3 mr-2">
-
-            <div title="Publicación" class=" fecha_template row main-font article-h2">&#128197 </div>
-            <div title="Likes" class=" likes_template row main-font article-h2">&#128077 </div>
-            <div title="Dislikes " class=" dislikes_template row main-font article-h2">&#128078 </div>
-
-        </div>
-        <div class="box-vertical-divider col-md-1   "></div>
-
-        <div class="col-md-2 mr-2">
-            <div class="row">
-                <a class="aceptar-template row btn btn-success" style="margin-left:15px; margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""> <i class="fa fa-check"></i></a>
-            </div>
-            <div class="row">
-                <a class="rechazar-template row btn btn-danger" style="margin-left:15px ;margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""><i class="fa fa-remove"></i></a>
-            </div>
-
-        </div>
-    </div>
-
-</template>
