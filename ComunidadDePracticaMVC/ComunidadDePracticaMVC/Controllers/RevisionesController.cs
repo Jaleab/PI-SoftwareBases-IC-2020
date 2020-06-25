@@ -122,7 +122,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 {
                     @TempData["Message"] = "Falló la operación.";
                 }
-                return RedirectToAction("MisArticulosRevision");
+                return RedirectToAction("MisArticulosColaboracion");
             }
             else
             {
@@ -148,7 +148,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 {
                     @TempData["Message"] = "Falló la operación.";
                 }
-                return RedirectToAction("MisArticulosRevision");
+                return RedirectToAction("MisArticulosColaboracion");
             }
             else
             {
