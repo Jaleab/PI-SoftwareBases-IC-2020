@@ -15,7 +15,8 @@
     <!--<li class="sidebar-divider"></li>-->
     if (categoria == "Núcleo" || categoria == "Coordinador")
     {
-        <li>@Html.ActionLink("Revisar Artículos", "MisArticulosRevision", "Revisiones", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Acceder a revisar artículos" })</li>
+        <li>@Html.ActionLink("Colaborar Artículos", "MisArticulosColaboracion", "Revisiones", null, htmlAttributes: new { title = "Acceder a colaboración de artículos" })</li>
+        <li>@Html.ActionLink("Revisar Artículos", "MisArticulosRevision", "Revisiones", null, htmlAttributes: new { title = "Acceder a revisar artículos" })</li>
     }
     <li class="sidebar-divider"></li>
 

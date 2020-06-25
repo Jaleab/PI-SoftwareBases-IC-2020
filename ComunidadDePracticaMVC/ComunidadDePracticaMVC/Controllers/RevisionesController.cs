@@ -32,7 +32,18 @@ namespace ComunidadDePracticaMVC.Controllers
         }
 
         [Authorize]
-        public ActionResult MisArticulosRevision() {
+        public ActionResult MisArticulosRevision()
+        {
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
+            ViewBag.categoria = "";
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult MisArticulosColaboracion() {
             if (TempData["Message"] != null)
             {
                 ViewBag.Message = TempData["Message"].ToString();

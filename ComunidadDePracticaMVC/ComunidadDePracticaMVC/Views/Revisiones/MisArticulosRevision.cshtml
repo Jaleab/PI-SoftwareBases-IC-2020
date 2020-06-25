@@ -1,4 +1,5 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "MisArticulosRevision";
 }
 
@@ -104,7 +105,7 @@
 
     <div class="col-xl-12 col-md-12 mb-12">
         <div class="row page-title main-font ">
-            <h2>Articulos de Revisión @User.Identity.Name</h2>
+            <h2>Mis Articulos Revisión @User.Identity.Name</h2>
             @if (ViewBag.Message != null && (ViewBag.Message == "Se aceptó la colaboración." || ViewBag.Message == "Se rechazó la colaboración."))
             {
                 <div class="alert-success">
@@ -118,13 +119,24 @@
                 </div>
             }
             <hr />
+            <div class="row">
+                <nav>
+                    
+                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulos", "Usuario", new { correo = User.Identity.Name } )"> <i class="fa fa-book"></i> Mis Artículos</a>
+                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulosRevision", "Revisiones")"> <i class="fa fa-paint-brush"></i> Revisión</a>
+                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulosColaboracion", "Revisiones")"> <i class="fa fa-user"></i> Colaboración</a>
+                </nav>
+
+            </div>
+
+
         </div>
 
         @*<div class="row main-font search-bar">
                 <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
             </div>*@
     </div>
-    
+
 
     <div>
         <div id="articleList">
@@ -172,6 +184,3 @@
     </div>
 
 </template>
-
-
-

@@ -379,6 +379,7 @@
     <Content Include="Views\Usuario\MisArticulos.cshtml" />
     <Content Include="Views\ArticuloLargo\EditarArticuloLargo.cshtml" />
     <Content Include="Views\Revisiones\ArticulosRequierenRevision.cshtml" />
+    <Content Include="Views\Revisiones\MisArticulosColaboracion.cshtml" />
     <Content Include="Views\Revisiones\MisArticulosRevision.cshtml" />
   </ItemGroup>
   <ItemGroup>
