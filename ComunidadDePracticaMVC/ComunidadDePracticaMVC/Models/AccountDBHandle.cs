@@ -81,7 +81,7 @@ namespace ComunidadDePracticaMVC.Models
         }
     }
 
-    public class AuthorizeClass {
+    public class CookieHandler {
         public static bool AuthorizeRole(HttpCookie authCookie, string rolesString) {
             FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
             CookieModel cookieInfo = JsonConvert.DeserializeObject<CookieModel>(authTicket.UserData);
@@ -98,4 +98,6 @@ namespace ComunidadDePracticaMVC.Models
             return isInRole;
         }
     }
+
+
 }

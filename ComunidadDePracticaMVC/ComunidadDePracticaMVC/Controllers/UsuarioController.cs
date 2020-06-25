@@ -79,7 +79,7 @@ namespace ComunidadDePracticaMVC.Controllers
         [Authorize]
         public ActionResult UsuariosComunidad(string mensaje)
         {
-            if (AuthorizeClass.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Coordinador"))
+            if (CookieHandler.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Coordinador"))
             {
                 UsuarioService usuario = new UsuarioService();
                 if (mensaje != "")
@@ -89,7 +89,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 return View(usuario.GetNombreUsuarios());
             }
             else {
-                return new RedirectResult("~/Account/AccessDenied");
+                return RedirectToAction("~/Account/AccessDenied");
             }
             
         }

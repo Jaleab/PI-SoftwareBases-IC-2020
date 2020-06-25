@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -253,8 +254,8 @@ namespace ComunidadDePracticaMVC.Services
             CookieModel datosUsuario = new CookieModel();
             string[] datos = GetDatosMiembro(correo);
             datosUsuario.Categoria = datos[0];
-            datosUsuario.Merito = datos[1];
-            datosUsuario.Peso = datos[2];
+            datosUsuario.Merito = int.Parse(datos[1], NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite);
+            datosUsuario.Peso = int.Parse(datos[2], NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite);
             datosUsuario.Nombre = datos[3];
 
             return datosUsuario;
