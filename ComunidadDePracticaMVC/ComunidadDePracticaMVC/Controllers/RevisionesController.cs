@@ -34,11 +34,17 @@ namespace ComunidadDePracticaMVC.Controllers
         [Authorize]
         public ActionResult MisArticulosRevision()
         {
-            if (TempData["Message"] != null)
+            ViewBag.exitoAutorizacion = false;
+            ViewBag.revisiones = new RevisionesModel();
+            RevisionesService servicioRevisiones = new RevisionesService();
+            if (AuthorizeClass.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Núcleo,Coordinador"))
             {
-                ViewBag.Message = TempData["Message"].ToString();
+                ViewBag.exitoAutorizacion = true;
+                string correo = User.Identity.Name.ToString();
+                ViewBag.correo = User.Identity.Name.ToString();
+                ViewBag.revisiones = servicioRevisiones.ObtenerArticulosAsignadosRevisionAMiembro(correo);
+
             }
-            ViewBag.categoria = "";
             return View();
         }
 

@@ -170,5 +170,38 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
             return exito;
         }
+
+        public RevisionesModel ObtenerArticulosAsignadosRevisionAMiembro(string correoMiembro)
+        {
+            Connection();
+            string consulta =
+                "SELECT A.articuloId, A.titulo, A.fechaPublicacion FROM Articulo A JOIN Revisa R ON R.articuloIdFK=A.articuloId  WHERE R.estadoRevision='Pendiente revisar' AND R.correoMiembroFK=@correo ORDER BY fechaPublicacion "
+                ;
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            cmd.Parameters.AddWithValue("@correo", correoMiembro);
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            RevisionesModel revisiones = new RevisionesModel();
+            List<ArticuloModel> listaArticulos = new List<ArticuloModel>();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                revisiones.ArticulosEnRevision.Add(
+                    new ArticuloModel
+                    {
+                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Autor= Convert.ToString(dr["titulo"]),
+                        Titulo = Convert.ToString(dr["titulo"]),
+                        FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
+                    });
+            }
+
+            return revisiones;
+        }
     }
 }
