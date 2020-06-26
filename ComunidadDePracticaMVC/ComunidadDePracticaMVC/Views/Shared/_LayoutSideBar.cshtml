@@ -17,9 +17,9 @@
     {
         <li>@Html.ActionLink("Colaborar Artículos", "MisArticulosColaboracion", "Revisiones", null, htmlAttributes: new { title = "Acceder a colaboración de artículos" })</li>
         <li>@Html.ActionLink("Revisar Artículos", "MisArticulosRevision", "Revisiones", null, htmlAttributes: new { title = "Acceder a revisar artículos" })</li>
-        if (categoria != "Núcleo")
+        if (categoria == "Coordinador")
         {
-            <li>@Html.ActionLink("Articulos por revisar", "ArticulosRequierenRevision", "Revisiones", null)</li>
+            <li>@Html.ActionLink("Articulos por revisar", "ArticulosRequierenRevision", "Revisiones", null, htmlAttributes: new { title = "Acceder a revisar artículos" })</li>
             <li>@Html.ActionLink("Decidir revisores", "ArticulosRequierenRevisores", "Revisiones", null)</li>
         }
     }
