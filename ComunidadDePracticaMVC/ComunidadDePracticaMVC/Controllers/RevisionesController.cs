@@ -199,9 +199,9 @@ namespace ComunidadDePracticaMVC.Controllers
                 FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
                 CookieModel cookieInfo = JsonConvert.DeserializeObject<CookieModel>(authTicket.UserData);
                 string correo = authTicket.Name;
-
+                int calificacion = 1000;
                 RevisionesService servicioRevisiones = new RevisionesService();
-                bool exito = servicioRevisiones.AsignarCalificacion(articuloId, correo, cookieInfo.Merito, model);
+                bool exito = servicioRevisiones.AsignarCalificacion(articuloId, correo, calificacion, model);
                 if (exito)
                 {
                     @TempData["Message"] = "Revisión enviada.";
