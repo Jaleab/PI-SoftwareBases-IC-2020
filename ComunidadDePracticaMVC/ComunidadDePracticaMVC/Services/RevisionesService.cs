@@ -75,7 +75,7 @@ namespace ComunidadDePracticaMVC.Services
 
         public bool ColaboracionDeUnMiembro(string correo,int articuloId) {
             bool exito = true;
-            string operacion = "INSERT INTO Revisa (correoMiembroFK,articuloIdFK,estadoRevision,calificacion) VALUES(@correo,@articuloId,'Colaboracion',0)";
+            string operacion = "INSERT INTO Revisa (correoMiembroFK,articuloIdFK,estadoRevision,calificacion,comentario) VALUES(@correo,@articuloId,'Colaboracion',0,' ')";
             Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
 
@@ -205,23 +205,19 @@ namespace ComunidadDePracticaMVC.Services
         }
 
         //Actualiza la colaboracion de la revision a aceptada
-        public bool AsignarCalificacion(int articuloId, string correoNucleo, int merito, FormularioModel model)
+        public bool AsignarCalificacion(int articuloId, string correoNucleo, int calificacion, FormularioModel model)
         {
             bool exito = true;
-            int puntaje = merito * (model.OpinionGeneral + model.Contribucion + model.Forma);
-            /*string operacion = "UPDATE Revisa " +
-                               "SET Revisa.estadoRevision = @estado, Revisa.puntaje = @puntaje, Revisa.comentario = @comentario " +
-                               "WHERE Revisa.correoMiembroFK = @correo AND articuloIdFK = @articuloId;";*/
-
-            string operacion = "INSERT INTO CalificacionProvisional (email, articuloId, puntaje, estadoRevision, comentario) " +
-                                            "VALUES(@correo, @articuloId, @puntaje, @estado, @comentario)";
+            string operacion = "UPDATE Revisa " +
+                               "SET Revisa.estadoRevision = @estado, Revisa.calificacion = @puntaje, Revisa.comentario = @comentario " +
+                               "WHERE Revisa.correoMiembroFK = @correo AND articuloIdFK = @articuloId";
             Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
             cmd.Parameters.AddWithValue("@correo", correoNucleo);
             cmd.Parameters.AddWithValue("@articuloId", articuloId);
             cmd.Parameters.AddWithValue("@estado", model.Estado);
             cmd.Parameters.AddWithValue("@comentario", model.Comentario);
-            cmd.Parameters.AddWithValue("@puntaje", puntaje);
+            cmd.Parameters.AddWithValue("@puntaje", calificacion);
 
             con.Open();
             exito = cmd.ExecuteNonQuery() > 0;
