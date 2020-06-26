@@ -232,6 +232,32 @@ namespace ComunidadDePracticaMVC.Services
             return revisiones;
         }
 
+        //Actualiza la colaboracion de la revision a aceptada
+        public bool AsignarCalificacion(int articuloId, string correoNucleo, int merito, FormularioModel model)
+        {
+            bool exito = true;
+            int puntaje = merito * (model.OpinionGeneral + model.Contribucion + model.Forma);
+            /*string operacion = "UPDATE Revisa " +
+                               "SET Revisa.estadoRevision = @estado, Revisa.puntaje = @puntaje, Revisa.comentario = @comentario " +
+                               "WHERE Revisa.correoMiembroFK = @correo AND articuloIdFK = @articuloId;";*/
+
+            string operacion = "INSERT INTO CalificacionProvisional (email, articuloId, puntaje, estadoRevision, comentario) " +
+                                            "VALUES(@correo, @articuloId, @puntaje, @estado, @comentario)";
+            Connection();
+            SqlCommand cmd = new SqlCommand(operacion, con);
+            cmd.Parameters.AddWithValue("@correo", correoNucleo);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+            cmd.Parameters.AddWithValue("@estado", model.Estado);
+            cmd.Parameters.AddWithValue("@comentario", model.Comentario);
+            cmd.Parameters.AddWithValue("@puntaje", puntaje);
+
+            con.Open();
+            exito = cmd.ExecuteNonQuery() > 0;
+            con.Close();
+            return exito;
+        }
+
+
         public List<UsuarioModel> ObtenerPosiblesRevisores(int articuloId)
         {
             Connection();

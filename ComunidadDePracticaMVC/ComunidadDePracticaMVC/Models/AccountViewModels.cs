@@ -126,8 +126,8 @@ namespace ComunidadDePracticaMVC.Models
 
     public class CookieModel {
         public string Categoria { get; set; }
-        public string Merito { get; set; }
-        public string Peso { get; set; }
+        public int Merito { get; set; }
+        public int Peso { get; set; }
         public string Nombre { get; set; }
 
     }

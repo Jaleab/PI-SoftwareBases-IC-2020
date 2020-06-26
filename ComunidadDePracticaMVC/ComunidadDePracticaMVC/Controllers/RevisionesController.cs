@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using ComunidadDePracticaMVC.Models;
 using ComunidadDePracticaMVC.Services;
+using Newtonsoft.Json;
 
 namespace ComunidadDePracticaMVC.Controllers
 {
@@ -37,8 +39,12 @@ namespace ComunidadDePracticaMVC.Controllers
             ViewBag.exitoAutorizacion = false;
             ViewBag.revisiones = new RevisionesModel();
             RevisionesService servicioRevisiones = new RevisionesService();
-            if (AuthorizeClass.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Núcleo,Coordinador"))
+            if (CookieHandler.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Núcleo,Coordinador"))
             {
+                if (TempData["Message"] != null)
+                {
+                    ViewBag.Message = TempData["Message"].ToString();
+                }
                 ViewBag.exitoAutorizacion = true;
                 string correo = User.Identity.Name.ToString();
                 ViewBag.correo = User.Identity.Name.ToString();
@@ -91,7 +97,6 @@ namespace ComunidadDePracticaMVC.Controllers
                     }
                     else
                     {
-
                         @TempData["Message"] = "Falló la operación, intente más tarde";
                     }
                 }
@@ -107,8 +112,10 @@ namespace ComunidadDePracticaMVC.Controllers
 
         [Authorize]
         public ActionResult AceptarColaboracion(int articuloId)
-        {        
-            if (AuthorizeClass.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Núcleo,Coordinador"))
+        {
+
+        
+            if (CookieHandler.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Núcleo,Coordinador"))
             {
                 RevisionesService servicioRevisiones = new RevisionesService();
                 bool exito = servicioRevisiones.AceptarColaboracion(articuloId, User.Identity.Name);
@@ -124,7 +131,7 @@ namespace ComunidadDePracticaMVC.Controllers
             }
             else
             {
-                return new RedirectResult("~/AccessDenied");
+                return RedirectToAction("~/AccessDenied");
             }
 
             
@@ -134,7 +141,7 @@ namespace ComunidadDePracticaMVC.Controllers
         public ActionResult RechazarColaboracion(int articuloId)
         {
 
-            if (AuthorizeClass.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Núcleo,Coordinador"))
+            if (CookieHandler.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Núcleo,Coordinador"))
             {
                 RevisionesService servicioRevisiones = new RevisionesService();
                 bool exito = servicioRevisiones.RechazarColaboracion(articuloId, User.Identity.Name);
@@ -150,7 +157,7 @@ namespace ComunidadDePracticaMVC.Controllers
             }
             else
             {
-                return new RedirectResult("~/AccessDenied");
+                return RedirectToAction("~/AccessDenied");
             }
         }
 
@@ -166,21 +173,54 @@ namespace ComunidadDePracticaMVC.Controllers
                 UsuarioService servicioUsuarios = new UsuarioService();
                 servicioArticulo.AumentarVisitas(articuloId);
                 ModelState.Clear();
-                var articuloModel = servicioArticulo.GetInfoArticulo(articuloId);
                 if (User.Identity.IsAuthenticated)
                 {
                     string correo = User.Identity.Name.ToString();
                     ViewBag.Reaccion = servicioUsuarios.ReaccionDeUsuario(correo, articuloId);
+                    ViewBag.Articulo = servicioArticulo.GetInfoArticulo(articuloId);
                 }
-                return View(articuloModel);
+                return View();
 
             }
             else 
             {
-                return new RedirectResult("~/AccessDenied");
+                return RedirectToAction("~/AccessDenied");
             }
         }
+        //Envia la revision del articulo
+        [HttpPost]
+        [Authorize]
+        public ActionResult EnviarRevision(int articuloId, FormularioModel model)
+        {
 
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie != null)
+            {
+                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                CookieModel cookieInfo = JsonConvert.DeserializeObject<CookieModel>(authTicket.UserData);
+                string correo = authTicket.Name;
+
+                RevisionesService servicioRevisiones = new RevisionesService();
+                bool exito = servicioRevisiones.AsignarCalificacion(articuloId, correo, cookieInfo.Merito, model);
+                if (exito)
+                {
+                    @TempData["Message"] = "Revisión enviada.";
+                }
+                else
+                {
+                    @TempData["Message"] = "Error al enviar la revisión.";
+                }
+                return RedirectToAction("MisArticulosRevision");
+            }
+            else
+            {
+                return RedirectToAction("~/AccessDenied");
+
+            }
+
+        }
+
+        
         public ActionResult ArticulosRequierenRevisores()
         {
             if (TempData["Message"] != null)
