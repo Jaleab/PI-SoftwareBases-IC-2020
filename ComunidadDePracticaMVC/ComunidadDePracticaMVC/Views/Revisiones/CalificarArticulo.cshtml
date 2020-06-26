@@ -1,6 +1,11 @@
 ﻿@{
     ViewBag.Title = "Calificación de Artículo";
     @model ComunidadDePracticaMVC.Models.FormularioModel
+    // Retrieves the cookie that contains your custom FormsAuthenticationTicket.
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+    // Decrypts the FormsAuthenticationTicket that is held in the cookie's .Value property.
+    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+    int merito = (Json.Decode(authTicket.UserData))["Merito"];
 
 }
 
@@ -9,6 +14,8 @@
 <html>
 <head>
     <script type="text/javascript">
+        //Es para actualizar verCalificacion constantemente
+        setInterval(verCalificacion, 1000);
 
         function mostrarContenido() {
             var contenido = document.getElementById("contenido");
@@ -22,6 +29,21 @@
             var formulario = document.getElementById("formulario");
             formulario.style.display = "block";
             contenido.style.display = "none";
+        }
+
+        function verCalificacion() {
+            var opinion = $("#opinionId");
+            var contribucion = $("#contribucionId");
+            var forma = $("#formaId");
+            var puntajeInt = parseInt(opinion.val()) + parseInt(contribucion.val()) + parseInt(forma.val());
+            var puntaje = document.getElementById("puntajeId");
+            if (!isNaN(puntajeInt)) {
+                puntaje.textContent =  ' '+(@merito * puntajeInt) + ' ( Merito ' + @merito + ' x ' + 'Puntaje ' + puntajeInt + ')' ;
+            }
+            else {
+                puntaje.textContent =  '  --';
+            }
+
         }
 
 
@@ -73,19 +95,19 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             @Html.LabelFor(model => model.OpinionGeneral)
-                            @Html.DropDownListFor(model => model.OpinionGeneral, listaNumeros, "--", new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.OpinionGeneral, listaNumeros, "--", new { @class = "form-control", @id = "opinionId" })
                             @Html.ValidationMessageFor(model => model.OpinionGeneral, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.Contribucion)
-                            @Html.DropDownListFor(model => model.Contribucion, listaNumeros, "--", new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.Contribucion, listaNumeros, "--", new { @class = "form-control", @id = "contribucionId" })
                             @Html.ValidationMessageFor(model => model.Contribucion, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.Forma)
-                            @Html.DropDownListFor(model => model.Forma, listaNumeros, "--", new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.Forma, listaNumeros, "--", new { @class = "form-control", @id = "formaId" })
                             @Html.ValidationMessageFor(model => model.Forma, "", new { @class = "text-danger" })
                         </div>
 
@@ -94,12 +116,19 @@
                             @Html.DropDownListFor(model => model.Estado, listaEstados, "--", new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
                         </div>
+                        <br />
+                        <div class="form-group ">
+                            <strong>Calificación que asignará:</strong>
+                            <nobr id="puntajeId"></nobr>
+                        </div>
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.Comentario)
                             @Html.TextAreaFor(model => model.Comentario, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Comentario, "", new { @class = "text-danger" })
                         </div>
+
+
 
                         <button type="submit" class="btn box-btn" onsubmit="return false"><i class="fa fa-paper-plane"></i> Enviar </button>
                         @Html.ActionLink("Cancelar", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Cancelar", @class = "btn box-btn" })
