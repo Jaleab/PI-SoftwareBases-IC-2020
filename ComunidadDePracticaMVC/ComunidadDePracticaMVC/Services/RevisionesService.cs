@@ -103,7 +103,7 @@ namespace ComunidadDePracticaMVC.Services
 
         public bool ColaboracionDeUnMiembro(string correo,int articuloId) {
             bool exito = true;
-            string operacion = "INSERT INTO Revisa (correoMiembroFK,articuloIdFK,estadoRevision,calificacion) VALUES(@correo,@articuloId,'Colaboracion',0)";
+            string operacion = "INSERT INTO Revisa (correoMiembroFK,articuloIdFK,estadoRevision,calificacion,comentario) VALUES(@correo,@articuloId,'Colaboracion',0,' ')";
             Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
 
