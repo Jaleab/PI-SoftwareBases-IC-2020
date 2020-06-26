@@ -1,0 +1,28 @@
+﻿@model ComunidadDePracticaMVC.Models.ChartDataModel
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<canvas id="myChart"></canvas>
+
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            
+            labels:@Html.Raw(ViewBag.Data),
+            datasets: [{
+                label: 'My First dataset',
+                backgroundColor: ["red", "blue", "green", "blue", "red", "blue"], 
+                borderColor: 'rgb(255, 99, 132)',
+                data:@Html.Raw(ViewBag.Numbers)
+            }]
+        },
+
+        // Configuration options go here
+        options: {}
+    });
+</script>
+

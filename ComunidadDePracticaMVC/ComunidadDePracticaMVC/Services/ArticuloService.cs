@@ -86,6 +86,11 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
         }
 
+        internal object GetInfoArticuloLargo(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         //TODO METODO PROVISIONAL
 
 
