@@ -21,7 +21,7 @@
             @foreach (var posiblesRevisores in Model)
             {
                 string nombreCompleto = posiblesRevisores.Nombre + " " + posiblesRevisores.Apellido1 + " " + posiblesRevisores.Apellido2;
-            <div class="col-xl-12 col-md-10 mb-12 articulo-element shadow">
+                <div class="col-xl-12 col-md-10 mb-12 articulo-element shadow">
 
                 <div class="col-md-6 mr-2">
                     <div class="row main-font article-h2"> Nombre</div>
@@ -35,10 +35,10 @@
                 <div class="col-md-2 mr-2">
                     <br />
                     <div class="row">
-                        <a class="aceptar-template row btn btn-success" style="margin-left:15px; margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""> <i class="fa fa-check"></i></a>
+                        <a class="aceptar-template row btn btn-success" style="margin-left:15px; margin-bottom: 5px; width: 100%; padding-left: -10px;" href="@Url.Action("DecisionRevisor", "Revisiones", new { articuloId = ViewBag.articuloId, hilera = "Aceptar", correo = posiblesRevisores.Correo })"> <i class="fa fa-check"></i></a>
                     </div>
                     <div class="row">
-                        <a class="rechazar-template row btn btn-danger" style="margin-left:15px ;margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""><i class="fa fa-remove"></i></a>
+                        <a class="rechazar-template row btn btn-danger" style="margin-left:15px ;margin-bottom: 5px; width: 100%; padding-left: -10px;" href="@Url.Action("DecisionRevisor", new {articuloId = ViewBag.articuloId, hilera = "Rechazar", correo = posiblesRevisores.Correo })"><i class="fa fa-remove"></i></a>
                     </div>
 
                 </div>

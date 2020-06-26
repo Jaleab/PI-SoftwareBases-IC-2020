@@ -257,7 +257,40 @@ namespace ComunidadDePracticaMVC.Controllers
                 var datos = servicioUsuarios.GetDatosMiembro(correo);
                 ViewBag.categoria = datos[0];
             }
+            ViewBag.articuloId = articuloId;
             return View(servicioRevisiones.ObtenerPosiblesRevisores(articuloId));
+        }
+
+        public ActionResult DecisionRevisor(int articuloId, string hilera, string correo)
+        {
+            RevisionesService servicioRevisiones = new RevisionesService();
+            ViewBag.articuloId = articuloId;
+            if (hilera == "Aceptar")
+            {
+                bool exito = servicioRevisiones.AceptarRevisor(articuloId, correo);
+                if (exito)
+                {
+                    @TempData["Message"] = "Se aceptó como revisor.";
+                }
+                else
+                {
+                    @TempData["Message"] = "Falló la operación.";
+                }
+            }
+            else {
+                if (hilera == "Rechazar") {
+                    bool exito = servicioRevisiones.RechazarRevisor(articuloId, correo);
+                    if (exito)
+                    {
+                        @TempData["Message"] = "Se rechazó como revisor.";
+                    }
+                    else
+                    {
+                        @TempData["Message"] = "Falló la operación.";
+                    }
+                }                 
+            }            
+            return RedirectToAction("DecidirRevisores", "Revisiones", new { articuloId });
         }
 
     }

@@ -48,35 +48,7 @@ namespace ComunidadDePracticaMVC.Services
 
             return revisiones;
         }
-
-        public RevisionesModel ObtenerArticulosRequierenRevisores()
-        {
-            Connection();
-            string consulta = "SELECT A.articuloId, A.titulo, A.fechaPublicacion FROM Articulo A WHERE A.estado = 'Revision' AND EXISTS(SELECT* FROM Revisa R WHERE R.articuloIdFK= A.articuloID) ORDER BY fechaPublicacion ";
-            SqlCommand cmd = new SqlCommand(consulta, con);
-            SqlDataAdapter sd = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-
-            con.Open();
-            sd.Fill(dt);
-            con.Close();
-
-            RevisionesModel revisiones = new RevisionesModel();
-            List<ArticuloModel> listaArticulos = new List<ArticuloModel>();
-
-            foreach (DataRow dr in dt.Rows)
-            {
-                revisiones.ArticulosEnRevision.Add(
-                    new ArticuloModel
-                    {
-                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
-                        Titulo = Convert.ToString(dr["titulo"]),
-                        FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
-                    });
-            }
-            return revisiones;
-        }
-
+        
         public List<UsuarioModel> ObtenerMiembrosNucleo() {
             List<UsuarioModel> listaUsuarios = new List<UsuarioModel>();
             Connection();
@@ -257,11 +229,38 @@ namespace ComunidadDePracticaMVC.Services
             return exito;
         }
 
+        public RevisionesModel ObtenerArticulosRequierenRevisores()
+        {
+            Connection();
+            string consulta = "SELECT A.articuloId, A.titulo, A.fechaPublicacion FROM Articulo A WHERE A.estado = 'Revision' AND EXISTS(SELECT* FROM Revisa R WHERE R.articuloIdFK= A.articuloID AND A.estado = 'Revision') ORDER BY fechaPublicacion";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            RevisionesModel revisiones = new RevisionesModel();
+            List<ArticuloModel> listaArticulos = new List<ArticuloModel>();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                revisiones.ArticulosEnRevision.Add(
+                    new ArticuloModel
+                    {
+                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Titulo = Convert.ToString(dr["titulo"]),
+                        FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
+                    });
+            }
+            return revisiones;
+        }
 
         public List<UsuarioModel> ObtenerPosiblesRevisores(int articuloId)
         {
             Connection();
-            string consulta = "SELECT U.nombre, U.apellido1, U.apellido2, U.correo FROM Usuario U WHERE U.correo = ANY( SELECT R.correoMiembroFK FROM Revisa R WHERE R.articuloIdFK = @articuloId AND R.estadoRevision = 'Acepta colaborar' OR R.estadoRevision = 'Rechaza colaborar' OR R.estadoRevision = 'Colaboracion' AND U.correo = R.correoMiembroFK)";
+            string consulta = "SELECT DISTINCT U.nombre, U.apellido1, U.apellido2, U.correo FROM Usuario U JOIN Revisa R ON U.correo = R.correoMiembroFK WHERE R.articuloIdFK = @articuloId AND (R.estadoRevision = 'Acepta colaborar' OR R.estadoRevision = 'Rechaza colaborar' OR R.estadoRevision = 'Colaboracion') AND (R.estadoRevision != 'Pendiente revisar' OR R.estadoRevision != 'No asignado')";
             SqlCommand cmd = new SqlCommand(consulta, con);
             cmd.Parameters.AddWithValue("@articuloId", articuloId);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
@@ -285,6 +284,37 @@ namespace ComunidadDePracticaMVC.Services
                     });
             }
             return posiblesRevisores;
+        }
+
+        public bool AceptarRevisor(int articuloId, string correoRevisor)
+        {
+            bool exito = true;
+            string operacion = "UPDATE Revisa SET estadoRevision = 'Pendiente revisar' WHERE correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
+            Connection();
+            SqlCommand cmd = new SqlCommand(operacion, con);
+            cmd.Parameters.AddWithValue("@correo", correoRevisor);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+
+            con.Open();
+            exito = cmd.ExecuteNonQuery() > 0;
+            con.Close();
+            return exito;
+        }
+
+        //Actualiza la colaboracion de la revision a rechazada
+        public bool RechazarRevisor(int articuloId, string correoRevisor)
+        {
+            bool exito = true;
+            string operacion = "UPDATE Revisa SET estadoRevision = 'No asignado' WHERE correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
+            Connection();
+            SqlCommand cmd = new SqlCommand(operacion, con);
+            cmd.Parameters.AddWithValue("@correo", correoRevisor);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+
+            con.Open();
+            exito = cmd.ExecuteNonQuery() > 0;
+            con.Close();
+            return exito;
         }
     }
 }
