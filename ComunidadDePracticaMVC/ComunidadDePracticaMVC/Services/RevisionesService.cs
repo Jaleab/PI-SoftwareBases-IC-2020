@@ -385,7 +385,7 @@ namespace ComunidadDePracticaMVC.Services
                                         "R.estadoRevision, R.calificacion, R.comentario " +
                               "FROM Revisa R JOIN Miembro M ON M.correoUsuarioFK = R.correoMiembroFK " +
                               "WHERE R.articuloIdFK = @articuloId " +
-                              "AND (R.estadoRevision = 'Aceptado' " +
+                              "AND (R.estadoRevision = 'Aprobado' " +
                                    "OR R.estadoRevision = 'Rechazado' " +
                                    "OR R.estadoRevision = 'Aceptado con modificaciones');";
             SqlCommand cmd = new SqlCommand(consulta, con);
