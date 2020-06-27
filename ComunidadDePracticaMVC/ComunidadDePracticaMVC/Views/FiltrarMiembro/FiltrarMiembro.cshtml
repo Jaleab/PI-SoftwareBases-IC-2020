@@ -1,0 +1,60 @@
+﻿@model ComunidadDePracticaMVC.Models.FiltroMiembroModel
+
+@{
+    List<SelectListItem> listaPaises = new List<SelectListItem>();
+    foreach (var item in ViewBag.listaPaises)
+    {
+        listaPaises.Add(new SelectListItem { Text = item });
+    }
+
+    List<SelectListItem> listaHabilidades = new List<SelectListItem>();
+    foreach (var item in ViewBag.listaHabilidades)
+    {
+        listaHabilidades.Add(new SelectListItem { Text = item });
+    }
+
+    List<SelectListItem> listaIdiomas = new List<SelectListItem>();
+    foreach (var item in ViewBag.listaIdiomas)
+    {
+        listaIdiomas.Add(new SelectListItem { Text = item });
+    }
+
+    List<SelectListItem> listaHobbies = new List<SelectListItem>();
+    foreach (var item in ViewBag.listaHobbies)
+    {
+        listaHobbies.Add(new SelectListItem { Text = item });
+    }
+
+
+
+}
+
+<style>
+    .form-control {
+        margin: 12px 14px;
+        width: 180px;
+        display: inline-table;
+    }
+
+    button {
+        margin-left: 697px;
+        margin-top: 40px;
+        height: 47px;
+    }
+</style>
+
+<h1>Filtrar miembro por: </h1>
+
+@using (Html.BeginForm("Consultar", "FiltrarMiembro", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.DropDownListFor(m => m.paisSeleccionado, listaPaises, "Seleccionar país", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.habilidadSeleccionado, listaHabilidades, "Seleccionar habilidad", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.idiomaSeleccionado, listaIdiomas, "Seleccionar idioma", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.hobbieSeleccionado, listaHobbies, "Seleccionar hobbie", new { @class = "form-control" })
+
+    <button class="btn btn-primary" type="submit" onclick="">
+        Realizar consulta
+    </button>
+
+}

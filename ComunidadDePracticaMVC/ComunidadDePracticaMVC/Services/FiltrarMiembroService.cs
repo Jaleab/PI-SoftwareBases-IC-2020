@@ -6,6 +6,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
+using ComunidadDePracticaMVC.Models; 
+
+
 namespace ComunidadDePracticaMVC.Services
 {
     public class FiltrarMiembroService
@@ -15,6 +18,45 @@ namespace ComunidadDePracticaMVC.Services
         {
             string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString();
             con = new SqlConnection(constring);
+        }
+
+        public List<MiembroModel> getUsuarios()
+        {
+            List<MiembroModel> usuarios = new List<MiembroModel>();
+            
+            connection();
+            string consulta =
+                "SELECT DISTINCT nombre,apellido1, pais,hobbieUsuario, idiomaUsuario, habilidadUsuario " +
+                "FROM Usuario U , Hobbie H, Idioma I, Habilidad HA " +
+                "WHERE U.correo = H.correoUsuarioFK " +
+                "AND U.correo = I.correoUsuarioFK " +
+                "AND U.correo = HA.correoUsuarioFK";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                usuarios.Add(new MiembroModel
+                            {
+                                nombre = Convert.ToString(dr["nombre"]),
+                                apellido = Convert.ToString(dr["apellido1"]),
+                                pais = Convert.ToString(dr["pais"]),
+                                habilidad = Convert.ToString(dr["habilidadUsuario"]),
+                                hobbie = Convert.ToString(dr["hobbieUsuario"]), 
+                                idioma = Convert.ToString(dr["idiomaUsuario"])
+
+                }
+                );
+            }
+
+            return usuarios; 
         }
         public List<String> getPaises()
         {
