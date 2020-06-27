@@ -12,8 +12,7 @@ namespace ComunidadDePracticaMVC.Models
         public List<ArticuloModel> ArticulosEnRevision = new List<ArticuloModel>();
         public List<UsuarioModel> Colaboradores = new List<UsuarioModel>();
         public List<UsuarioModel> Revisores = new List<UsuarioModel>();
-        public int cantidadRevisores { get; set; }
-
+        public int CantidadRevisores { get; set; }
     }
 
     public class FormularioModel

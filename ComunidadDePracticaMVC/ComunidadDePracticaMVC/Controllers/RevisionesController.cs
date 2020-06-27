@@ -178,7 +178,7 @@ namespace ComunidadDePracticaMVC.Controllers
             }
             else 
             {
-                return RedirectToAction("~/AccessDenied");
+                //return RedirectToAction("~/AccessDenied");
             }
         }
         //Envia la revision del articulo
@@ -252,7 +252,58 @@ namespace ComunidadDePracticaMVC.Controllers
                 var datos = servicioUsuarios.GetDatosMiembro(correo);
                 ViewBag.categoria = datos[0];
             }
+            ViewBag.articuloId = articuloId;
             return View(servicioRevisiones.ObtenerPosiblesRevisores(articuloId));
+        }
+
+        public ActionResult DecisionRevisor(int articuloId, string hilera, string correo)
+        {
+            RevisionesService servicioRevisiones = new RevisionesService();
+            ViewBag.articuloId = articuloId;
+            if (hilera == "Aceptar")
+            {
+                bool exito = servicioRevisiones.AceptarRevisor(articuloId, correo);
+                if (exito)
+                {
+                    @TempData["Message"] = "Se aceptó como revisor.";
+                }
+                else
+                {
+                    @TempData["Message"] = "Falló la operación.";
+                }
+            }
+            else {
+                if (hilera == "Rechazar") {
+                    bool exito = servicioRevisiones.RechazarRevisor(articuloId, correo);
+                    if (exito)
+                    {
+                        @TempData["Message"] = "Se rechazó como revisor.";
+                    }
+                    else
+                    {
+                        @TempData["Message"] = "Falló la operación.";
+                    }
+                }                 
+            }            
+            return RedirectToAction("DecidirRevisores", "Revisiones", new { articuloId });
+        }
+
+        public ActionResult ArticulosEnRevisionPorMiembros() {
+            ViewBag.categoria = "";
+            ViewBag.revisiones = new RevisionesModel();
+            RevisionesService servicioRevisiones = new RevisionesService();
+            if (User.Identity.IsAuthenticated)
+            {
+                string correo = User.Identity.Name.ToString();
+                UsuarioService servicioUsuarios = new UsuarioService();
+                var datos = servicioUsuarios.GetDatosMiembro(correo);
+                ViewBag.categoria = datos[0];
+                ViewBag.categoria = datos[0];
+                ViewBag.revisiones = servicioRevisiones.ArticulosEnRevisionPorMiembros();
+                ViewBag.servicioRevision = servicioRevisiones;
+            }
+
+            return View();
         }
 
         [Authorize]

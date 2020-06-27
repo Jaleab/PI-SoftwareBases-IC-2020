@@ -48,35 +48,7 @@ namespace ComunidadDePracticaMVC.Services
 
             return revisiones;
         }
-
-        public RevisionesModel ObtenerArticulosRequierenRevisores()
-        {
-            Connection();
-            string consulta = "SELECT A.articuloId, A.titulo, A.fechaPublicacion FROM Articulo A WHERE A.estado = 'Revision' AND EXISTS(SELECT* FROM Revisa R WHERE R.articuloIdFK= A.articuloID) ORDER BY fechaPublicacion ";
-            SqlCommand cmd = new SqlCommand(consulta, con);
-            SqlDataAdapter sd = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-
-            con.Open();
-            sd.Fill(dt);
-            con.Close();
-
-            RevisionesModel revisiones = new RevisionesModel();
-            List<ArticuloModel> listaArticulos = new List<ArticuloModel>();
-
-            foreach (DataRow dr in dt.Rows)
-            {
-                revisiones.ArticulosEnRevision.Add(
-                    new ArticuloModel
-                    {
-                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
-                        Titulo = Convert.ToString(dr["titulo"]),
-                        FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
-                    });
-            }
-            return revisiones;
-        }
-
+        
         public List<UsuarioModel> ObtenerMiembrosNucleo() {
             List<UsuarioModel> listaUsuarios = new List<UsuarioModel>();
             Connection();
@@ -253,11 +225,38 @@ namespace ComunidadDePracticaMVC.Services
             return exito;
         }
 
+        public RevisionesModel ObtenerArticulosRequierenRevisores()
+        {
+            Connection();
+            string consulta = "SELECT A.articuloId, A.titulo, A.fechaPublicacion FROM Articulo A WHERE A.estado = 'Revision' AND EXISTS(SELECT* FROM Revisa R WHERE R.articuloIdFK= A.articuloID AND A.estado = 'Revision') ORDER BY fechaPublicacion";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            RevisionesModel revisiones = new RevisionesModel();
+            List<ArticuloModel> listaArticulos = new List<ArticuloModel>();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                revisiones.ArticulosEnRevision.Add(
+                    new ArticuloModel
+                    {
+                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Titulo = Convert.ToString(dr["titulo"]),
+                        FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
+                    });
+            }
+            return revisiones;
+        }
 
         public List<UsuarioModel> ObtenerPosiblesRevisores(int articuloId)
         {
             Connection();
-            string consulta = "SELECT U.nombre, U.apellido1, U.apellido2, U.correo FROM Usuario U WHERE U.correo = ANY( SELECT R.correoMiembroFK FROM Revisa R WHERE R.articuloIdFK = @articuloId AND R.estadoRevision = 'Acepta colaborar' OR R.estadoRevision = 'Rechaza colaborar' OR R.estadoRevision = 'Colaboracion' AND U.correo = R.correoMiembroFK)";
+            string consulta = "SELECT DISTINCT U.nombre, U.apellido1, U.apellido2, U.correo FROM Usuario U JOIN Revisa R ON U.correo = R.correoMiembroFK WHERE R.articuloIdFK = @articuloId AND (R.estadoRevision = 'Acepta colaborar' OR R.estadoRevision = 'Rechaza colaborar' OR R.estadoRevision = 'Colaboracion') AND (R.estadoRevision != 'Pendiente revisar' OR R.estadoRevision != 'No asignado')";
             SqlCommand cmd = new SqlCommand(consulta, con);
             cmd.Parameters.AddWithValue("@articuloId", articuloId);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
@@ -281,6 +280,103 @@ namespace ComunidadDePracticaMVC.Services
                     });
             }
             return posiblesRevisores;
+        }
+
+        public bool AceptarRevisor(int articuloId, string correoRevisor)
+        {
+            bool exito = true;
+            string operacion = "UPDATE Revisa SET estadoRevision = 'Pendiente revisar' WHERE correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
+            Connection();
+            SqlCommand cmd = new SqlCommand(operacion, con);
+            cmd.Parameters.AddWithValue("@correo", correoRevisor);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+
+            con.Open();
+            exito = cmd.ExecuteNonQuery() > 0;
+            con.Close();
+            return exito;
+        }
+
+        //Actualiza la colaboracion de la revision a rechazada
+        public bool RechazarRevisor(int articuloId, string correoRevisor)
+        {
+            bool exito = true;
+            string operacion = "UPDATE Revisa SET estadoRevision = 'No asignado' WHERE correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
+            Connection();
+            SqlCommand cmd = new SqlCommand(operacion, con);
+            cmd.Parameters.AddWithValue("@correo", correoRevisor);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+
+            con.Open();
+            exito = cmd.ExecuteNonQuery() > 0;
+            con.Close();
+            return exito;
+        }
+
+
+        //Este metodo retorna un modelo de revisiones cuya lista de articulos en revision corresponde a todos aquellos articulos que tienen asignado un revisor
+        public RevisionesModel ArticulosEnRevisionPorMiembros() {
+            Connection();
+            string consulta =
+            "SELECT A.articuloId, A.titulo, A.fechaPublicacion FROM Articulo A WHERE A.estado = 'Revision' AND EXISTS ( SELECT * FROM Revisa R WHERE R.articuloIdFK= A.articuloId AND ( R.estadoRevision= 'Pendiente revisar' OR R.estadoRevision= 'Aprobado' OR R.estadoRevision= 'Aceptado con modificaciones' OR R.estadoRevision= 'Rechazado' ) )";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            RevisionesModel revisiones = new RevisionesModel();
+            List<ArticuloModel> listaArticulos = new List<ArticuloModel>();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                revisiones.ArticulosEnRevision.Add(
+                    new ArticuloModel
+                    {
+                        ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Titulo = Convert.ToString(dr["titulo"]),
+                        FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
+                    });
+            }
+            return revisiones;
+        }
+
+        public List< Tuple<string,int> > CantidadesPorEstadoArticulosRevision(int articuloId) {
+            
+            Connection();
+            string consulta = "DECLARE @numPendiente INT, @numAprob INT , @numRech INT, @numAcepMod INT "+
+                               "SELECT @numPendiente = COUNT(*) FROM Revisa WHERE estadoRevision = 'Pendiente revisar' AND articuloIdFK = @articuloId "+
+                               "SELECT @numAprob = COUNT(*) FROM Revisa WHERE estadoRevision = 'Aprobado' AND articuloIdFK = @articuloId "+
+                               "SELECT @numAcepMod = COUNT(*) FROM Revisa WHERE estadoRevision = 'Aceptado con modificaciones' AND articuloIdFK = @articuloId "+
+                               "SELECT @numRech = COUNT(*) FROM Revisa WHERE estadoRevision = 'Rechazado' AND articuloIdFK = @articuloId "+
+                               "SELECT @numAcepMod AS[Aceptado con modificaciones] , @numAprob AS[Aprobado], @numRech AS[Rechazado], @numPendiente AS[Pendiente revisar] ";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            
+
+            DataRow dr = dt.Rows[0];
+            Tuple<string, int> par1 = new Tuple<string, int> ("Aceptado con modificaciones", Convert.ToInt32(dr["Aceptado con modificaciones"]));
+            Tuple<string, int> par2 = new Tuple<string, int>("Aprobado", Convert.ToInt32(dr["Aprobado"]));
+            Tuple<string, int> par3 = new Tuple<string, int>("Rechazado", Convert.ToInt32(dr["Rechazado"]));
+            Tuple<string, int> par4 = new Tuple<string, int>("Pendiente revisar", Convert.ToInt32(dr["Pendiente revisar"]));
+
+            List<Tuple<string, int>> valores = new List<Tuple<string, int>> () ;
+            
+            valores.Add(par1);
+            valores.Add(par2);
+            valores.Add(par3);
+            valores.Add(par4);
+
+            return valores;
         }
 
         public List<CalificacionesModel> ObtenerCalificaciones(int articuloId) {
