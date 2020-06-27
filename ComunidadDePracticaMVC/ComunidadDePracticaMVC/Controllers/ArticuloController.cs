@@ -110,7 +110,7 @@ namespace PassParameter.Controllers
             {
                 return RedirectToAction("EditarArticuloLargo", "ArticuloLargo", new { id = articuloModel.ArticuloId });                
             }
-        }  
+        }
 
         public ActionResult EditarArticuloCorto(int id, string mensaje)
         {
@@ -118,7 +118,8 @@ namespace PassParameter.Controllers
             {
                 ViewBag.Message = TempData["Message"].ToString();
             }
-            else {
+            else
+            {
                 ViewBag.mensaje = mensaje;
             }
             ArticuloService servicioArticulo = new ArticuloService();

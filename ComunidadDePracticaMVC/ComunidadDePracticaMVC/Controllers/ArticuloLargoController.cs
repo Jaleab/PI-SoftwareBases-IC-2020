@@ -70,7 +70,7 @@ namespace ComunidadDePracticaMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult Editar(int id, ArticuloLargoViewModel model, string hilera)
+        public ActionResult Editar(int id, ArticuloModel model, string hilera)
         {
             ArticuloService servicioArticulo = new ArticuloService();
             bool exito = servicioArticulo.EditarArticuloLargo(id, model, hilera);

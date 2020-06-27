@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace ComunidadDePracticaMVC.Models
@@ -43,6 +46,10 @@ namespace ComunidadDePracticaMVC.Models
         public string FechaPublicacion { get; set; }
 
         public string TipoArchivo { get; set; }
+
+        [Required]
+        [DisplayName("Artículo con fórmato PDF")]
+        public HttpPostedFileBase Archivo { get; set; }
 
         public int Likes { get; set; }
 

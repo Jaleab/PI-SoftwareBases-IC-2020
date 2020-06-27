@@ -6,5 +6,11 @@
     <li>@Html.ActionLink("Mis Articulos", "MisArticulos", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Mi perfil" })</li>
     <!--<li class="sidebar-divider"></li>-->
     <li class="sidebar-divider"></li>
+    <li> @Html.ActionLink("Crear Artículo Largo", "Index", "ArticuloLargo") </li>
+    <li> @Html.ActionLink("Crear Artículo Corto", "Create", "Articulo") </li>
+    <li class="sidebar-divider"></li>
+    <li> @Html.ActionLink("Ver Miembros", "UsuariosComunidad", "Usuario") </li>
+    <li> @Html.ActionLink("Asignar Meritos", "ArticulosCalificados", "Articulo") </li>
+    <li class="sidebar-divider"></li>
 }
 
