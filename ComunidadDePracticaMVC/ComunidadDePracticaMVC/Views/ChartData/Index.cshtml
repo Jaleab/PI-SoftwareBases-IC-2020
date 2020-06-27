@@ -48,7 +48,8 @@
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        precision: 0
                     }
                 }]
             }
@@ -61,7 +62,7 @@
         type: 'bar',
         // The data for our dataset
         data: {
-            labels:@Html.Raw(ViewBag.LabelPais),
+            labels:@Html.Raw(ViewBag.LabelHabilidad),
             datasets: [{
                 label: 'Cantidad de miembros por habilidades',
                 backgroundColor: [
@@ -73,7 +74,7 @@
                 'rgba(255, 159, 64, 0.2)'
                 ],
                 borderColor: 'rgb(255, 99, 132)',
-                data:@Html.Raw(ViewBag.DataPais)
+                data:@Html.Raw(ViewBag.DataHabilidad)
             }]
         },
         // Configuration options go here
@@ -81,7 +82,8 @@
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true, 
+                        precision: 0
                     }
                 }]
             }}
@@ -93,7 +95,7 @@
         type: 'bar',
         // The data for our dataset
         data: {
-            labels:@Html.Raw(ViewBag.LabelPais),
+            labels:@Html.Raw(ViewBag.LabelHobbie),
             datasets: [{
                 label: 'Cantidad de miembros por hobbies',
                 backgroundColor: [
@@ -105,7 +107,7 @@
                 'rgba(255, 159, 64, 0.2)'
                 ],
                 borderColor: 'rgb(255, 99, 132)',
-                data:@Html.Raw(ViewBag.DataPais)
+                data:@Html.Raw(ViewBag.DataHobbie)
             }]
         },
         // Configuration options go here
@@ -113,7 +115,8 @@
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        precision: 0
                     }
                 }]
             }}
@@ -125,7 +128,7 @@
         type: 'bar',
         // The data for our dataset
         data: {
-            labels:@Html.Raw(ViewBag.LabelPais),
+            labels:@Html.Raw(ViewBag.LabelIdioma),
             datasets: [{
                 label: 'Cantidad de miembros por idiomas',
                 backgroundColor: [
@@ -137,7 +140,7 @@
                 'rgba(255, 159, 64, 0.2)'
                 ],
                 borderColor: 'rgb(255, 99, 132)',
-                data:@Html.Raw(ViewBag.DataPais)
+                data:@Html.Raw(ViewBag.Idioma)
             }]
         },
         // Configuration options go here
@@ -145,7 +148,8 @@
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true, 
+                        precision: 0
                     }
                 }]
             }
