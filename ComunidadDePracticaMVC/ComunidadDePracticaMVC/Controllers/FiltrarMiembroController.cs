@@ -53,30 +53,5 @@ namespace ComunidadDePracticaMVC.Controllers
 
         }
 
-        // GET: FiltrarMiembro
-        public ActionResult FiltrarPorArticulo(FiltroArticulosModel filtro)
-        {
-            /*IMPLEMENTAR*/
-            /*Aqui llama al servicio donde le pasa el filtro, el servicio llama la base de datos y le devuelve la vara*/
-            return View();
-        }
-
-        // GET: FiltrarMiembro
-        public ActionResult FiltrarPorArticuloCategoria(FiltroArticulosCategoriaModel filtro)
-        {
-            /*IMPLEMENTAR*/
-            /*Aqui llama al servicio donde le pasa el filtro, el servicio llama la base de datos y le devuelve la vara*/
-            return View();
-        }
-
-        // GET: FiltrarMiembro
-        public ActionResult FiltrarPorAccesosCategoria(FiltroAccesosCategoriaModel filtro)
-        {
-            /*IMPLEMENTAR*/
-            /*Aqui llama al servicio donde le pasa el filtro, el servicio llama la base de datos y le devuelve la vara*/
-            return View();
-        }
-
-
     }
 }
