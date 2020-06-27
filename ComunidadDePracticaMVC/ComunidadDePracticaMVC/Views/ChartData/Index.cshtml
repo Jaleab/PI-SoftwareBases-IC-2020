@@ -2,27 +2,154 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-<canvas id="myChart"></canvas>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <canvas id="pais" width="200" height="200"></canvas>
+    </div>
+    <div class="col-md-6">
+        <canvas id="habilidad" width="200" height="200"></canvas>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <canvas id="hobbie" width="200" height="200"></canvas>
+    </div>
+    <div class="col-md-6">
+        <canvas id="idioma" width="200" height="200"></canvas>
+    </div>
+</div>
 
 <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
+    var ctx = document.getElementById('pais').getContext('2d');
     var chart = new Chart(ctx, {
         // The type of chart we want to create
         type: 'bar',
         // The data for our dataset
         data: {
-            
-            labels:@Html.Raw(ViewBag.Data),
+            labels:@Html.Raw(ViewBag.LabelPais),
             datasets: [{
                 label: 'Cantidad de miembros por país',
-                backgroundColor: ["red", "blue", "green", "blue", "red", "blue"], 
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+                ],
                 borderColor: 'rgb(255, 99, 132)',
-                data:@Html.Raw(ViewBag.Numbers)
+                data:@Html.Raw(ViewBag.DataPais)
             }]
         },
-
         // Configuration options go here
-        options: {}
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var ctx1 = document.getElementById('habilidad').getContext('2d');
+    var chart = new Chart(ctx1, {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            labels:@Html.Raw(ViewBag.LabelPais),
+            datasets: [{
+                label: 'Cantidad de miembros por habilidades',
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: 'rgb(255, 99, 132)',
+                data:@Html.Raw(ViewBag.DataPais)
+            }]
+        },
+        // Configuration options go here
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }}
+    });
+
+     var ctx2 = document.getElementById('hobbie').getContext('2d');
+    var chart = new Chart(ctx2, {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            labels:@Html.Raw(ViewBag.LabelPais),
+            datasets: [{
+                label: 'Cantidad de miembros por hobbies',
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: 'rgb(255, 99, 132)',
+                data:@Html.Raw(ViewBag.DataPais)
+            }]
+        },
+        // Configuration options go here
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }}
+    });
+
+     var ctx3 = document.getElementById('idioma').getContext('2d');
+    var chart = new Chart(ctx3, {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            labels:@Html.Raw(ViewBag.LabelPais),
+            datasets: [{
+                label: 'Cantidad de miembros por idiomas',
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: 'rgb(255, 99, 132)',
+                data:@Html.Raw(ViewBag.DataPais)
+            }]
+        },
+        // Configuration options go here
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
     });
 </script>
 

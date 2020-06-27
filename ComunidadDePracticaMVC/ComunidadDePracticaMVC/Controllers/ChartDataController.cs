@@ -16,8 +16,11 @@ namespace ComunidadDePracticaMVC.Controllers
             ChartService chartData = new ChartService();
             var labelPais = chartData.ObtenerPaises();
             var numbers = chartData.ObtenerCuentaPaises();
-            ViewBag.Data = Newtonsoft.Json.JsonConvert.SerializeObject(labelPais);
-            ViewBag.Numbers = Newtonsoft.Json.JsonConvert.SerializeObject(numbers);
+            
+            ViewBag.LabelPais = Newtonsoft.Json.JsonConvert.SerializeObject(labelPais);
+            ViewBag.DataPais = Newtonsoft.Json.JsonConvert.SerializeObject(numbers);
+
+
             return View(data);
         }        
     }
