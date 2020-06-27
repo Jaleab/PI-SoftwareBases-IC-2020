@@ -130,68 +130,42 @@ namespace ComunidadDePracticaMVC.Services
 
         public List<int> ObtenerCuentaPaises()
         {
-            List<String> paises = this.ObtenerPaises(); 
             List<int> listaValores = new List<int>();
             connection();
 
-
-            string consulta =
-               "SELECT COUNT(pais) AS 'VALOR' " +
-               "FROM Usuario " + 
-               "WHERE pais = @paisParam";
+            string consulta = "SELECT COUNT(DISTINCT U.correo) AS 'VALOR' FROM Usuario U GROUP BY U.pais;";
 
             SqlCommand cmd = new SqlCommand(consulta, con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
 
-            for (int i = 0; i < paises.Count(); ++i)
-            {
-                cmd.Parameters.Clear(); 
-                cmd.Parameters.AddWithValue("@paisParam", paises[i]);
-                dt.Clear();  
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                con.Open();
-                sd.Fill(dt);
-                con.Close();
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
 
-                DataRow dr = dt.Rows[0];
-                listaValores.Add(Convert.ToInt32(dr["VALOR"])); 
+            foreach (DataRow dr in dt.Rows) {
+                listaValores.Add(Convert.ToInt32(dr["VALOR"]));
             }
             return listaValores;
         }
 
         public List<int> ObtenerCuentaHabilidades()
         {
-            List<String> habilidades = this.ObtenerHabilidades(); 
             List<int> listaValores = new List<int>();
             connection();
 
-
-            string consulta =
-               "SELECT COUNT(habilidadUsuario) AS 'VALOR' " +
-               "FROM Habilidad, Usuario " +
-               "WHERE Habilidad.correoUsuarioFK = Usuario.correo " +
-               "AND habilidadUsuario = @habilidadParam";
+            string consulta = "SELECT COUNT(DISTINCT H.correoUsuarioFK) AS 'VALOR' FROM habilidad H GROUP BY H.habilidadUsuario HAVING H.habilidadUsuario != '';";
 
             SqlCommand cmd = new SqlCommand(consulta, con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
 
-            for (int i = 0; i < habilidades.Count(); ++i)
-            {
-                cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@habilidadParam", habilidades[i]);
-                dt.Clear();
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                con.Open();
-                sd.Fill(dt);
-                con.Close();
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
 
-                DataRow dr = dt.Rows[0];
+            foreach (DataRow dr in dt.Rows)
+            {
                 listaValores.Add(Convert.ToInt32(dr["VALOR"]));
             }
             return listaValores;
@@ -199,34 +173,21 @@ namespace ComunidadDePracticaMVC.Services
 
         public List<int> ObtenerCuentaHobbies()
         {
-            List<String> hobbies = this.ObtenerHobbies();
             List<int> listaValores = new List<int>();
             connection();
 
-
-            string consulta =
-               "SELECT COUNT(hobbieUsuario) AS 'VALOR' " +
-               "FROM Hobbie, Usuario " +
-               "WHERE Hobbie.correoUsuarioFK = Usuario.correo " +
-               "AND hobbieUsuario = @hobbieParam";
+            string consulta = "SELECT COUNT(DISTINCT Ho.correoUsuarioFK) AS 'VALOR' FROM Hobbie Ho GROUP BY Ho.hobbieUsuario HAVING Ho.hobbieUsuario != '';";
 
             SqlCommand cmd = new SqlCommand(consulta, con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
 
-            for (int i = 0; i < hobbies.Count(); ++i)
-            {
-                cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@hobbieParam", hobbies[i]);
-                dt.Clear();
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                con.Open();
-                sd.Fill(dt);
-                con.Close();
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
 
-                DataRow dr = dt.Rows[0];
+            foreach (DataRow dr in dt.Rows)
+            {
                 listaValores.Add(Convert.ToInt32(dr["VALOR"]));
             }
             return listaValores;
@@ -234,34 +195,21 @@ namespace ComunidadDePracticaMVC.Services
 
         public List<int> ObtenerCuentaIdiomas()
         {
-            List<String> idomas = this.ObtenerIdiomas();
             List<int> listaValores = new List<int>();
             connection();
 
-
-            string consulta =
-               "SELECT COUNT(idiomaUsuario) AS 'VALOR' " +
-               "FROM Idioma, Usuario " +
-               "WHERE Idioma.correoUsuarioFK = Usuario.correo " +
-               "AND idiomaUsuario = @idiomaUsuario";
+            string consulta = "SELECT COUNT(DISTINCT I.correoUsuarioFK) AS 'VALOR' FROM Idioma I GROUP BY I.idiomaUsuario HAVING I.idiomaUsuario != '';";
 
             SqlCommand cmd = new SqlCommand(consulta, con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
 
-            for (int i = 0; i < idomas.Count(); ++i)
-            {
-                cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@idiomaUsuario", idomas[i]);
-                dt.Clear();
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                con.Open();
-                sd.Fill(dt);
-                con.Close();
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
 
-                DataRow dr = dt.Rows[0];
+            foreach (DataRow dr in dt.Rows)
+            {
                 listaValores.Add(Convert.ToInt32(dr["VALOR"]));
             }
             return listaValores;

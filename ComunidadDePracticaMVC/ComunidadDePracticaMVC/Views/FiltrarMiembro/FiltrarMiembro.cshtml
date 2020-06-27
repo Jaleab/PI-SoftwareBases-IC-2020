@@ -45,7 +45,7 @@
 
 <h1>Filtrar miembro por: </h1>
 
-@using (Html.BeginForm("ConsultarMiembroPorDatosPersonales", "FiltrarMiembro", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Consultar", "FiltrarMiembro", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.DropDownListFor(m => m.paisSeleccionado, listaPaises, "Seleccionar país", new { @class = "form-control" })

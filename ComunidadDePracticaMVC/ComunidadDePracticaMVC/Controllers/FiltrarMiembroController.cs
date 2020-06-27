@@ -25,6 +25,7 @@ namespace ComunidadDePracticaMVC.Controllers
         [HttpPost]
         public ActionResult Consultar(FiltroMiembroModel filtro)
         {
+            /*
             FiltrarMiembroService filtrarServicio = new FiltrarMiembroService();
             List<MiembroModel> usuarios = filtrarServicio.getUsuarios();
 
@@ -44,17 +45,38 @@ namespace ComunidadDePracticaMVC.Controllers
 
             var noDupsList = new HashSet<MiembroModel>(filterResultes).ToList();  
 
-            return View(noDupsList); 
-        }
-
-        [HttpPost]
-        public ActionResult ConsultarMiembroPorDatosPersonales(FiltroMiembroModel filtro)
-        {
+            return View(noDupsList); */
             FiltrarMiembroService filtrarServicio = new FiltrarMiembroService();
             List<MiembroModel> usuarios = filtrarServicio.GetDatosPersonalesByFiltro(filtro);
 
             return View(usuarios);
+
         }
+
+        // GET: FiltrarMiembro
+        public ActionResult FiltrarPorArticulo(FiltroArticulosModel filtro)
+        {
+            /*IMPLEMENTAR*/
+            /*Aqui llama al servicio donde le pasa el filtro, el servicio llama la base de datos y le devuelve la vara*/
+            return View();
+        }
+
+        // GET: FiltrarMiembro
+        public ActionResult FiltrarPorArticuloCategoria(FiltroArticulosCategoriaModel filtro)
+        {
+            /*IMPLEMENTAR*/
+            /*Aqui llama al servicio donde le pasa el filtro, el servicio llama la base de datos y le devuelve la vara*/
+            return View();
+        }
+
+        // GET: FiltrarMiembro
+        public ActionResult FiltrarPorAccesosCategoria(FiltroAccesosCategoriaModel filtro)
+        {
+            /*IMPLEMENTAR*/
+            /*Aqui llama al servicio donde le pasa el filtro, el servicio llama la base de datos y le devuelve la vara*/
+            return View();
+        }
+
 
     }
 }
