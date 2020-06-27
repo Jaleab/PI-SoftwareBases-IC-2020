@@ -58,6 +58,63 @@ namespace ComunidadDePracticaMVC.Services
 
             return usuarios; 
         }
+
+        public List<MiembroModel> GetDatosPersonalesByFiltro(FiltroMiembroModel filtro)
+        {
+            List<MiembroModel> usuarios = new List<MiembroModel>();
+
+            connection();
+            SqlCommand cmd = new SqlCommand("filtrarMiembroPorDatosPersonales", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            if (filtro.paisSeleccionado == null) {
+                filtro.paisSeleccionado = "";
+            }
+            if (filtro.hobbieSeleccionado == null) {
+                filtro.hobbieSeleccionado = "";
+            }
+            if (filtro.idiomaSeleccionado == null)
+            {
+                filtro.idiomaSeleccionado = "";
+            }
+            if (filtro.habilidadSeleccionado == null)
+            {
+                filtro.habilidadSeleccionado = "";
+            }
+
+            cmd.Parameters.AddWithValue("@pais", filtro.paisSeleccionado);
+            cmd.Parameters.AddWithValue("@hobbie", filtro.hobbieSeleccionado);
+            cmd.Parameters.AddWithValue("@idioma", filtro.idiomaSeleccionado);
+            cmd.Parameters.AddWithValue("@habilidad", filtro.habilidadSeleccionado);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                usuarios.Add(new MiembroModel
+                {
+                    correo = Convert.ToString(dr["correo"]),
+                    nombre = Convert.ToString(dr["nombre"]),
+                    apellido = Convert.ToString(dr["apellido1"]),
+                    pais = Convert.ToString(dr["pais"]),
+                    hobbie = Convert.ToString(dr["hobbies"]),
+                    idioma = Convert.ToString(dr["idiomas"]),
+                    habilidad = Convert.ToString(dr["habilidades"])
+
+                }
+                );
+            }
+
+            return usuarios;
+
+        }
+
         public List<String> getPaises()
         {
             List<String> paises = new List<string>();

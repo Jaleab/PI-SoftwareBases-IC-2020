@@ -7,6 +7,8 @@ namespace ComunidadDePracticaMVC.Models
 {
     public class MiembroModel
     {
+        public string correo { get; set; }
+
         public string nombre { get; set; }
 
         public string apellido { get; set; }

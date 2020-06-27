@@ -46,5 +46,15 @@ namespace ComunidadDePracticaMVC.Controllers
 
             return View(noDupsList); 
         }
+
+        [HttpPost]
+        public ActionResult ConsultarMiembroPorDatosPersonales(FiltroMiembroModel filtro)
+        {
+            FiltrarMiembroService filtrarServicio = new FiltrarMiembroService();
+            List<MiembroModel> usuarios = filtrarServicio.GetDatosPersonalesByFiltro(filtro);
+
+            return View(usuarios);
+        }
+
     }
 }
