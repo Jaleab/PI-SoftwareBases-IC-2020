@@ -184,7 +184,7 @@ namespace ComunidadDePracticaMVC.Controllers
             }
             else 
             {
-                return RedirectToAction("~/AccessDenied");
+                //return RedirectToAction("~/AccessDenied");
             }
         }
         //Envia la revision del articulo
@@ -292,6 +292,24 @@ namespace ComunidadDePracticaMVC.Controllers
                 }                 
             }            
             return RedirectToAction("DecidirRevisores", "Revisiones", new { articuloId });
+        }
+
+        public ActionResult ArticulosEnRevisionPorMiembros() {
+            ViewBag.categoria = "";
+            ViewBag.revisiones = new RevisionesModel();
+            RevisionesService servicioRevisiones = new RevisionesService();
+            if (User.Identity.IsAuthenticated)
+            {
+                string correo = User.Identity.Name.ToString();
+                UsuarioService servicioUsuarios = new UsuarioService();
+                var datos = servicioUsuarios.GetDatosMiembro(correo);
+                ViewBag.categoria = datos[0];
+                ViewBag.categoria = datos[0];
+                ViewBag.revisiones = servicioRevisiones.ArticulosEnRevisionPorMiembros();
+                ViewBag.servicioRevision = servicioRevisiones;
+            }
+
+            return View();
         }
 
     }

@@ -384,6 +384,7 @@
     <Content Include="Views\Revisiones\CalificarArticulo.cshtml" />
     <Content Include="Views\Revisiones\ArticulosRequierenRevisores.cshtml" />
     <Content Include="Views\Revisiones\DecidirRevisores.cshtml" />
+    <Content Include="Views\Revisiones\ArticulosEnRevisionPorMiembros.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
