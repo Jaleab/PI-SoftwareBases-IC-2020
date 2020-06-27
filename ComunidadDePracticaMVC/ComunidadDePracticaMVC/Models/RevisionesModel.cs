@@ -32,4 +32,19 @@ namespace ComunidadDePracticaMVC.Models
         
     }
 
+    public class CalificacionesModel { 
+        public int ArticuloId { get; set; }
+        public string Revisor { get; set; }
+        public int MeritoRevisor { get; set; }
+        public string Estado { get; set; }
+        public string Comentario { get; set; }
+        public int Calificacion { get; set; }
+    }
+
+    public class DecisionFinalModel {
+        public int ArticuloId { get; set; }
+        public int NotaFinal { get; set; }
+        public string Decision { get; set; }
+        public string Comentario { get; set; }
+    }
 }

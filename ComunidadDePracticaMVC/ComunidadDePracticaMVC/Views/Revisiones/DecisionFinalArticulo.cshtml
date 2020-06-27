@@ -1,0 +1,224 @@
+﻿@{
+    ViewBag.Title = "Calificación de Artículo";
+    @model ComunidadDePracticaMVC.Models.DecisionFinalModel
+    // Retrieves the cookie that contains your custom FormsAuthenticationTicket.
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+    // Decrypts the FormsAuthenticationTicket that is held in the cookie's .Value property.
+    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+    int merito = (Json.Decode(authTicket.UserData))["Merito"];
+
+}
+
+
+
+<html>
+<head>
+    <script type="text/javascript">
+
+
+        function mostrarContenido() {
+            var contenido = document.getElementById("contenido");
+            var revisiones = document.getElementById("revisiones");
+            var formulario = document.getElementById("formulario");
+            contenido.style.display = "block";
+            revisiones.style.display = "none";
+            formulario.style.display = "none";
+        }
+
+        function mostrarFormulario() {
+            var contenido = document.getElementById("contenido");
+            var revisiones = document.getElementById("revisiones");
+            var formulario = document.getElementById("formulario");
+            formulario.style.display = "block";
+            contenido.style.display = "none";
+            revisiones.style.display = "none";
+        }
+
+        function mostrarRevisiones() {
+            var contenido = document.getElementById("contenido");
+            var revisiones = document.getElementById("revisiones");
+            var formulario = document.getElementById("formulario");
+            revisiones.style.display = "block";
+            formulario.style.display = "none";
+            contenido.style.display = "none";
+        }
+
+    </script>
+
+</head>
+
+@{
+
+    List<SelectListItem> listaEstados = new List<SelectListItem>();
+    listaEstados.Add(new SelectListItem { Text = "Aprobado", Value = "Aprobado" });
+    listaEstados.Add(new SelectListItem { Text = "Rechazado", Value = "Rechazado" });
+    listaEstados.Add(new SelectListItem { Text = "Aceptado con modificaciones", Value = "Aceptado con modificaciones" });
+
+}
+
+
+<body>
+    <div>
+        <h2>Decisión final: @ViewBag.Articulo.Titulo </h2>
+        <br />
+        <h4>Tome una decisión respecto al artículo en base a las calificaciones del núcleo.</h4>
+        <hr />
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarFormulario()"> <i class="fa fa-paint-brush"></i> Decisión Final</button>
+                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarRevisiones()"> <i class="fa fa-paint-brush"></i> Calificaciónes</button>
+                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarContenido()"> <i class="fa fa-book"></i> Artículo </button>
+            </nav>
+        </div>
+    </div>
+    <div id="revisiones" style="display:none">
+        @{
+            if (ViewBag.Calificaciones.Count != 0)
+            {
+                foreach (var revisiones in ViewBag.Calificaciones)
+                {
+
+                    <div class="col-xl-12 col-md-10 mb-12 articulo-element shadow">
+                        <h3>Revisión de @revisiones.Revisor </h3>
+                        <hr />
+                        <div class="article-h2"> <strong>Estado: </strong> @revisiones.Estado  </div>
+                        <div class="article-h2"> <strong>Calificación: </strong> @revisiones.Calificacion </div>
+                        <br />
+                        <div class="article-h2"> <strong> Comentario: </strong></div>
+                        <hr style="margin-top: 0px; margin-bottom: 5px" />
+                        <div class="main-font article-h2">@revisiones.Comentario</div>
+                        <br />
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-xl-12 col-md-10 mb-12 articulo-element shadow">
+                    <h4> Por ahora no hay calificaciones.</h4>
+                </div>
+
+            }
+
+        }
+
+    </div>
+
+    <div id="formulario" style="display:block">
+
+        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+            <h4>Formulario de Revisión:</h4>
+            <hr />
+            @using (Html.BeginForm("TomarDecisionFinal", "Revisiones", new { articuloId = ViewBag.Articulo.ArticuloId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                if (ViewBag.Calificaciones.Count != 0)
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Decision)
+                                @Html.DropDownListFor(model => model.Decision, listaEstados, "--", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Decision, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group ">
+                                <strong>Calificación ponderada:</strong>
+                                <nobr id="puntajeId"> @ViewBag.Ponderado</nobr>
+
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Comentario)
+                                @Html.TextAreaFor(model => model.Comentario, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Comentario, "", new { @class = "text-danger" })
+                            </div>
+
+                            <button type="submit" class="btn box-btn" onsubmit="return false"><i class="fa fa-paper-plane"></i> Enviar </button>
+                            @Html.ActionLink("Cancelar", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Cancelar", @class = "btn box-btn" })
+
+                        </div>
+                    </div>
+                    <br />
+                }
+                else { 
+                    <h4> Por ahora no se puede calificar debido a la falta de calificaciones.</h4>
+                }
+            }
+        </div>
+
+    </div>
+
+    <div id="contenido" style="display:none">
+
+        @if (ViewBag.Articulo.TipoArchivo != "corto")
+        {
+
+            <h3> <strong>Título:</strong> </h3>
+
+            <h4>@ViewBag.Articulo.Titulo</h4>
+
+            <h3> <strong>Autor:</strong> </h3>
+
+            <h4>@ViewBag.Articulo.Autor</h4>
+
+            <h3> <strong>Tópicos: </strong> </h3>
+            <h4> @ViewBag.Articulo.Topico</h4>
+
+            <hr />
+
+            <h3> <strong> Resumen del articulo </strong> </h3>
+            <br />
+            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
+            </div>
+
+            <hr />
+
+
+            <a class="btn box-btn" href="/Articulo/AccederArticuloLargo?idArt=@ViewBag.Articulo.ArticuloId" target="_blank"> Ver archivo</a>
+        }
+        else
+        {
+
+            <h3> <strong>Título:</strong> </h3>
+
+            <h4>@ViewBag.Articulo.Titulo</h4>
+
+            <h3> <strong>Autor:</strong> </h3>
+
+            <h4>@ViewBag.Articulo.Autor</h4>
+
+            <h3> <strong>Tópicos: </strong> </h3>
+            <h4> @ViewBag.Articulo.Topico</h4>
+
+            <hr />
+
+            <h3> <strong> Resumen del articulo: </strong> </h3>
+            <br />
+            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
+            </div>
+            <hr />
+
+            <h3> <strong> Contenido: </strong></h3>
+            <br />
+            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Contenido))
+            </div>
+        }
+
+        <hr />
+
+
+    </div>
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+</body>
+</html>

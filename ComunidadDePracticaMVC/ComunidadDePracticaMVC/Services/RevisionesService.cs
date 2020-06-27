@@ -282,5 +282,42 @@ namespace ComunidadDePracticaMVC.Services
             }
             return posiblesRevisores;
         }
+
+        public List<CalificacionesModel> ObtenerCalificaciones(int articuloId) {
+            Connection();
+            string consulta = "SELECT R.articuloIdFK, R.correoMiembroFK, M.merito, " +
+                                        "R.estadoRevision, R.calificacion, R.comentario " +
+                              "FROM Revisa R JOIN Miembro M ON M.correoUsuarioFK = R.correoMiembroFK " +
+                              "WHERE R.articuloIdFK = @articuloId " +
+                              "AND (R.estadoRevision = 'Aceptado' " +
+                                   "OR R.estadoRevision = 'Rechazado' " +
+                                   "OR R.estadoRevision = 'Aceptado con modificaciones');";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+            List<CalificacionesModel> calificaciones = new List<CalificacionesModel>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                calificaciones.Add(
+                    new CalificacionesModel
+                    {
+                        //aqui pueden ir mas atributos en caso de ser necesario
+                        ArticuloId = Convert.ToInt32(dr["articuloIdFK"]),
+                        Revisor = Convert.ToString(dr["correoMiembroFK"]),
+                        MeritoRevisor = Convert.ToInt32(dr["merito"]),
+                        Estado = Convert.ToString(dr["estadoRevision"]),
+                        Calificacion = Convert.ToInt32(dr["calificacion"]),
+                        Comentario = Convert.ToString(dr["comentario"])
+                        
+                    });
+            }
+            return calificaciones;
+        }
     }
 }

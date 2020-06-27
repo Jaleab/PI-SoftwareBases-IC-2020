@@ -167,16 +167,10 @@ namespace ComunidadDePracticaMVC.Controllers
 
             if (true /*TODO revisar si el aritculo le corresponde al calificador*/)
             {
-                ViewBag.Message = "Usted está visitando un artículo";
-                ViewBag.Reaccion = 2;
                 ArticuloService servicioArticulo = new ArticuloService();
-                UsuarioService servicioUsuarios = new UsuarioService();
-                servicioArticulo.AumentarVisitas(articuloId);
                 ModelState.Clear();
                 if (User.Identity.IsAuthenticated)
                 {
-                    string correo = User.Identity.Name.ToString();
-                    ViewBag.Reaccion = servicioUsuarios.ReaccionDeUsuario(correo, articuloId);
                     ViewBag.Articulo = servicioArticulo.GetInfoArticulo(articuloId);
                 }
                 return View();
@@ -259,6 +253,44 @@ namespace ComunidadDePracticaMVC.Controllers
                 ViewBag.categoria = datos[0];
             }
             return View(servicioRevisiones.ObtenerPosiblesRevisores(articuloId));
+        }
+
+        [Authorize]
+        public ActionResult DecisionFinalArticulo(int articuloId) {
+
+            RevisionesService servicioRevisiones = new RevisionesService();
+            if (CookieHandler.AuthorizeRole(Request.Cookies[FormsAuthentication.FormsCookieName], "Coordinador"))
+            {
+                ArticuloService servicioArticulo = new ArticuloService();
+                List<CalificacionesModel> listaRevisiones = servicioRevisiones.ObtenerCalificaciones(articuloId);
+                //Calcula ponderado
+                int cantRevisiones = listaRevisiones.Count;
+                int calificacionTotal = 0;
+                int ponderado = 0;
+                if (listaRevisiones.Count > 0) {
+                    foreach (CalificacionesModel Revision in listaRevisiones)
+                    {
+                        calificacionTotal += Revision.Calificacion;
+                    }
+                    ponderado = calificacionTotal / cantRevisiones;
+                }
+                ViewBag.Ponderado = ponderado;
+                ViewBag.Calificaciones = listaRevisiones;
+                ViewBag.Articulo = servicioArticulo.GetInfoArticulo(articuloId);
+                
+                ModelState.Clear();
+                return View();
+            }
+            else {
+                return RedirectToAction("Home/AccessDenied");
+            }
+            
+        }
+        [HttpPost]
+        public ActionResult DecisionFinalArticulo(int articuloId, int ponderado, string estado, string comentario ) 
+        {
+
+            return View();
         }
 
     }
