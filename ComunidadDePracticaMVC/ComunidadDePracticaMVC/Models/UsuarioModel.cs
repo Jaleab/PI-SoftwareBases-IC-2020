@@ -20,11 +20,10 @@ namespace ComunidadDePracticaMVC.Models
         [Display(Name = "Primer Apellido")]
         public string Apellido1 { get; set; }
 
-        [Required(ErrorMessage = "Un segundo apellido es requerido.")]
+    
         [Display(Name = "Segundo Apellido")]
         public string Apellido2 { get; set; }
 
-        [Required(ErrorMessage = "Una ciudad es requerida.")]
         [Display(Name = "Ciudad")]
         public string Ciudad { get; set; }
 
@@ -32,9 +31,9 @@ namespace ComunidadDePracticaMVC.Models
         [Display(Name = "País")]
         public string Pais { get; set; }
 
-        [Required(ErrorMessage = "Un idioma es requerido.")]
-        [Display(Name = "Idiomas")]
-        public string Idioma { get; set; }
+        
+        [Display(Name = "Mis Idiomas ")]
+        public List<string> Idioma { get; set; }
 
         [Display(Name = "Merito")]
         public string Merito { get; set; }
@@ -45,13 +44,13 @@ namespace ComunidadDePracticaMVC.Models
         [Display(Name = "Categoría")]
         public string Categoria { get; set; }
 
-        [Required(ErrorMessage = "Una habilidad es requerida.")]
-        [Display(Name = "Habilidades")]
-        public string Habilidad { get; set; }
+        
+        [Display(Name = "Mis Habilidades ")]
+        public List<string> Habilidad { get; set; }
 
-        [Required(ErrorMessage = "Un hobbie es requerido.")]
-        [Display(Name = "Hobbies")]
-        public string Hobbie { get; set; }
+        
+        [Display(Name = "Mis Hobbies ")]
+        public List<string> Hobbie { get; set; }
 
     }
 } 

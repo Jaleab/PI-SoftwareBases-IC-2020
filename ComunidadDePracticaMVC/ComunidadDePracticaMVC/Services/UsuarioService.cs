@@ -22,6 +22,7 @@ namespace ComunidadDePracticaMVC.Services
 
         public UsuarioModel GetProfile(string correo)
         {
+
             Connection();
 
             SqlCommand cmd = new SqlCommand("GetProfile", con)
@@ -37,11 +38,15 @@ namespace ComunidadDePracticaMVC.Services
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             UsuarioModel usuario = new UsuarioModel();
+            usuario.Idioma = new List<string>();
+            usuario.Hobbie = new List<string>();
+            usuario.Habilidad = new List<string>();
 
 
             con.Open();
             sd.Fill(dt);
             con.Close();
+
             //Revisar si no esta vacio
             if (dt.Rows.Count > 0)
             {
@@ -53,26 +58,25 @@ namespace ComunidadDePracticaMVC.Services
                 usuario.Apellido2 = Convert.ToString(dr["apellido2"]);
                 usuario.Ciudad = Convert.ToString(dr["ciudad"]);
                 usuario.Pais = Convert.ToString(dr["pais"]);
-                usuario.Idioma = Convert.ToString(dr["idiomaUsuario"]);
                 usuario.Merito = Convert.ToString(dr["merito"]);
                 usuario.Peso = Convert.ToString(dr["peso"]);
                 usuario.Categoria = Convert.ToString(dr["categoriaMiembro"]);
-                usuario.Habilidad = Convert.ToString(dr["habilidadUsuario"]);
-                usuario.Hobbie = Convert.ToString(dr["hobbieUsuario"]);
-
 
             }
             else {
 
                 usuario.Nombre = "Error de usuario";
             }
+      
+            
             return usuario;
         }
 
 
         public void EditarUsuario(UsuarioModel usuario)
         {
-
+            if (usuario.Apellido2 == null) { usuario.Apellido2 = ""; }
+            if (usuario.Ciudad == null) { usuario.Ciudad = ""; }
             Connection();
 
             SqlCommand cmd = new SqlCommand("EditUsuarioProvisional", con);
@@ -87,82 +91,6 @@ namespace ComunidadDePracticaMVC.Services
 
             con.Open();
             cmd.ExecuteNonQuery();
-
-            //Ve si hay entradas de idioma si no agrega una nueva entrada
-            string queryIdiomaCount = "SELECT COUNT(*) FROM Idioma WHERE correoUsuarioFK=@correo;";
-            SqlCommand commandIdiomaCount = new SqlCommand(queryIdiomaCount, con);
-            commandIdiomaCount.Parameters.AddWithValue("@Correo", usuario.Correo);
-
-            Int32 countIdioma = (Int32)commandIdiomaCount.ExecuteScalar();
-            if (countIdioma > 0)
-            {
-                string queryIdiomaUpdate = "UPDATE Idioma SET idiomaUsuario = @Idioma WHERE correoUsuarioFK=@correo;";
-                SqlCommand commandIdiomaUpdate = new SqlCommand(queryIdiomaUpdate, con);
-                commandIdiomaUpdate.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandIdiomaUpdate.Parameters.AddWithValue("@Idioma", usuario.Idioma);
-                commandIdiomaUpdate.ExecuteNonQuery();
-            }
-            else {
-                string queryIdiomaInsert = "INSERT INTO Idioma (correoUsuarioFK, idiomaUsuario) VALUES(@Correo, @Idioma); ";
-                SqlCommand commandIdiomaInsert = new SqlCommand(queryIdiomaInsert, con);
-                commandIdiomaInsert.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandIdiomaInsert.Parameters.AddWithValue("@Idioma", usuario.Idioma);
-                commandIdiomaInsert.ExecuteNonQuery();
-
-            }
-
-
-            //Ve si hay entradas de HABILIDAD si no agrega una nueva entrada
-            string queryHabilidadCount = "SELECT COUNT(*) FROM Habilidad WHERE correoUsuarioFK=@correo;";
-            SqlCommand commandHabilidadCount = new SqlCommand(queryHabilidadCount, con);
-            commandHabilidadCount.Parameters.AddWithValue("@Correo", usuario.Correo);
-
-            Int32 countHabilidad = (Int32)commandHabilidadCount.ExecuteScalar();
-            if (countHabilidad > 0)
-            {
-                string queryHabilidadUpdate = "UPDATE Habilidad SET habilidadUsuario = @Habilidad WHERE correoUsuarioFK=@correo;";
-                SqlCommand commandHabilidadUpdate = new SqlCommand(queryHabilidadUpdate, con);
-                commandHabilidadUpdate.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandHabilidadUpdate.Parameters.AddWithValue("@Habilidad", usuario.Habilidad);
-                commandHabilidadUpdate.ExecuteNonQuery();
-            }
-            else
-            {
-                string queryHabilidadInsert = "INSERT INTO Habilidad (correoUsuarioFK, habilidadUsuario) VALUES(@Correo, @Habilidad); ";
-                SqlCommand commandHabilidadInsert = new SqlCommand(queryHabilidadInsert, con);
-                commandHabilidadInsert.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandHabilidadInsert.Parameters.AddWithValue("@Habilidad", usuario.Habilidad);
-                commandHabilidadInsert.ExecuteNonQuery();
-
-            }
-
-            
-            //Ve si hay entradas de Hobbie si no agrega una nueva entrada de lo contrario updatea
-            string queryHobbieCount = "SELECT COUNT(*) FROM Hobbie WHERE correoUsuarioFK=@correo;";
-            SqlCommand commandHobbieCount = new SqlCommand(queryHobbieCount, con);
-            commandHobbieCount.Parameters.AddWithValue("@Correo", usuario.Correo);
-
-            Int32 countHobbie = (Int32)commandHobbieCount.ExecuteScalar();
-            if (countHobbie > 0)
-            {
-                string queryHobbieUpdate = "UPDATE Hobbie SET hobbieUsuario = @Hobbie WHERE correoUsuarioFK=@correo;";
-                SqlCommand commandHobbieUpdate = new SqlCommand(queryHobbieUpdate, con);
-                commandHobbieUpdate.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandHobbieUpdate.Parameters.AddWithValue("@Hobbie", usuario.Hobbie);
-                commandHobbieUpdate.ExecuteNonQuery();
-            }
-            else
-            {
-                string queryHobbieInsert = "INSERT INTO Hobbie (correoUsuarioFK, hobbieUsuario) VALUES(@Correo, @Hobbie); ";
-                SqlCommand commandHobbieInsert = new SqlCommand(queryHobbieInsert, con);
-                commandHobbieInsert.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandHobbieInsert.Parameters.AddWithValue("@Hobbie", usuario.Hobbie);
-                commandHobbieInsert.ExecuteNonQuery();
-
-            }
-            //cmd.Parameters.AddWithValue("@Habilidad", usuario.Habilidad);
-            //cmd.Parameters.AddWithValue("@Hobbie", usuario.Hobbie);
-
             con.Close();
         }
 
@@ -178,8 +106,6 @@ namespace ComunidadDePracticaMVC.Services
             con.Open();
             sd.Fill(dt);
             con.Close();
-            
-
             foreach (DataRow dr in dt.Rows)
             {
                 UsuarioList.Add(
@@ -345,6 +271,47 @@ namespace ComunidadDePracticaMVC.Services
             }
             ModificarReacciones(articuloId);
         }
+
+        public void Agregar(string correo, string valor, int tipo)
+        {
+            // Tipo 1= Idioma
+            //Tipo 2= Hobbie
+            //tipo 3= Habilidad
+
+            Connection();
+            SqlCommand cmd;
+            switch (tipo)
+            {
+                case 1:
+                     cmd = new SqlCommand("insert into Idioma values(@correo, @valor)", con);                   
+                    break;
+
+                case 2:  cmd = new SqlCommand("insert into Idioma values(@correo, @valor)", con);
+                    break;
+
+                case 3:  cmd = new SqlCommand("insert into Idioma values(@correo, @valor)", con);
+                    break;
+
+                default: cmd = new SqlCommand();
+                    break;
+
+            }
+
+            cmd.Parameters.AddWithValue("@Correo", correo);
+            cmd.Parameters.AddWithValue("@valor", valor);
+            con.Open();
+            try
+            {
+              cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+
+            }
+            
+            con.Close();
+        }
+
 
 
     }

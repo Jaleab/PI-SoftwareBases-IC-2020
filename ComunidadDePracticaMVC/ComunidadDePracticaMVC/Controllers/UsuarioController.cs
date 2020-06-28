@@ -24,37 +24,18 @@ namespace ComunidadDePracticaMVC.Controllers
         {
 
             UsuarioService usuario = new UsuarioService();
-            return View(usuario.GetProfile(correo));
+            return View( usuario.GetProfile(correo));
         }
 
 
 
         [HttpPost]
-        public JsonResult EditarUsuario(UsuarioModel model)
+        public ActionResult EditarUsuario(UsuarioModel model)
         {
 
             UsuarioService usuarioDb = new UsuarioService();
             usuarioDb.EditarUsuario(model);
-            JsonResult result = Json(new
-            {
-                Correo = model.Correo,
-                Nombre = model.Nombre,
-                Apellido1 = model.Apellido1,
-                Apellido2 = model.Apellido2,
-                Ciudad = model.Ciudad,
-                Pais = model.Pais,
-                Idioma = model.Idioma,
-                Merito = model.Merito,
-                Peso = model.Peso,
-                Categoria = model.Categoria,
-                Habilidad = model.Habilidad,
-                Hobbie = model.Hobbie,
-                responseMessage = "Correo o contraseña incorrecta.",
-                newUrl = ""
-            }
-                );
-
-            return result;
+            return RedirectToAction("DesplegarUsuario", "Usuario", new { correo = model.Correo });
         }
 
         public ActionResult NuevoUsuario()
@@ -140,12 +121,49 @@ namespace ComunidadDePracticaMVC.Controllers
             return RedirectToAction("UsuariosComunidad", "Usuario", new { mensaje = mensajeEvento });
         }
 
-        
-
         public ActionResult MisArticulos(string correo) {
             ViewBag.correo = correo;
             return View();
         }
-       
+
+
+        public ActionResult AgregarIdioma(UsuarioModel model)            
+        {
+            if (model.Idioma[0] !="")
+            {
+                UsuarioService usuario = new UsuarioService();
+                usuario.Agregar(model.Correo, model.Idioma[0],1);
+            }
+            else
+            {}
+            return RedirectToAction("DesplegarEditarUsuario", "Usuario",new {correo= model.Correo });
+        }
+
+        public ActionResult AgregarHobbie(UsuarioModel model)
+        {
+            if (model.Hobbie[0] != "")
+            {
+                UsuarioService usuario = new UsuarioService();
+                usuario.Agregar(model.Correo, model.Hobbie[0],2);
+            }
+            else
+            { }
+            return RedirectToAction("DesplegarEditarUsuario", "Usuario", new { correo = model.Correo });
+        }
+
+        public ActionResult AgregarHabilidad(UsuarioModel model)
+        {
+            if (model.Habilidad[0] != "")
+            {
+                UsuarioService usuario = new UsuarioService();
+                usuario.Agregar(model.Correo, model.Habilidad[0],3);
+            }
+            else
+            { }
+            return RedirectToAction("DesplegarEditarUsuario", "Usuario", new { correo = model.Correo });
+        }
+
+
     }
 }
+

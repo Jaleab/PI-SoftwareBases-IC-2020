@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "DesplegarUsuario";
+
+    string espaciador = " , ";
 }
 
 <html>
@@ -155,7 +157,11 @@
                         @Html.DisplayNameFor(model => model.Idioma)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => model.Idioma)
+                        @foreach (string elemento in Model.Idioma)
+                        {
+                            @Html.DisplayTextFor(model => elemento)
+                            @Html.DisplayTextFor(model => espaciador)
+                        }
                     </td>
                 </tr>
                 <tr>
@@ -164,7 +170,11 @@
                         @Html.DisplayNameFor(model => model.Habilidad)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => model.Habilidad)
+                        @foreach (string elemento in Model.Habilidad)
+                        {
+                            @Html.DisplayTextFor(model => elemento)
+                            @Html.DisplayTextFor(model => espaciador)
+                        }
                     </td>
                 </tr>
                 <tr>
@@ -173,7 +183,11 @@
                         @Html.DisplayNameFor(model => model.Hobbie)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => model.Hobbie)
+                        @foreach (string elemento in Model.Hobbie)
+                        {
+                            @Html.DisplayTextFor(model => elemento)
+                            @Html.DisplayTextFor(model => espaciador)
+                        }
                     </td>
 
                 </tr>
