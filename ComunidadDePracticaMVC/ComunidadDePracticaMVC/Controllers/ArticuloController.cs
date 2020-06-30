@@ -143,34 +143,6 @@ namespace ComunidadDePracticaMVC.Controllers
             return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloId, mensaje = ViewBag.mensaje});
         }
 
-        // GET: Articulo/BorrarArticulo/5
-        public ActionResult BorrarArticulo(int id)
-        {
-            ArticuloService dbArticulo = new ArticuloService();
-            return View(dbArticulo.GetInfoArticulo(id));
-        }
-
-        // POST: Articulo/BorrarArticulo/5
-        [HttpPost]
-        public ActionResult BorrarArticulo(int id, ArticuloModel articulo)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-                ArticuloService dbhandle = new ArticuloService();
-
-                if (dbhandle.BorrarArticulo(id))
-                {
-                    ViewBag.AlertMsg = "Articulo Deleted Successfully";
-                }
-                return RedirectToAction("InicioArticulos");
-            }
-            catch
-            {
-                return RedirectToAction("InicioArticulos");
-            }
-        }
-
         // GET: Articulo/Busqueda/1
         //public ContentResult Busqueda(int id)
         public ActionResult Busqueda(string hilera)

@@ -38,7 +38,7 @@ namespace ComunidadDePracticaMVC.Services
         private string ObtenerAutorDeArticulo(int articuloID)
         { //deberia estar en un modelo de usuarios o autores
             connection();
-            
+
             SqlCommand cmd = new SqlCommand("ObtenerAutorDeArticulo", con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@articuloID", articuloID);
@@ -52,11 +52,11 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
 
             DataRow dr = dt.Rows[0];
- 
+
             return Convert.ToString(dr["correoMiembroFK"]);
         }
 
-        public void AumentarMeritoPorCalificacion(int articuloID,int merito)
+        public void AumentarMeritoPorCalificacion(int articuloID, int merito)
         {
             //esto deberia estar en el modelo de usuarios
             string correoUsuario = ObtenerAutorDeArticulo(articuloID);
@@ -154,17 +154,19 @@ namespace ComunidadDePracticaMVC.Services
 
             string correosConcatenados = "";
             int contador = 0;
-            foreach(var correo in articulo.Correos)
+            foreach (var correo in articulo.Correos)
             {
-                if (contador != articulo.Correos.Count-1){
+                if (contador != articulo.Correos.Count - 1)
+                {
                     correosConcatenados += correo + ',';
                 }
-                else {
+                else
+                {
                     correosConcatenados += correo;
                 }
                 contador += 1;
             }
-            exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, correosConcatenados);
+            exito = exito && AgregarArticuloAPublicacion(articuloIdGuardado, correosConcatenados);
             con.Close();
             return exito;
         }
@@ -193,8 +195,8 @@ namespace ComunidadDePracticaMVC.Services
             articulo.Resumen = Convert.ToString(dr["resumen"]);
             articulo.Titulo = Convert.ToString(dr["titulo"]);
             articulo.Topico = Convert.ToString(dr["topico"]);
-            articulo.TipoArchivo= Convert.ToString(dr["tipoArchivo"]);
-            articulo.Likes= Convert.ToInt32(dr["cantidadLikes"]);
+            articulo.TipoArchivo = Convert.ToString(dr["tipoArchivo"]);
+            articulo.Likes = Convert.ToInt32(dr["cantidadLikes"]);
             articulo.Dislikes = Convert.ToInt32(dr["cantidadNoMeGusta"]);
             articulo.FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]);
 
@@ -276,9 +278,9 @@ namespace ComunidadDePracticaMVC.Services
                         Autor = Convert.ToString(dr["autor"]),
                         Titulo = Convert.ToString(dr["titulo"]),
                         Topico = Convert.ToString(dr["topico"]),
-                        NotaRevision= Convert.ToInt32(dr["notaRevision"]),
+                        NotaRevision = Convert.ToInt32(dr["notaRevision"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
-                        Likes= Convert.ToInt32(dr["cantidadLikes"]),
+                        Likes = Convert.ToInt32(dr["cantidadLikes"]),
                         Dislikes = Convert.ToInt32(dr["cantidadNoMeGusta"])
                     });
             }
@@ -320,7 +322,7 @@ namespace ComunidadDePracticaMVC.Services
             connection();
             cmd = new SqlCommand(
                 "UPDATE Topico" + " " +
-                "SET topico = @Hilera"+ " " +
+                "SET topico = @Hilera" + " " +
                 "WHERE topico = @TopicoAnterior" + " " +
                 "AND articuloIdFk = @ArticuloId", con);
 
@@ -385,27 +387,6 @@ namespace ComunidadDePracticaMVC.Services
             return exito;
         }
 
-        public bool BorrarArticulo(int id)
-        {
-            //establecer la conexion con la base de datos
-            connection();
-            //Ejecutar la consulta de un articulo segun su id
-
-            SqlCommand cmd = new SqlCommand("BorrarArticulo", con);
-            SqlDataAdapter sd = new SqlDataAdapter(cmd);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@ArtId", id);
-
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-            con.Close();
-
-            if (i >= 1)
-                return true;
-            else
-                return false;
-        }
-
         public List<ArticuloModel> GetArticulosTopico(string hilera) //OK
         {
             //establecer la conexion con la base de datos
@@ -440,10 +421,11 @@ namespace ComunidadDePracticaMVC.Services
             return articuloList;
         }
 
-        public bool GuardarArticuloLargo(ArticuloLargoViewModel articulo) {
+        public bool GuardarArticuloLargo(ArticuloLargoViewModel articulo)
+        {
             byte[] bytes;
             bool exito = false;
-            BinaryReader br = new  BinaryReader(articulo.Archivo1.InputStream); //
+            BinaryReader br = new BinaryReader(articulo.Archivo1.InputStream); //
             bytes = br.ReadBytes(articulo.Archivo1.ContentLength);
             connection();
             SqlCommand cmd = new SqlCommand("AgregarNuevoArticuloLargo", con); // elegir procedimiento
@@ -453,14 +435,14 @@ namespace ComunidadDePracticaMVC.Services
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
             cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
-            cmd.Parameters.AddWithValue("@TipoArchivo",  articulo.Archivo1.ContentType);
+            cmd.Parameters.AddWithValue("@TipoArchivo", articulo.Archivo1.ContentType);
 
             con.Open();
 
             try
             {
                 exito = cmd.ExecuteNonQuery() >= 1;
-                                  
+
             }
             catch (Exception e)
             {
@@ -490,7 +472,8 @@ namespace ComunidadDePracticaMVC.Services
             return exito;
         }
 
-        public Tuple<byte[], string> DescargarArticuloLargo(int id) {
+        public Tuple<byte[], string> DescargarArticuloLargo(int id)
+        {
             byte[] bytes;
             string contentType;
             connection();
@@ -514,8 +497,9 @@ namespace ComunidadDePracticaMVC.Services
             return new Tuple<byte[], string>(bytes, contentType);
         }
 
-        public List< List< string > > ObtenerAutoresCorreos() {
-            List< List<string> > listaNombreCorreos = new List< List<string> >();
+        public List<List<string>> ObtenerAutoresCorreos()
+        {
+            List<List<string>> listaNombreCorreos = new List<List<string>>();
 
             connection();
             string consulta =
@@ -529,7 +513,7 @@ namespace ComunidadDePracticaMVC.Services
             con.Open();
             sd.Fill(dt);
             con.Close();
-                       
+
             foreach (DataRow dr in dt.Rows)
             {
                 List<string> listaInterna = new List<string>();
@@ -571,7 +555,8 @@ namespace ComunidadDePracticaMVC.Services
             return listaTopicos;
         }
 
-        public void PonerEnRevision(int id) {
+        public void PonerEnRevision(int id)
+        {
             connection();
             string consulta = "UPDATE Articulo SET estado= 'Revision' WHERE articuloId=@articuloId";
             SqlCommand cmd = new SqlCommand(consulta, con);
@@ -583,7 +568,8 @@ namespace ComunidadDePracticaMVC.Services
 
         }
 
-        private int ObtenerIdArticuloPorTitulo(string titulo) {
+        private int ObtenerIdArticuloPorTitulo(string titulo)
+        {
             int articuloId = -1; // si retorna -1 es porque ocurre un error al intentar obtener el valor
             connection();
             SqlCommand cmd = new SqlCommand(
@@ -602,7 +588,8 @@ namespace ComunidadDePracticaMVC.Services
             return articuloId;
         }
 
-        private bool AgregarArticuloAPublicacion(int articuloId, string correos) {
+        private bool AgregarArticuloAPublicacion(int articuloId, string correos)
+        {
             bool agregado = false;
             connection();
             string[] hileraCorreos = correos.Split(',');
@@ -622,107 +609,4 @@ namespace ComunidadDePracticaMVC.Services
         }
 
     }
-
-    public class questionService
-    {
-        private SqlConnection con;
-        private void connection()
-        {
-            string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn"].ToString();
-            con = new SqlConnection(constring);
-        }
-
-
-        // **************** ADD NEW QUESTIOn *********************
-        public bool AddQuestion(FaqModel preg)
-        {
-            connection();
-            SqlCommand cmd = new SqlCommand("AddNewQuestion", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@pregunta", preg.Pregunta);
-            cmd.Parameters.AddWithValue("@respuesta", preg.Respuesta);
-
-
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-            con.Close();
-
-            if (i >= 1)
-                return true;
-            else
-                return false;
-        }
-
-
-        // ********** VIEW QUESTIOn ********************
-        public List<FaqModel> GetQuestions()
-        {
-            connection();
-            List<FaqModel> studentlist = new List<FaqModel>();
-
-            SqlCommand cmd = new SqlCommand("GetQuestions", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            SqlDataAdapter sd = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-
-            con.Open();
-            sd.Fill(dt);
-            con.Close();
-
-            foreach (DataRow dr in dt.Rows)
-            {
-                studentlist.Add(
-                    new FaqModel
-                    {
-                        Id = Convert.ToInt32(dr["id"]),
-                        Pregunta = Convert.ToString(dr["pregunta"]),
-                        Respuesta = Convert.ToString(dr["respuesta"]),
-
-                    });
-            }
-            return studentlist;
-        }
-
-        // ***************** UPDATE QUESTIOn *********************
-        public bool UpdateQuestion(FaqModel preg)
-        {
-            connection();
-            SqlCommand cmd = new SqlCommand("UpdateQuestion", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@id", preg.Id);
-            cmd.Parameters.AddWithValue("@pregunta", preg.Pregunta);
-            cmd.Parameters.AddWithValue("@respuesta", preg.Respuesta);
-
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-            con.Close();
-
-            if (i >= 1)
-                return true;
-            else
-                return false;
-        }
-
-        // ********************** DELETE QUESTIOn *******************
-        public bool DeleteQuestion(int id)
-        {
-            connection();
-            SqlCommand cmd = new SqlCommand("DeleteQuestion", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@id", id);
-
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-            con.Close();
-
-            if (i >= 1)
-                return true;
-            else
-                return false;
-        }
-    }
-
 }

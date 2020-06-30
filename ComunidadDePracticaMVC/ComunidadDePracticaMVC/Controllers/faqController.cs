@@ -8,9 +8,9 @@ namespace ComunidadDePracticaMVC.Controllers
     public class FaqController : Controller
     {
         // GET: faq
-        public ActionResult Faq()
+        public ActionResult FAQ()
         {
-            questionService dbhandle = new questionService();
+            FaqService dbhandle = new FaqService();
             ModelState.Clear();
             return View(dbhandle.GetQuestions());
         }
@@ -30,14 +30,14 @@ namespace ComunidadDePracticaMVC.Controllers
                 FaqModel pregunta = new FaqModel();
                 pregunta.Pregunta = preguntaStr;
                 pregunta.Respuesta = respuestaStr;
-                questionService serviceFaq = new questionService();
+                FaqService serviceFaq = new FaqService();
                 if (serviceFaq.AddQuestion(pregunta))
                 {
                     ViewBag.Message = "Question Added Successfully";
                     ModelState.Clear();
                 }
                 
-                return RedirectToAction("faq");
+                return RedirectToAction("FAQ");
 
             }
             catch
@@ -49,7 +49,7 @@ namespace ComunidadDePracticaMVC.Controllers
         // GET: faq/Edit/5
         public JsonResult Edit(int id)
         {
-            questionService serviceFaq = new questionService();
+            FaqService serviceFaq = new FaqService();
             List<FaqModel> articuloList = serviceFaq.GetQuestions();
             return Json(articuloList, JsonRequestBehavior.AllowGet);
         }
@@ -64,9 +64,9 @@ namespace ComunidadDePracticaMVC.Controllers
                 pregunta.Id = id;
                 pregunta.Pregunta = preguntaStr;
                 pregunta.Respuesta = respuestaStr;
-                questionService serviceFaq = new questionService();
+                FaqService serviceFaq = new FaqService();
                 serviceFaq.UpdateQuestion(pregunta);
-                return RedirectToAction("faq");
+                return RedirectToAction("FAQ");
             }
             catch
             {
@@ -80,12 +80,12 @@ namespace ComunidadDePracticaMVC.Controllers
         {
             try
             {
-                questionService serviceFaq = new questionService();
+                FaqService serviceFaq = new FaqService();
                 if (serviceFaq.DeleteQuestion(id))
                 {
                     ViewBag.AlertMsg = "Question Deleted Successfully";
                 }
-                return RedirectToAction("faq");
+                return RedirectToAction("FAQ");
             }
             catch
             {
