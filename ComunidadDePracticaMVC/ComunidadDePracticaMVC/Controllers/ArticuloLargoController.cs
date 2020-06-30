@@ -76,7 +76,6 @@ namespace ComunidadDePracticaMVC.Controllers
             }
 
             int articuloId = id;
-            //return View(new { id = articuloId });
             return RedirectToAction("EditarArticuloLargo", "ArticuloLargo", new { id = articuloId, mensaje = ViewBag.mensaje });
         }
 

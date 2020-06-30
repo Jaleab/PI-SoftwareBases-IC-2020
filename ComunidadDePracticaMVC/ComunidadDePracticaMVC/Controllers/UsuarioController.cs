@@ -1,10 +1,7 @@
 ﻿using ComunidadDePracticaMVC.Models;
 using ComunidadDePracticaMVC.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -68,12 +65,6 @@ namespace ComunidadDePracticaMVC.Controllers
         {
             UsuarioService usuario = new UsuarioService();
             return View(usuario.GetProfile(correo));
-        }
-
-        [HttpPost]
-        public String Prueba()
-        {
-            return "JOSTYN";
         }
 
         [Authorize]

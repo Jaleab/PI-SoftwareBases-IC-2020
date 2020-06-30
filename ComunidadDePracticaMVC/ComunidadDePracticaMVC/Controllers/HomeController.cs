@@ -33,17 +33,5 @@ namespace ComunidadDePracticaMVC.Controllers
 
             return View();
         }
-
-        
-
-        public ActionResult ControlarForma()
-        {
-            ViewBag.Message = "Your ControlarForma page.";
-
-            return View();
-        }
-
-        
-
     }
 }

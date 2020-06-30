@@ -300,10 +300,6 @@ namespace ComunidadDePracticaMVC.Services
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
             cmd.Parameters.AddWithValue("@Id", id);
 
-            //con.Open();
-            //cmd.ExecuteNonQuery();
-            //con.Close();
-
             con.Open();
             try
             {
@@ -343,18 +339,13 @@ namespace ComunidadDePracticaMVC.Services
             bytes = br.ReadBytes(articulo.Archivo.ContentLength);
             connection();
             SqlCommand cmd = new SqlCommand("UPDATE Articulo SET titulo = @Titulo, topico = @Topico, resumen = @Resumen, archivo = @Archivo, tipoArchivo = @TipoArchivo WHERE articuloId = @Id", con);
-            //cmd.CommandType = CommandType.StoredProcedure;
+
             cmd.Parameters.AddWithValue("@Archivo", bytes); // completar resto de parametros
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
             cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
             cmd.Parameters.AddWithValue("@TipoArchivo", articulo.Archivo.ContentType);
             cmd.Parameters.AddWithValue("@Id", id);
-
-
-            //con.Open();
-            //cmd.ExecuteNonQuery();
-            //con.Close();
 
             con.Open();
             try

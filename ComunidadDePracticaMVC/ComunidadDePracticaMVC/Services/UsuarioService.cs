@@ -5,9 +5,6 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace ComunidadDePracticaMVC.Services
 {
@@ -161,8 +158,6 @@ namespace ComunidadDePracticaMVC.Services
                 commandHobbieInsert.ExecuteNonQuery();
 
             }
-            //cmd.Parameters.AddWithValue("@Habilidad", usuario.Habilidad);
-            //cmd.Parameters.AddWithValue("@Hobbie", usuario.Hobbie);
 
             con.Close();
         }

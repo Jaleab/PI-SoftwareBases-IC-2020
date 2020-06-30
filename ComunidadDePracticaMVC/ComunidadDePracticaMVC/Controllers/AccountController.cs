@@ -16,10 +16,6 @@ namespace ComunidadDePracticaMVC.Controllers
             return View();
         }
 
-        //
-        // GET: /Account/Login
-        //[AllowAnonymous]
-
         [HttpPost]
         public JsonResult LoginAction(LoginViewModel model)
         {
@@ -29,11 +25,8 @@ namespace ComunidadDePracticaMVC.Controllers
             if (accountDbHandle.LoginUser(model) != -1)
             {
                 UsuarioService usuarioService = new UsuarioService();
-                //TODO get ROL de USUARIO
-                var jsonUsuario = new JavaScriptSerializer().Serialize(usuarioService.GetCookieInfo(model.Email));
 
-                //FormsAuthentication.SetAuthCookie(jsonUsuario, true);
-                //FormsAuthentication.SetAuthCookie(model.Email, true);
+                var jsonUsuario = new JavaScriptSerializer().Serialize(usuarioService.GetCookieInfo(model.Email));
 
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
                 model.Email,
@@ -49,7 +42,6 @@ namespace ComunidadDePracticaMVC.Controllers
                 // Create the cookie.
                 Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
 
-                //TODO hacer que diga que pudo completar la accion
                 result = Json(new
                 {
                     
@@ -69,7 +61,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 }
                 );
             }
-            //ViewBag.ReturnUrl = returnUrl;
+
             return result;
         }
 
@@ -77,13 +69,7 @@ namespace ComunidadDePracticaMVC.Controllers
         {
             return View();
         }
-        //
-        // POST: /Account/Login
 
-
-        //
-        // GET: /Account/Register
-        //[AllowAnonymous]
         [HttpPost]
         public JsonResult RegisterAction(RegisterViewModel model)
         {
@@ -92,11 +78,7 @@ namespace ComunidadDePracticaMVC.Controllers
             if (accountDbHandle.RegisterUser(model) != -1)
             {
                 UsuarioService usuarioService = new UsuarioService();
-                //TODO get ROL de USUARIO
                 var jsonUsuario = new JavaScriptSerializer().Serialize(usuarioService.GetCookieInfo(model.Email));
-
-                //FormsAuthentication.SetAuthCookie(jsonUsuario, true);
-                //FormsAuthentication.SetAuthCookie(model.Email, true);
 
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
                 model.Email,
@@ -112,8 +94,6 @@ namespace ComunidadDePracticaMVC.Controllers
                 // Create the cookie.
                 Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
 
-
-                //TODO hacer que diga que pudo completar la accion
                 result = Json(new
                     {
                         responseStatus = 1,
@@ -137,8 +117,6 @@ namespace ComunidadDePracticaMVC.Controllers
             return result;
         }
 
-        //
-        // POST: /Account/Register
         [Authorize]
         public ActionResult MyProfile(String Name)
         {

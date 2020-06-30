@@ -365,7 +365,6 @@
     <Content Include="Views\Articulo\Create.cshtml" />
     <Content Include="Views\Faq\FAQ.cshtml" />
     <Content Include="Views\Articulo\BorrarArticulo.cshtml" />
-    <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Articulo\ArticulosCalificados.cshtml" />
     <Content Include="Views\ArticuloLargo\Index.cshtml" />
     <Content Include="Views\Usuario\DesplegarEditarUsuario.cshtml" />

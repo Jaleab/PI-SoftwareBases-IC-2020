@@ -1,7 +1,5 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -191,9 +189,10 @@ namespace ComunidadDePracticaMVC.Controllers
             }
             else 
             {
-                //return RedirectToAction("~/AccessDenied");
+                return RedirectToAction("~/AccessDenied");
             }
         }
+
         //Envia la revision del articulo
         [HttpPost]
         [Authorize]
@@ -228,7 +227,6 @@ namespace ComunidadDePracticaMVC.Controllers
 
         }
 
-        
         public ActionResult ArticulosRequierenRevisores()
         {
             if (TempData["Message"] != null)
@@ -350,7 +348,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 return View();
             }
             else {
-                return RedirectToAction("Home/AccessDenied");
+                return RedirectToAction("~/AccessDenied");
             }
             
         }
