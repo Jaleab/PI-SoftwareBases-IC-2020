@@ -126,7 +126,7 @@
     <Compile Include="Controllers\ArticuloLargoController.cs" />
     <Compile Include="Controllers\CorreoController.cs" />
     <Compile Include="Controllers\ArticuloController.cs" />
-    <Compile Include="Controllers\faqController.cs" />
+    <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RevisionesController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />

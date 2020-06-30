@@ -1,6 +1,7 @@
 ﻿using ComunidadDePracticaMVC.ViewModels;
 using System.Web.Mvc;
 using ComunidadDePracticaMVC.Services;
+using ComunidadDePracticaMVC.Models;
 
 namespace ComunidadDePracticaMVC.Controllers
 {

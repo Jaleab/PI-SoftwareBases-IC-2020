@@ -26,9 +26,13 @@
     <li class="sidebar-divider"></li>
     <li> @Html.ActionLink("Crear Artículo Largo", "Index", "ArticuloLargo") </li>
     <li> @Html.ActionLink("Crear Artículo Corto", "Create", "Articulo") </li>
-    <li class="sidebar-divider"></li>
-    <li> @Html.ActionLink("Ver Miembros", "UsuariosComunidad", "Usuario") </li>
-    <li> @Html.ActionLink("Asignar Meritos", "ArticulosCalificados", "Articulo") </li>
+    if (categoria == "Coordinador")
+    {
+        <li class="sidebar-divider"></li>
+        <li> @Html.ActionLink("Ver Miembros", "UsuariosComunidad", "Usuario") </li>
+        <li> @Html.ActionLink("Asignar Meritos", "ArticulosCalificados", "Articulo") </li>
+
+    }
     <li class="sidebar-divider"></li>
 }
 
