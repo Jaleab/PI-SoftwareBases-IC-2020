@@ -18,7 +18,7 @@ namespace ComunidadDePracticaMVC.Controllers
         public ActionResult Guardar(ArticuloLargoViewModel model)
         {
 
-            if (model.Titulo == null || model.Topico == null || model.Correo == null || model.Resumen == null || model.Archivo1 == null)
+            if (model.Titulo == null || model.Topico == null || model.Correos == null || model.Resumen == null || model.Archivo1 == null)
             {
                 ArticuloService servicioArticulo = new ArticuloService();
                 ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
@@ -61,7 +61,7 @@ namespace ComunidadDePracticaMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult Editar(int id, ArticuloLargoViewModel model, string hilera)
+        public ActionResult Editar(int id, ArticuloModel model, string hilera)
         {
             ArticuloService servicioArticulo = new ArticuloService();
             bool exito = servicioArticulo.EditarArticuloLargo(id, model, hilera);

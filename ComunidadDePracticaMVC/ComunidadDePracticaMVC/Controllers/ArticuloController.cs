@@ -66,7 +66,7 @@ namespace ComunidadDePracticaMVC.Controllers
         [HttpPost]
         public ActionResult Create(ArticuloModel model)
         {
-            if (model.Titulo == null || model.Topico == null || model.Correo == null || model.Resumen == null || model.Contenido == null)
+            if (model.Titulo == null || model.Topico == null || model.Correos == null || model.Resumen == null || model.Contenido == null)
             {
                 ArticuloService servicioArt = new ArticuloService();
                 ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
@@ -105,7 +105,7 @@ namespace ComunidadDePracticaMVC.Controllers
             {
                 return RedirectToAction("EditarArticuloLargo", "ArticuloLargo", new { id = articuloModel.ArticuloId });                
             }
-        }  
+        }
 
         public ActionResult EditarArticuloCorto(int id, string mensaje)
         {
@@ -113,7 +113,8 @@ namespace ComunidadDePracticaMVC.Controllers
             {
                 ViewBag.Message = TempData["Message"].ToString();
             }
-            else {
+            else
+            {
                 ViewBag.mensaje = mensaje;
             }
             ArticuloService servicioArticulo = new ArticuloService();

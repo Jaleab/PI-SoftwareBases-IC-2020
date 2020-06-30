@@ -151,7 +151,20 @@ namespace ComunidadDePracticaMVC.Services
                 return exito;
             }
             int articuloIdGuardado = ObtenerIdArticuloPorTitulo(articulo.Titulo);
-            exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, articulo.Correo);
+
+            string correosConcatenados = "";
+            int contador = 0;
+            foreach(var correo in articulo.Correos)
+            {
+                if (contador != articulo.Correos.Count-1){
+                    correosConcatenados += correo + ',';
+                }
+                else {
+                    correosConcatenados += correo;
+                }
+                contador += 1;
+            }
+            exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, correosConcatenados);
             con.Close();
             return exito;
         }
@@ -285,24 +298,24 @@ namespace ComunidadDePracticaMVC.Services
             cmd.Parameters.AddWithValue("@Contenido", articulo.Contenido);
             cmd.Parameters.AddWithValue("@Id", id);
 
-            con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close();
-
             //con.Open();
-            //try
-            //{
-            //    exito = cmd.ExecuteNonQuery() >= 1;
-
-            //}
-            //catch (Exception e)
-            //{
-            //}
+            //cmd.ExecuteNonQuery();
             //con.Close();
-            //if (exito == false)
-            //{
-            //    return exito;
-            //}
+
+            con.Open();
+            try
+            {
+                exito = cmd.ExecuteNonQuery() >= 1;
+
+            }
+            catch (Exception e)
+            {
+            }
+            con.Close();
+            if (exito == false)
+            {
+                return exito;
+            }
 
             connection();
             cmd = new SqlCommand(
@@ -320,12 +333,12 @@ namespace ComunidadDePracticaMVC.Services
             return exito;
         }
 
-        public bool EditarArticuloLargo(int id, ArticuloLargoViewModel articulo, string hilera)
+        public bool EditarArticuloLargo(int id, ArticuloModel articulo, string hilera)
         {
             byte[] bytes;
             bool exito = false;
-            BinaryReader br = new BinaryReader(articulo.Archivo1.InputStream); //
-            bytes = br.ReadBytes(articulo.Archivo1.ContentLength);
+            BinaryReader br = new BinaryReader(articulo.Archivo.InputStream); //
+            bytes = br.ReadBytes(articulo.Archivo.ContentLength);
             connection();
             SqlCommand cmd = new SqlCommand("UPDATE Articulo SET titulo = @Titulo, topico = @Topico, resumen = @Resumen, archivo = @Archivo, tipoArchivo = @TipoArchivo WHERE articuloId = @Id", con);
             //cmd.CommandType = CommandType.StoredProcedure;
@@ -333,7 +346,7 @@ namespace ComunidadDePracticaMVC.Services
             cmd.Parameters.AddWithValue("@Resumen", articulo.Resumen);
             cmd.Parameters.AddWithValue("@Topico", articulo.Topico);
             cmd.Parameters.AddWithValue("@Titulo", articulo.Titulo);
-            cmd.Parameters.AddWithValue("@TipoArchivo", articulo.Archivo1.ContentType);
+            cmd.Parameters.AddWithValue("@TipoArchivo", articulo.Archivo.ContentType);
             cmd.Parameters.AddWithValue("@Id", id);
 
 
@@ -458,7 +471,22 @@ namespace ComunidadDePracticaMVC.Services
                 return exito;
             }
             int articuloIdGuardado = ObtenerIdArticuloPorTitulo(articulo.Titulo);
-            exito=exito && AgregarArticuloAPublicacion(articuloIdGuardado, articulo.Correo);
+
+            string correosConcatenados = "";
+            int contador = 0;
+            foreach (var correo in articulo.Correos)
+            {
+                if (contador != articulo.Correos.Count - 1)
+                {
+                    correosConcatenados += correo + ',';
+                }
+                else
+                {
+                    correosConcatenados += correo;
+                }
+                contador += 1;
+            }
+            exito = exito && AgregarArticuloAPublicacion(articuloIdGuardado, correosConcatenados);
             return exito;
         }
 
@@ -574,17 +602,21 @@ namespace ComunidadDePracticaMVC.Services
             return articuloId;
         }
 
-        private bool AgregarArticuloAPublicacion(int articuloId, string correoAutor) {
+        private bool AgregarArticuloAPublicacion(int articuloId, string correos) {
             bool agregado = false;
             connection();
-            string consulta = "INSERT INTO Publica VALUES(@correoAutor, @articuloId)";
-            SqlCommand cmd = new SqlCommand(consulta, con);
-            cmd.Parameters.AddWithValue("@articuloId", articuloId);
-            cmd.Parameters.AddWithValue("@correoAutor", correoAutor);
+            string[] hileraCorreos = correos.Split(',');
+            foreach (var correo in hileraCorreos)
+            {
+                string consulta = "INSERT INTO Publica VALUES(@correoAutor, @articuloId)";
+                SqlCommand cmd = new SqlCommand(consulta, con);
+                cmd.Parameters.AddWithValue("@articuloId", articuloId);
+                cmd.Parameters.AddWithValue("@correoAutor", correo);
 
-            con.Open();
-            agregado=cmd.ExecuteNonQuery() >= 1;
-            con.Close();
+                con.Open();
+                agregado = cmd.ExecuteNonQuery() >= 1;
+                con.Close();
+            }
 
             return agregado;
         }
