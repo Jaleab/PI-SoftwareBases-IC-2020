@@ -17,6 +17,7 @@ namespace ComunidadDePracticaMVC.Tests.Controllers
         {
             ArticuloController artController = new ArticuloController();
 
+
             ViewResult result = artController.InicioArticulos() as ViewResult;
 
             Assert.IsNotNull(result); 
@@ -30,6 +31,8 @@ namespace ComunidadDePracticaMVC.Tests.Controllers
             ArticuloController artController = new ArticuloController();
 
             ViewResult result = artController.Create() as ViewResult;
+
+            Assert.IsNotNull(result);
         }
 
 
