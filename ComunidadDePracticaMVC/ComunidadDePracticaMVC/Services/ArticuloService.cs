@@ -490,9 +490,8 @@ namespace ComunidadDePracticaMVC.Services
 
         public List<List<string>> ObtenerAutoresCorreos()
         {
-            List<List<string>> listaNombreCorreos = new List<List<string>>();
-
             connection();
+            List<List<string>> listaNombreCorreos = new List<List<string>>();
             string consulta =
                 "SELECT nombre  + \' \' + apellido1   AS [nombre completo], correo " +
                 "FROM Usuario";

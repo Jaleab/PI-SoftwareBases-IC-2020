@@ -49,8 +49,8 @@ namespace ComunidadDePracticaMVC.Services
         }
         //Se obtienen potenciales calificadores de articulos
         public List<UsuarioModel> ObtenerMiembrosNucleo() {
-            List<UsuarioModel> listaUsuarios = new List<UsuarioModel>();
             Connection();
+            List<UsuarioModel> listaUsuarios = new List<UsuarioModel>();
             string consulta = "SELECT correoUsuarioFK FROM Miembro WHERE categoriaMiembro='Núcleo'";
             SqlCommand cmd = new SqlCommand(consulta, con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
@@ -73,9 +73,9 @@ namespace ComunidadDePracticaMVC.Services
         }
         //Agregar a la BD una peticion de revisar el articulo del parametro al autor con correo pasado por parametro
         public bool ColaboracionDeUnMiembro(string correo,int articuloId) {
+            Connection();
             bool exito;
             string operacion = "INSERT INTO Revisa (correoMiembroFK,articuloIdFK,estadoRevision,calificacion,comentario) VALUES(@correo,@articuloId,'Colaboracion',0,' ')";
-            Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
 
             cmd.Parameters.AddWithValue("@correo", correo);
@@ -141,9 +141,9 @@ namespace ComunidadDePracticaMVC.Services
 
         //Actualiza la colaboracion de la revision a aceptada
         public bool AceptarColaboracion(int articuloId, string correoNucleo) {
+            Connection();
             bool exito;
             string operacion = "UPDATE Revisa SET Revisa.estadoRevision = 'Acepta colaborar' WHERE Revisa.correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
-            Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
             cmd.Parameters.AddWithValue("@correo", correoNucleo);
             cmd.Parameters.AddWithValue("@articuloId", articuloId);
@@ -155,11 +155,12 @@ namespace ComunidadDePracticaMVC.Services
         }
 
         //Actualiza la colaboracion de la revision a rechazada
-        public bool RechazarColaboracion(int articuloId, string correoNucleo) {
+        public bool RechazarColaboracion(int articuloId, string correoNucleo) 
+        {
 
+            Connection();
             bool exito;
             string operacion = "UPDATE Revisa SET Revisa.estadoRevision = 'Rechaza colaborar' WHERE Revisa.correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
-            Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
             cmd.Parameters.AddWithValue("@correo", correoNucleo);
             cmd.Parameters.AddWithValue("@articuloId", articuloId);
@@ -206,11 +207,11 @@ namespace ComunidadDePracticaMVC.Services
         //Modifica los datos de un articulo en revision para el autor que ya ha revisado
         public bool AsignarCalificacion(int articuloId, string correoNucleo, int calificacion, FormularioModel model)
         {
+            Connection();
             bool exito;
             string operacion = "UPDATE Revisa " +
                                "SET Revisa.estadoRevision = @estado, Revisa.calificacion = @puntaje, Revisa.comentario = @comentario " +
                                "WHERE Revisa.correoMiembroFK = @correo AND articuloIdFK = @articuloId";
-            Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
             cmd.Parameters.AddWithValue("@correo", correoNucleo);
             cmd.Parameters.AddWithValue("@articuloId", articuloId);
@@ -283,9 +284,9 @@ namespace ComunidadDePracticaMVC.Services
 
         public bool AceptarRevisor(int articuloId, string correoRevisor)
         {
+            Connection();
             bool exito;
             string operacion = "UPDATE Revisa SET estadoRevision = 'Pendiente revisar' WHERE correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
-            Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
             cmd.Parameters.AddWithValue("@correo", correoRevisor);
             cmd.Parameters.AddWithValue("@articuloId", articuloId);
@@ -299,9 +300,9 @@ namespace ComunidadDePracticaMVC.Services
         //Actualiza la colaboracion de la revision a rechazada
         public bool RechazarRevisor(int articuloId, string correoRevisor)
         {
+            Connection();
             bool exito;
             string operacion = "UPDATE Revisa SET estadoRevision = 'No asignado' WHERE correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
-            Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
             cmd.Parameters.AddWithValue("@correo", correoRevisor);
             cmd.Parameters.AddWithValue("@articuloId", articuloId);
