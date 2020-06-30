@@ -61,15 +61,68 @@ namespace ComunidadDePracticaMVC.Services
                 usuario.Merito = Convert.ToString(dr["merito"]);
                 usuario.Peso = Convert.ToString(dr["peso"]);
                 usuario.Categoria = Convert.ToString(dr["categoriaMiembro"]);
+                usuario.Idioma = this.GetMultivaluados(1,correo);
+                usuario.Hobbie = this.GetMultivaluados(2,correo);
+                usuario.Habilidad = this.GetMultivaluados(3, correo);
 
             }
             else {
 
                 usuario.Nombre = "Error de usuario";
             }
-      
-            
+             
+
+
+
             return usuario;
+        }
+
+        private List<string> GetMultivaluados(int tipo, string correo)
+        {
+            List<string> laLista = new List<string>();
+            Connection();
+            string comando;
+            switch (tipo)
+            {
+                case 1:
+                    comando = "getIdiomas";
+                    break;
+
+                case 2:
+                    comando = "GetHobbies";
+                    break;
+
+                case 3:
+                    comando = "GetHabilidades";
+                    break;
+
+                default:
+                    comando = "";
+                    break;
+
+            }
+
+            SqlCommand cmd = new SqlCommand(comando, con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@Correo",
+                Value = correo
+            });
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+            DataRow dr = dt.Rows[0];
+            foreach(var elemento in dr.ItemArray)
+            {
+                laLista.Add(Convert.ToString(elemento));
+            }
+            return laLista;
+
         }
 
 
@@ -286,10 +339,10 @@ namespace ComunidadDePracticaMVC.Services
                      cmd = new SqlCommand("insert into Idioma values(@correo, @valor)", con);                   
                     break;
 
-                case 2:  cmd = new SqlCommand("insert into Idioma values(@correo, @valor)", con);
+                case 2:  cmd = new SqlCommand("insert into Hobbie values(@correo, @valor)", con);
                     break;
 
-                case 3:  cmd = new SqlCommand("insert into Idioma values(@correo, @valor)", con);
+                case 3:  cmd = new SqlCommand("insert into Habilidad values(@correo, @valor)", con);
                     break;
 
                 default: cmd = new SqlCommand();

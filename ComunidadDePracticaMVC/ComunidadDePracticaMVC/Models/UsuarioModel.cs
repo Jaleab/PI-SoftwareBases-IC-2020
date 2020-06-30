@@ -32,7 +32,7 @@ namespace ComunidadDePracticaMVC.Models
         public string Pais { get; set; }
 
         
-        [Display(Name = "Mis Idiomas ")]
+        [Display(Name = "Mis Idiomas: ")]
         public List<string> Idioma { get; set; }
 
         [Display(Name = "Merito")]
@@ -45,11 +45,11 @@ namespace ComunidadDePracticaMVC.Models
         public string Categoria { get; set; }
 
         
-        [Display(Name = "Mis Habilidades ")]
+        [Display(Name = "Mis Habilidades: ")]
         public List<string> Habilidad { get; set; }
 
         
-        [Display(Name = "Mis Hobbies ")]
+        [Display(Name = "Mis Hobbies: ")]
         public List<string> Hobbie { get; set; }
 
     }

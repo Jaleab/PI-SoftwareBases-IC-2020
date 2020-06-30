@@ -34,6 +34,10 @@
 
 
 <h2 align="center">EditarUsuario</h2>
+<br /><br />
+<h4 align="center">
+    Edite el contenido de su perfil, porfavor rellene los espacios incompletos.
+</h4>
 
 
 
@@ -118,27 +122,24 @@
 }
 
 
-    <div class="form-group">
+<div class="form-group">
 
-        @Html.DisplayNameFor(model => model.Habilidad)
-        @foreach (string elemento in Model.Habilidad)
-        {
-            @Html.DisplayTextFor(model => elemento)
-            @Html.DisplayTextFor(model => espaciador)
-        }
-    </div>
-    <br /><br />
+    @Html.DisplayNameFor(model => model.Habilidad)
+    @foreach (string elemento in Model.Habilidad)
+    {
+        @Html.DisplayTextFor(model => elemento)
+        @Html.DisplayTextFor(model => espaciador)
+    }
+</div>
+<br /><br />
 
 @using (Html.BeginForm("EditarUsuario", "Usuario"))
 
 {
 
     @Html.AntiForgeryToken()
-    <h4 align="center">
-        Edite el contenido de su perfil, porfavor rellene los espacios incompletos.
-    </h4>
-    <br />
 
+    <br />
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
