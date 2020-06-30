@@ -1,0 +1,83 @@
+﻿
+<html>
+
+<head>
+    <title>Artículos revisores</title>
+</head>
+
+<body>
+
+    <hr />
+    <div>
+
+        @if (ViewBag.categoria == "Coordinador")
+        {
+
+            <h2>Artículos que requieren revisores.</h2>
+
+            if (ViewBag.Message != null && ViewBag.Message == "Se ha enviado la solicitud")
+            {
+                <div class="alert-success">
+                    @ViewBag.Message
+                </div>
+            }
+            else if (ViewBag.Message == "Falló la operación, intente más tarde")
+            {
+                <div class="alert-danger">
+                    @ViewBag.Message
+                </div>
+            }
+
+            <hr />
+
+
+            foreach (var articulo in ViewBag.revisiones.ArticulosEnRevision)
+            {
+                <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
+
+                    <div class="col-md-6 mr-2">
+                        <div class="row main-font article-h1"> Titulo </div>
+                        <div class="row main-font article-h2"> @articulo.Titulo </div>
+
+                    </div>
+
+                    <div class="box-vertical-divider col-md-1   "></div>
+
+                    <div class="col-md-3 mr-2">
+
+                        <div class="row main-font article-h2">Fecha de publicación</div>
+                        <div class="row main-font article-h2">&#128197 @articulo.FechaPublicacion</div>
+
+                    </div>
+
+                    <div class="box-vertical-divider col-md-1   "></div>
+
+                    <div class="col-md-2 mr-2">
+                        <div class="row">
+                            <div class="row main-font article-h2"></div>
+                            <br />
+                            <a class="btn box-btn" href="@Url.Action("DecidirRevisores", "Revisiones", new { articuloId = articulo.ArticuloId})">Decidir revisores</a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+        }
+        else
+        {
+
+            <h2>Lo sentimos, usted no puede interacturar en esta sección</h2>
+
+        }
+    </div>
+
+
+    <div class="row">
+        <a class="btn box-btn" href="/Home/Index"> Volver a página principal</a>
+    </div>
+
+
+</body>
+</html>
+

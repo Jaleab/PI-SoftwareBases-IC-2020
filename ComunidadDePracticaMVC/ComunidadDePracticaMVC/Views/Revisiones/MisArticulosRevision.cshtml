@@ -1,0 +1,90 @@
+﻿
+
+
+
+<html>
+
+<head>
+    <title> Solicitar colaboradores para revisión </title>
+</head>
+
+<body>
+
+
+    @if (ViewBag.exitoAutorizacion)
+    {
+    <div class="row page-title main-font ">
+        <h2> Solicite a los miembros de núcleo colaboración </h2>
+        @if (ViewBag.Message != null && (ViewBag.Message == "Revisión enviada."))
+        {
+            <div class="alert-success">
+                @ViewBag.Message
+            </div>
+        }
+        else if (ViewBag.Message == "Error al enviar la revisión.")
+        {
+            <div class="alert-danger">
+                @ViewBag.Message
+            </div>
+        }
+        <hr />
+    </div>
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <nav>
+                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulos", "Usuario", new { correo = User.Identity.Name } )"> <i class="fa fa-book"></i> Mis Artículos</a>
+                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulosRevision", "Revisiones")"> <i class="fa fa-paint-brush"></i> Revisión</a>
+                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulosColaboracion", "Revisiones")"> <i class="fa fa-user"></i> Colaboración</a>
+                </nav>
+            </div>
+        </div>
+
+
+        foreach (var articulo in ViewBag.revisiones.ArticulosEnRevision)
+        {
+            <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
+
+                <div class="col-md-6 mr-2">
+                    <div class="row main-font article-h2"> Titulo </div>
+                    <div class="row main-font article-h1"> @articulo.Titulo </div>
+
+                </div>
+
+                <div class="box-vertical-divider col-md-1   "></div>
+
+                <div class="col-md-3 mr-2">
+
+                    <div class="row main-font article-h2">Fecha de publicación</div>
+                    <div class="row main-font article-h2">&#128197 @articulo.FechaPublicacion</div>
+
+                </div>
+
+                <div class="box-vertical-divider col-md-1   "></div>
+
+                <div class="col-md-2 mr-2">
+                    <div class="row">
+                        <div class="row main-font article-h2"></div>
+                        <a class="btn box-btn" href="/Revisiones/CalificarArticulo?articuloId=@articulo.ArticuloId"> Revisar </a>
+                    </div>
+                </div>
+
+            </div>
+        }
+
+    }
+    else
+    {
+
+        <h2>Lo sentimos, usted no puede interacturar en esta sección</h2>
+
+    }
+
+    <div class="row col-md-12">
+        <a class="btn box-btn " href="/Home/Index"> Volver a página principal</a>
+    </div>
+
+
+</body>
+</html>

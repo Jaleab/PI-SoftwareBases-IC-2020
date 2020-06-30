@@ -1,16 +1,38 @@
 ﻿
 @if (User.Identity.IsAuthenticated)
 {
-    <li class="sidebar-title"> @Html.ActionLink("Mi perfil", "DesplegarUsuario", "Usuario", new { correo = User.Identity.Name }, null) </li>
+    // Retrieves the cookie that contains your custom FormsAuthenticationTicket.
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+    // Decrypts the FormsAuthenticationTicket that is held in the cookie's .Value property.
+    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+    string nombreUsuario = (Json.Decode(authTicket.UserData))["Nombre"];
+    string categoria = (Json.Decode(authTicket.UserData))["Categoria"];
+
+    <p class="sidebar-title">@nombreUsuario</p>
+    <li> @Html.ActionLink("Mi perfil", "DesplegarUsuario", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Acceder a mi perfil" }) </li>
     <!--<li> <a href="#"> Crear Articulo </a> </li>-->
-    <li>@Html.ActionLink("Mis Articulos", "MisArticulos", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Mi perfil" })</li>
+    <li>@Html.ActionLink("Mis Articulos", "MisArticulos", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Mis artículos" })</li>
     <!--<li class="sidebar-divider"></li>-->
+    if (categoria == "Núcleo" || categoria == "Coordinador")
+    {
+        <li>@Html.ActionLink("Colaborar Artículos", "MisArticulosColaboracion", "Revisiones", null, htmlAttributes: new { title = "Acceder a colaboración de artículos" })</li>
+        <li>@Html.ActionLink("Revisar Artículos", "MisArticulosRevision", "Revisiones", null, htmlAttributes: new { title = "Acceder a revisar artículos" })</li>
+        if (categoria == "Coordinador")
+        {
+            <li>@Html.ActionLink("Articulos por revisar", "ArticulosRequierenRevision", "Revisiones", null, htmlAttributes: new { title = "" })</li>
+            <li>@Html.ActionLink("Decidir revisores", "ArticulosRequierenRevisores", "Revisiones", null, htmlAttributes: new { title = "" })</li>
+        }
+    }
     <li class="sidebar-divider"></li>
     <li> @Html.ActionLink("Crear Artículo Largo", "Index", "ArticuloLargo") </li>
     <li> @Html.ActionLink("Crear Artículo Corto", "Create", "Articulo") </li>
-    <li class="sidebar-divider"></li>
-    <li> @Html.ActionLink("Ver Miembros", "UsuariosComunidad", "Usuario") </li>
-    <li> @Html.ActionLink("Asignar Meritos", "ArticulosCalificados", "Articulo") </li>
+    if (categoria == "Coordinador")
+    {
+        <li class="sidebar-divider"></li>
+        <li> @Html.ActionLink("Ver Miembros", "UsuariosComunidad", "Usuario") </li>
+        <li> @Html.ActionLink("Asignar Meritos", "ArticulosCalificados", "Articulo") </li>
+
+    }
     <li class="sidebar-divider"></li>
 }
 

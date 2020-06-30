@@ -28,10 +28,6 @@
 
         });
 
-        function verVara() {
-            var windowComparison = ($(document).height() - $(window).height()) - $(window).scrollTop();
-            alert(windowComparison);
-        }
         function loadArticlesData(currentPageNumber) {
             $.ajax({
                 type: "GET",
@@ -150,10 +146,22 @@
         <div class="row page-title main-font ">
             <h2>Articulos de @ViewBag.correo</h2>
             <hr />
+
+            <div class="row">
+                <nav>
+
+                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulos", "Usuario", new { correo = User.Identity.Name } )"> <i class="fa fa-book"></i> Mis Artículos</a>
+                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulosRevision", "Revisiones")"> <i class="fa fa-paint-brush"></i> Revisión</a>
+                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulosColaboracion", "Revisiones")"> <i class="fa fa-user"></i> Colaboración</a>
+                </nav>
+
+            </div>
+
         </div>
         @*<div class="row main-font search-bar">
-                <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
-            </div>*@
+            <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
+        </div>*@
+        
     </div>
     <div>
         <div id="articleList">

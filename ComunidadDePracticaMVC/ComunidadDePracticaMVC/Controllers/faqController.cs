@@ -1,19 +1,14 @@
 ﻿using ComunidadDePracticaMVC.Models;
 using ComunidadDePracticaMVC.Services;
-using Microsoft.Ajax.Utilities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace ComunidadDePracticaMVC.Controllers
 {
-    public class faqController : Controller
+    public class FaqController : Controller
     {
         // GET: faq
-        public ActionResult faq()
+        public ActionResult Faq()
         {
             questionService dbhandle = new questionService();
             ModelState.Clear();
@@ -32,7 +27,7 @@ namespace ComunidadDePracticaMVC.Controllers
         {
             try
             {
-                faqModel pregunta = new faqModel();
+                FaqModel pregunta = new FaqModel();
                 pregunta.Pregunta = preguntaStr;
                 pregunta.Respuesta = respuestaStr;
                 questionService serviceFaq = new questionService();
@@ -55,7 +50,7 @@ namespace ComunidadDePracticaMVC.Controllers
         public JsonResult Edit(int id)
         {
             questionService serviceFaq = new questionService();
-            List<faqModel> articuloList = serviceFaq.GetQuestions();
+            List<FaqModel> articuloList = serviceFaq.GetQuestions();
             return Json(articuloList, JsonRequestBehavior.AllowGet);
         }
 
@@ -65,7 +60,7 @@ namespace ComunidadDePracticaMVC.Controllers
         {
             try
             {
-                faqModel pregunta = new faqModel();
+                FaqModel pregunta = new FaqModel();
                 pregunta.Id = id;
                 pregunta.Pregunta = preguntaStr;
                 pregunta.Respuesta = respuestaStr;

@@ -36,6 +36,7 @@ namespace ComunidadDePracticaMVC
                 "ArticuloLargo/{action}/{hilera}",
                 new { controller = "ArticuloLargo", action = "Index", hilera = UrlParameter.Optional }
             );
+
         }
     }
 }

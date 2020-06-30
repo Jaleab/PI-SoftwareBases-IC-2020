@@ -1,0 +1,92 @@
+﻿
+<html>
+
+<head>
+    <title> Decisión final </title>
+</head>
+
+<body>
+
+    <hr />
+    <div>
+
+        @if (ViewBag.categoria == "Coordinador")
+        {
+
+            if (ViewBag.Message != null && ViewBag.Message == "Se calificó el artículo con éxito")
+            {
+                <div class="alert-success">
+                    @ViewBag.Message
+                </div>
+            }
+            else if (ViewBag.Message == "Algo salió mal, intente de nuevo más tarde")
+            {
+                <div class="text-danger">
+                    @ViewBag.Message
+                </div>
+            }
+
+            <h2> Los siguientes artículos están siendo revisados por miembros de la comunidad </h2>
+
+            <hr />
+
+
+            foreach (var articulo in ViewBag.revisiones.ArticulosEnRevision)
+            {
+                var listaValores = ViewBag.servicioRevision.CantidadesPorEstadoArticulosRevision(articulo.ArticuloId);
+                <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
+
+                    <div class="col-md-6 mr-2">
+                        <div class="row main-font article-h2"> Titulo </div>
+                        <div class="row main-font article-h1"> @articulo.Titulo </div>
+                        <br />
+                        <div class="row main-font article-h2">Fecha de publicación</div>
+                        <div class="row main-font article-h2">&#128197 @articulo.FechaPublicacion</div>
+
+                    </div>
+
+                    <div class="box-vertical-divider col-md-1   "></div>
+
+                    <div class="col-md-3 mr-2">
+
+
+                        <div class="row main-font article-h2"> Resultados actuales </div>
+
+                        <div class="row main-font article-h2"> @listaValores[0].Item1 : @listaValores[0].Item2 </div>
+                        <div class="row main-font article-h2"> @listaValores[1].Item1 : @listaValores[1].Item2 </div>
+                        <div class="row main-font article-h2"> @listaValores[2].Item1 : @listaValores[2].Item2 </div>
+                        <div class="row main-font article-h2"> @listaValores[3].Item1 : @listaValores[3].Item2 </div>
+                    </div>
+
+                    <div class="box-vertical-divider col-md-1   "></div>
+
+
+                    <div class="col-md-2 mr-2">
+                        <div class="row">
+                            <div class="row main-font article-h2"></div>
+                            <a class="btn box-btn" href="/Revisiones/DecisionFinalArticulo?articuloId=@articulo.ArticuloId"> Decisión final </a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+        }
+        else
+        {
+
+            <h2>Lo sentimos, usted no puede interacturar en esta sección</h2>
+
+        }
+    </div>
+
+
+    <div class="row">
+        <a class="btn box-btn" href="/Home/Index"> Volver a página principal</a>
+    </div>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,215 @@
+﻿@{
+    ViewBag.Title = "Calificación de Artículo";
+    @model ComunidadDePracticaMVC.Models.FormularioModel
+    // Retrieves the cookie that contains your custom FormsAuthenticationTicket.
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+    // Decrypts the FormsAuthenticationTicket that is held in the cookie's .Value property.
+    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+    int merito = (Json.Decode(authTicket.UserData))["Merito"];
+
+}
+
+
+
+<html>
+<head>
+    <script type="text/javascript">
+        //Es para actualizar verCalificacion constantemente
+        setInterval(verCalificacion, 1000);
+
+        function mostrarContenido() {
+            var contenido = document.getElementById("contenido");
+            var formulario = document.getElementById("formulario");
+            contenido.style.display = "block";
+            formulario.style.display = "none";
+        }
+
+        function mostrarFormulario() {
+            var contenido = document.getElementById("contenido");
+            var formulario = document.getElementById("formulario");
+            formulario.style.display = "block";
+            contenido.style.display = "none";
+        }
+
+        function verCalificacion() {
+            var opinion = $("#opinionId");
+            var contribucion = $("#contribucionId");
+            var forma = $("#formaId");
+            var puntajeInt = parseInt(opinion.val()) + parseInt(contribucion.val()) + parseInt(forma.val());
+            var puntaje = document.getElementById("puntajeId");
+            if (!isNaN(puntajeInt)) {
+                puntaje.textContent =  ' '+(@merito * puntajeInt) + ' ( Merito ' + @merito + ' x ' + 'Puntaje ' + puntajeInt + ')' ;
+            }
+            else {
+                puntaje.textContent =  '  --';
+            }
+
+        }
+
+
+    </script>
+
+</head>
+
+@{
+    var listaNumeros = new List<SelectListItem>();
+    for (var i = 1; i < 6; i++)
+    {
+        listaNumeros.Add(new SelectListItem { Text = i.ToString(), Value = i.ToString() });
+    }
+
+    List<SelectListItem> listaEstados = new List<SelectListItem>();
+    listaEstados.Add(new SelectListItem { Text = "Aprobado", Value = "Aprobado" });
+    listaEstados.Add(new SelectListItem { Text = "Rechazado", Value = "Rechazado" });
+    listaEstados.Add(new SelectListItem { Text = "Aceptado con modificaciones", Value = "Aceptado con modificaciones" });
+
+}
+
+
+<body>
+    <div>
+        <h2>@ViewBag.Title </h2>
+        <h4>Usted está visitando un artículo largo</h4>
+        <hr />
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarFormulario()"> <i class="fa fa-paint-brush"></i> Calificar</button>
+                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarContenido()"> <i class="fa fa-book"></i> Artículo </button>
+            </nav>
+        </div>
+    </div>
+
+    <div id="formulario" style="display:block">
+
+        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+            <h4>Formulario de Revisión:</h4>
+            <hr />
+            @using (Html.BeginForm("EnviarRevision", "Revisiones", new { articuloId = ViewBag.Articulo.ArticuloId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OpinionGeneral)
+                            @Html.DropDownListFor(model => model.OpinionGeneral, listaNumeros, "--", new { @class = "form-control", @id = "opinionId" })
+                            @Html.ValidationMessageFor(model => model.OpinionGeneral, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Contribucion)
+                            @Html.DropDownListFor(model => model.Contribucion, listaNumeros, "--", new { @class = "form-control", @id = "contribucionId" })
+                            @Html.ValidationMessageFor(model => model.Contribucion, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Forma)
+                            @Html.DropDownListFor(model => model.Forma, listaNumeros, "--", new { @class = "form-control", @id = "formaId" })
+                            @Html.ValidationMessageFor(model => model.Forma, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Estado)
+                            @Html.DropDownListFor(model => model.Estado, listaEstados, "--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+                        </div>
+                        <br />
+                        <div class="form-group ">
+                            <strong>Calificación que asignará:</strong>
+                            <nobr id="puntajeId"></nobr>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Comentario)
+                            @Html.TextAreaFor(model => model.Comentario, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Comentario, "", new { @class = "text-danger" })
+                        </div>
+
+
+
+                        <button type="submit" class="btn box-btn" onsubmit="return false"><i class="fa fa-paper-plane"></i> Enviar </button>
+                        @Html.ActionLink("Cancelar", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Cancelar", @class = "btn box-btn" })
+
+                    </div>
+                </div>
+                <br />
+
+
+            }
+        </div>
+
+    </div>
+    <div id="contenido" style="display:none">
+
+        @if (ViewBag.Articulo.TipoArchivo != "corto")
+        {
+
+            <h3> <strong>Título:</strong> </h3>
+
+            <h4>@ViewBag.Articulo.Titulo</h4>
+
+            <h3> <strong>Autor:</strong> </h3>
+
+            <h4>@ViewBag.Articulo.Autor</h4>
+
+            <h3> <strong>Tópicos: </strong> </h3>
+            <h4> @ViewBag.Articulo.Topico</h4>
+
+            <hr />
+
+            <h3> <strong> Resumen del articulo </strong> </h3>
+            <br />
+            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
+            </div>
+
+            <hr />
+
+
+            <a class="btn box-btn" href="/Articulo/AccederArticuloLargo?idArt=@ViewBag.Articulo.ArticuloId" target="_blank"> Ver archivo</a>
+        }
+        else
+        {
+
+            <h3> <strong>Título:</strong> </h3>
+
+            <h4>@ViewBag.Articulo.Titulo</h4>
+
+            <h3> <strong>Autor:</strong> </h3>
+
+            <h4>@ViewBag.Articulo.Autor</h4>
+
+            <h3> <strong>Tópicos: </strong> </h3>
+            <h4> @ViewBag.Articulo.Topico</h4>
+
+            <hr />
+
+            <h3> <strong> Resumen del articulo: </strong> </h3>
+            <br />
+            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
+            </div>
+            <hr />
+
+            <h3> <strong> Contenido: </strong></h3>
+            <br />
+            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Contenido))
+            </div>
+        }
+
+        <hr />
+
+            
+    </div>
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+</body>
+</html>

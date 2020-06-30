@@ -114,7 +114,8 @@ namespace ComunidadDePracticaMVC.Services
                         Titulo = Convert.ToString(dr["titulo"]),
                         Resumen = Convert.ToString(dr["resumen"]),
                         Topico = Convert.ToString(dr["topico"]),
-                        Contenido = Convert.ToString(dr["contenido"])
+                        Contenido = Convert.ToString(dr["contenido"]),
+                        Estado = Convert.ToString(dr["estado"])
                     });
             }
             return Articulolist;
@@ -228,11 +229,11 @@ namespace ComunidadDePracticaMVC.Services
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
                         Autor = Convert.ToString(dr["autor"]),
                         Titulo = Convert.ToString(dr["titulo"]),
-                        Resumen = Convert.ToString(dr["resumen"]),
                         Topico = Convert.ToString(dr["topico"]),
-                        Contenido = Convert.ToString(dr["contenido"]),
                         NotaRevision = Convert.ToInt32(dr["notaRevision"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
+                        Likes = Convert.ToInt32(dr["cantidadLikes"]),
+                        Dislikes = Convert.ToInt32(dr["cantidadNoMeGusta"]),
                         Estado = Convert.ToString(dr["estado"])
                     });
             }
@@ -274,9 +275,7 @@ namespace ComunidadDePracticaMVC.Services
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
                         Autor = Convert.ToString(dr["autor"]),
                         Titulo = Convert.ToString(dr["titulo"]),
-                        Resumen = Convert.ToString(dr["resumen"]),
                         Topico = Convert.ToString(dr["topico"]),
-                        Contenido = Convert.ToString(dr["contenido"]),
                         NotaRevision= Convert.ToInt32(dr["notaRevision"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"]),
                         Likes= Convert.ToInt32(dr["cantidadLikes"]),
@@ -635,7 +634,7 @@ namespace ComunidadDePracticaMVC.Services
 
 
         // **************** ADD NEW QUESTIOn *********************
-        public bool AddQuestion(faqModel preg)
+        public bool AddQuestion(FaqModel preg)
         {
             connection();
             SqlCommand cmd = new SqlCommand("AddNewQuestion", con);
@@ -657,10 +656,10 @@ namespace ComunidadDePracticaMVC.Services
 
 
         // ********** VIEW QUESTIOn ********************
-        public List<faqModel> GetQuestions()
+        public List<FaqModel> GetQuestions()
         {
             connection();
-            List<faqModel> studentlist = new List<faqModel>();
+            List<FaqModel> studentlist = new List<FaqModel>();
 
             SqlCommand cmd = new SqlCommand("GetQuestions", con);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -674,7 +673,7 @@ namespace ComunidadDePracticaMVC.Services
             foreach (DataRow dr in dt.Rows)
             {
                 studentlist.Add(
-                    new faqModel
+                    new FaqModel
                     {
                         Id = Convert.ToInt32(dr["id"]),
                         Pregunta = Convert.ToString(dr["pregunta"]),
@@ -686,7 +685,7 @@ namespace ComunidadDePracticaMVC.Services
         }
 
         // ***************** UPDATE QUESTIOn *********************
-        public bool UpdateQuestion(faqModel preg)
+        public bool UpdateQuestion(FaqModel preg)
         {
             connection();
             SqlCommand cmd = new SqlCommand("UpdateQuestion", con);
