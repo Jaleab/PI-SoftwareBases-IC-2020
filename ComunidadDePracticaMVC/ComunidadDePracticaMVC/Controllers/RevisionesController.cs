@@ -289,6 +289,10 @@ namespace ComunidadDePracticaMVC.Controllers
         }
 
         public ActionResult ArticulosEnRevisionPorMiembros() {
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
             ViewBag.categoria = "";
             ViewBag.revisiones = new RevisionesModel();
             RevisionesService servicioRevisiones = new RevisionesService();
@@ -338,10 +342,21 @@ namespace ComunidadDePracticaMVC.Controllers
             
         }
         [HttpPost]
-        public ActionResult DecisionFinalArticulo(int articuloId, int ponderado, string estado, string comentario ) 
+        public ActionResult DecisionFinalArticulo(int articuloId, int notaPonderada, DecisionFinalModel model) 
         {
-
-            return View();
+            model.NotaFinal = notaPonderada;
+            model.ArticuloId = articuloId;
+            RevisionesService servicioRevision = new RevisionesService();
+            bool exito = servicioRevision.DecisionFinal(model);
+            if (exito)
+            {
+                @TempData["Message"] = "Se calificó el artículo con éxito";
+            }
+            else
+            {
+                @TempData["Message"] = "Algo salió mal, intente de nuevo más tarde";
+            }
+            return RedirectToAction("ArticulosEnRevisionPorMiembros");
         }
 
     }

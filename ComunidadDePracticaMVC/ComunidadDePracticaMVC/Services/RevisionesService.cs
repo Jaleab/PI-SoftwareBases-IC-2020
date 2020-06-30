@@ -415,5 +415,22 @@ namespace ComunidadDePracticaMVC.Services
             }
             return calificaciones;
         }
+
+        public bool DecisionFinal(DecisionFinalModel modelo) {
+            bool exito = true;
+            string operacion = "UPDATE Articulo SET estado = @estado, notaRevision=@nota, comentario=@comentario WHERE articuloId = @articuloId ";
+            Connection();
+            SqlCommand cmd = new SqlCommand(operacion, con);
+            cmd.Parameters.AddWithValue("@articuloId", modelo.ArticuloId);
+            cmd.Parameters.AddWithValue("@estado", modelo.Decision);
+            cmd.Parameters.AddWithValue("@nota", modelo.NotaFinal);
+            cmd.Parameters.AddWithValue("@comentario", modelo.Comentario);
+
+            con.Open();
+            exito = cmd.ExecuteNonQuery() > 0;
+            con.Close();
+
+            return exito;
+        }
     }
 }

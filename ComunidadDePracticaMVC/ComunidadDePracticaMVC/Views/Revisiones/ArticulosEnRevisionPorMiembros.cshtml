@@ -13,6 +13,19 @@
         @if (ViewBag.categoria == "Coordinador")
         {
 
+            if (ViewBag.Message != null && ViewBag.Message == "Se calificó el artículo con éxito")
+            {
+                <div class="alert-success">
+                    @ViewBag.Message
+                </div>
+            }
+            else if (ViewBag.Message == "Algo salió mal, intente de nuevo más tarde")
+            {
+                <div class="text-danger">
+                    @ViewBag.Message
+                </div>
+            }
+
             <h2> Los siguientes artículos están siendo revisados por miembros de la comunidad </h2>
 
             <hr />
@@ -20,7 +33,7 @@
 
             foreach (var articulo in ViewBag.revisiones.ArticulosEnRevision)
             {
-                var listaValores  = ViewBag.servicioRevision.CantidadesPorEstadoArticulosRevision(articulo.ArticuloId);
+                var listaValores = ViewBag.servicioRevision.CantidadesPorEstadoArticulosRevision(articulo.ArticuloId);
                 <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
 
                     <div class="col-md-6 mr-2">

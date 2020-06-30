@@ -43,7 +43,9 @@ namespace ComunidadDePracticaMVC.Models
     public class DecisionFinalModel {
         public int ArticuloId { get; set; }
         public int NotaFinal { get; set; }
+        [Required(ErrorMessage = "Es necesario que indique su decisión antes de enviar")]
         public string Decision { get; set; }
+        [Required(ErrorMessage = "Un comentario es requerido.")]
         public string Comentario { get; set; }
     }
 }
