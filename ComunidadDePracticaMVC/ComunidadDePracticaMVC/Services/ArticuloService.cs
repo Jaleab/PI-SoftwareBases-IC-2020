@@ -602,7 +602,7 @@ namespace ComunidadDePracticaMVC.Services
 
 
         // **************** ADD NEW QUESTIOn *********************
-        public bool AddQuestion(faqModel preg)
+        public bool AddQuestion(FaqModel preg)
         {
             connection();
             SqlCommand cmd = new SqlCommand("AddNewQuestion", con);
@@ -624,10 +624,10 @@ namespace ComunidadDePracticaMVC.Services
 
 
         // ********** VIEW QUESTIOn ********************
-        public List<faqModel> GetQuestions()
+        public List<FaqModel> GetQuestions()
         {
             connection();
-            List<faqModel> studentlist = new List<faqModel>();
+            List<FaqModel> studentlist = new List<FaqModel>();
 
             SqlCommand cmd = new SqlCommand("GetQuestions", con);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -641,7 +641,7 @@ namespace ComunidadDePracticaMVC.Services
             foreach (DataRow dr in dt.Rows)
             {
                 studentlist.Add(
-                    new faqModel
+                    new FaqModel
                     {
                         Id = Convert.ToInt32(dr["id"]),
                         Pregunta = Convert.ToString(dr["pregunta"]),
@@ -653,7 +653,7 @@ namespace ComunidadDePracticaMVC.Services
         }
 
         // ***************** UPDATE QUESTIOn *********************
-        public bool UpdateQuestion(faqModel preg)
+        public bool UpdateQuestion(FaqModel preg)
         {
             connection();
             SqlCommand cmd = new SqlCommand("UpdateQuestion", con);

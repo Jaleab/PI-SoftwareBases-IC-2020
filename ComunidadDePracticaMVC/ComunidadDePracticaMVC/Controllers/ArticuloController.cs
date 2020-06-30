@@ -1,14 +1,9 @@
-﻿using ComunidadDePracticaMVC.ViewModels;
-using ComunidadDePracticaMVC.Models;
-using System;
+﻿using ComunidadDePracticaMVC.Models;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ComunidadDePracticaMVC.Services;
 
-namespace PassParameter.Controllers
+namespace ComunidadDePracticaMVC.Controllers
 
 {
 

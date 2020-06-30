@@ -33,7 +33,6 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
 
             RevisionesModel revisiones=new RevisionesModel();
-            List<ArticuloModel> listaArticulos = new List<ArticuloModel>();
 
             foreach (DataRow dr in dt.Rows)
             {
@@ -74,7 +73,7 @@ namespace ComunidadDePracticaMVC.Services
         }
 
         public bool ColaboracionDeUnMiembro(string correo,int articuloId) {
-            bool exito = true;
+            bool exito;
             string operacion = "INSERT INTO Revisa (correoMiembroFK,articuloIdFK,estadoRevision,calificacion,comentario) VALUES(@correo,@articuloId,'Colaboracion',0,' ')";
             Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
@@ -142,7 +141,7 @@ namespace ComunidadDePracticaMVC.Services
 
         //Actualiza la colaboracion de la revision a aceptada
         public bool AceptarColaboracion(int articuloId, string correoNucleo) {
-            bool exito = true;
+            bool exito;
             string operacion = "UPDATE Revisa SET Revisa.estadoRevision = 'Acepta colaborar' WHERE Revisa.correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
             Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
@@ -158,7 +157,7 @@ namespace ComunidadDePracticaMVC.Services
         //Actualiza la colaboracion de la revision a rechazada
         public bool RechazarColaboracion(int articuloId, string correoNucleo) {
 
-            bool exito = true;
+            bool exito;
             string operacion = "UPDATE Revisa SET Revisa.estadoRevision = 'Rechaza colaborar' WHERE Revisa.correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
             Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
@@ -207,7 +206,7 @@ namespace ComunidadDePracticaMVC.Services
         //Actualiza la colaboracion de la revision a aceptada
         public bool AsignarCalificacion(int articuloId, string correoNucleo, int calificacion, FormularioModel model)
         {
-            bool exito = true;
+            bool exito;
             string operacion = "UPDATE Revisa " +
                                "SET Revisa.estadoRevision = @estado, Revisa.calificacion = @puntaje, Revisa.comentario = @comentario " +
                                "WHERE Revisa.correoMiembroFK = @correo AND articuloIdFK = @articuloId";
@@ -284,7 +283,7 @@ namespace ComunidadDePracticaMVC.Services
 
         public bool AceptarRevisor(int articuloId, string correoRevisor)
         {
-            bool exito = true;
+            bool exito;
             string operacion = "UPDATE Revisa SET estadoRevision = 'Pendiente revisar' WHERE correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
             Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
@@ -300,7 +299,7 @@ namespace ComunidadDePracticaMVC.Services
         //Actualiza la colaboracion de la revision a rechazada
         public bool RechazarRevisor(int articuloId, string correoRevisor)
         {
-            bool exito = true;
+            bool exito;
             string operacion = "UPDATE Revisa SET estadoRevision = 'No asignado' WHERE correoMiembroFK = @correo AND articuloIdFK = @articuloId;";
             Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);
@@ -361,8 +360,6 @@ namespace ComunidadDePracticaMVC.Services
             sd.Fill(dt);
             con.Close();
 
-            
-
             DataRow dr = dt.Rows[0];
             Tuple<string, int> par1 = new Tuple<string, int> ("Aceptado con modificaciones", Convert.ToInt32(dr["Aceptado con modificaciones"]));
             Tuple<string, int> par2 = new Tuple<string, int>("Aprobado", Convert.ToInt32(dr["Aprobado"]));
@@ -417,7 +414,7 @@ namespace ComunidadDePracticaMVC.Services
         }
 
         public bool DecisionFinal(DecisionFinalModel modelo) {
-            bool exito = true;
+            bool exito;
             string operacion = "UPDATE Articulo SET estado = @estado, notaRevision=@nota, comentario=@comentario WHERE articuloId = @articuloId ";
             Connection();
             SqlCommand cmd = new SqlCommand(operacion, con);

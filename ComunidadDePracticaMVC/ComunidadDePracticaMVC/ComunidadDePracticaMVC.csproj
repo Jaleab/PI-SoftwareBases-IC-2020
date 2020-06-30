@@ -125,7 +125,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ArticuloLargoController.cs" />
     <Compile Include="Controllers\CorreoController.cs" />
-    <Compile Include="Controllers\ExampleController.cs" />
     <Compile Include="Controllers\ArticuloController.cs" />
     <Compile Include="Controllers\faqController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -138,10 +137,8 @@
     <Compile Include="Models\ArticuloLargoViewModel.cs" />
     <Compile Include="Models\ArticuloModel.cs" />
     <Compile Include="Models\CorreoModel.cs" />
-    <Compile Include="Models\faqModel.cs" />
+    <Compile Include="Models\FaqModel.cs" />
     <Compile Include="Models\RevisionesModel.cs" />
-    <Compile Include="Models\StudentDBHandle.cs" />
-    <Compile Include="Models\StudentExample.cs" />
     <Compile Include="Models\AccountDBHandle.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

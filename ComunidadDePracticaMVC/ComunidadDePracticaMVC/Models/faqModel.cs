@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ComunidadDePracticaMVC.Models
 {
-    public class faqModel
+    public class FaqModel
     {
         
         public int Id { get; set; }
