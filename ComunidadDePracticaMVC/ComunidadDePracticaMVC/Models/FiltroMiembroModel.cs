@@ -22,6 +22,12 @@ namespace ComunidadDePracticaMVC.Models
         public string hobbieSeleccionado { get; set; }
 
         public IEnumerable<SelectListItem> Hobbies { get; set; }
+
+        public List<string> hobbiesSeleccionados { get; set; }
+        public List<string> idiomasSeleccionados { get; set; }
+        public List<string> habilidadesSeleccionados { get; set; }
+        public List<string> paisesSeleccionados { get; set; }
+
     }
 
 }

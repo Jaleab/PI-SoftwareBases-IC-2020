@@ -7,8 +7,12 @@ namespace ComunidadDePracticaMVC.Models
 {
     public class ChartDataModel
     {
-        List<int> datos;
         string titulo;
+        List<int> datos;
         List<string> nombres;
+
+        List<string> titulos;
+        List<string> etiquetas;
+        List<int> counts;
     }
 }

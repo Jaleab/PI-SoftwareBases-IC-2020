@@ -4,6 +4,7 @@
     <li class="sidebar-title"> @Html.ActionLink("Mi perfil", "DesplegarUsuario", "Usuario", new { correo = User.Identity.Name }, null) </li>
     <!--<li> <a href="#"> Crear Articulo </a> </li>-->
     <li>@Html.ActionLink("Mis Articulos", "MisArticulos", "Usuario", new { correo = User.Identity.Name }, htmlAttributes: new { title = "Mi perfil" })</li>
+    <li>@Html.ActionLink("Filtrar miembros", "FiltrarMiembro", "FiltrarMiembro", new { correo = User.Identity.Name, graficado = 0 }, htmlAttributes: new { title = "Filtrar" })</li>
     <!--<li class="sidebar-divider"></li>-->
     <li class="sidebar-divider"></li>
 }

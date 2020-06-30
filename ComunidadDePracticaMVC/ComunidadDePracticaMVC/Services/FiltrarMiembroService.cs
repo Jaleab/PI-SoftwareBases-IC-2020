@@ -26,7 +26,7 @@ namespace ComunidadDePracticaMVC.Services
             
             connection();
             string consulta =
-                "SELECT DISTINCT nombre,apellido1, pais,hobbieUsuario, idiomaUsuario, habilidadUsuario " +
+                "SELECT DISTINCT correo, nombre,apellido1, pais,hobbieUsuario, idiomaUsuario, habilidadUsuario " +
                 "FROM Usuario U , Hobbie H, Idioma I, Habilidad HA " +
                 "WHERE U.correo = H.correoUsuarioFK " +
                 "AND U.correo = I.correoUsuarioFK " +
@@ -50,8 +50,8 @@ namespace ComunidadDePracticaMVC.Services
                                 pais = Convert.ToString(dr["pais"]),
                                 habilidad = Convert.ToString(dr["habilidadUsuario"]),
                                 hobbie = Convert.ToString(dr["hobbieUsuario"]), 
-                                idioma = Convert.ToString(dr["idiomaUsuario"])
-
+                                idioma = Convert.ToString(dr["idiomaUsuario"]),
+                                correo = Convert.ToString(dr["correo"])
                 }
                 );
             }
@@ -212,5 +212,48 @@ namespace ComunidadDePracticaMVC.Services
 
             return hobbies;
         }
+
+        public List<MiembroModel> GetMiembrosPorFiltros(string pais, string habilidad, string hobby, string idioma)
+        {
+            List<MiembroModel> usuarios = new List<MiembroModel>();
+
+            connection();
+            SqlCommand cmd = new SqlCommand("filtrarMiembroPorDatosPersonales", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@pais", pais);
+            cmd.Parameters.AddWithValue("@hobbie", hobby);
+            cmd.Parameters.AddWithValue("@idioma", idioma);
+            cmd.Parameters.AddWithValue("@habilidad", habilidad);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                usuarios.Add(new MiembroModel
+                {
+                    correo = Convert.ToString(dr["correo"]),
+                    nombre = Convert.ToString(dr["nombre"]),
+                    apellido = Convert.ToString(dr["apellido1"]),
+                    pais = Convert.ToString(dr["pais"]),
+                    hobbie = Convert.ToString(dr["hobbies"]),
+                    idioma = Convert.ToString(dr["idiomas"]),
+                    habilidad = Convert.ToString(dr["habilidades"])
+
+                }
+                );
+            }
+
+            return usuarios;
+
+        }
     }
+
+
 }
