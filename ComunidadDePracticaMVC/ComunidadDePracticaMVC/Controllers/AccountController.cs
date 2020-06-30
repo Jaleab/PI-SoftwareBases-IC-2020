@@ -25,8 +25,8 @@ namespace ComunidadDePracticaMVC.Controllers
         {
             //Default result
             JsonResult result;
-            AccountDBHandle accountDbHandle = new AccountDBHandle();
-            if (accountDbHandle.loginUser(model) != -1)
+            AccountService accountDbHandle = new AccountService();
+            if (accountDbHandle.LoginUser(model) != -1)
             {
                 UsuarioService usuarioService = new UsuarioService();
                 //TODO get ROL de USUARIO
@@ -88,8 +88,8 @@ namespace ComunidadDePracticaMVC.Controllers
         public JsonResult RegisterAction(RegisterViewModel model)
         {
             JsonResult result;
-            AccountDBHandle accountDbHandle = new AccountDBHandle();
-            if (accountDbHandle.registerUser(model) != -1)
+            AccountService accountDbHandle = new AccountService();
+            if (accountDbHandle.RegisterUser(model) != -1)
             {
                 UsuarioService usuarioService = new UsuarioService();
                 //TODO get ROL de USUARIO

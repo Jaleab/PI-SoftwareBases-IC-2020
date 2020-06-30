@@ -139,10 +139,11 @@
     <Compile Include="Models\CorreoModel.cs" />
     <Compile Include="Models\FaqModel.cs" />
     <Compile Include="Models\RevisionesModel.cs" />
-    <Compile Include="Models\AccountDBHandle.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\ArticuloService.cs" />
+    <Compile Include="Services\FaqService.cs" />
     <Compile Include="Services\RevisionesService.cs" />
     <Compile Include="Services\UsuarioService.cs" />
   </ItemGroup>
@@ -344,7 +345,6 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Articulo\Busqueda.cshtml" />
-    <Content Include="Views\Example\Index.cshtml" />
     <Content Include="Views\Articulo\ConsultarArticulos.cshtml" />
     <Content Include="Views\Articulo\InicioArticulos.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -363,7 +363,7 @@
     <Content Include="Views\Shared\_LayoutSideBar.cshtml" />
     <Content Include="Views\Articulo\EditarArticuloCorto.cshtml" />
     <Content Include="Views\Articulo\Create.cshtml" />
-    <Content Include="Views\faq\FAQ.cshtml" />
+    <Content Include="Views\Faq\FAQ.cshtml" />
     <Content Include="Views\Articulo\BorrarArticulo.cshtml" />
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Articulo\ArticulosCalificados.cshtml" />

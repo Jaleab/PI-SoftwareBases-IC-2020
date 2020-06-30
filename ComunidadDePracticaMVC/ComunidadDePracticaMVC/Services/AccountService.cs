@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
 using Newtonsoft.Json;
-
-namespace ComunidadDePracticaMVC.Models
+using ComunidadDePracticaMVC.Models;
+namespace ComunidadDePracticaMVC.Services
 {
-    public class AccountDBHandle
+    public class AccountService
     {
         private SqlConnection con;
-        private void connection()
+        private void Connection()
         {
             string constring = ConfigurationManager.ConnectionStrings["Grupo3Conn75"].ToString();
             con = new SqlConnection(constring);
 
         }
-        public int registerUser(RegisterViewModel model)
+        public int RegisterUser(RegisterViewModel model)
         {
-            connection();
+            Connection();
             SqlCommand cmd = new SqlCommand("InsertUser", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
@@ -38,10 +36,10 @@ namespace ComunidadDePracticaMVC.Models
             return codereturn;
         }
 
-        public int loginUser(LoginViewModel model)
+        public int LoginUser(LoginViewModel model)
         {
             int codereturn = 0;
-            if (authenticate(model.Email, model.Password))
+            if (Authenticate(model.Email, model.Password))
             {
                 codereturn = 1;
             }
@@ -52,16 +50,16 @@ namespace ComunidadDePracticaMVC.Models
             return codereturn;
         }
 
-        private bool authenticate(string Username, string Password)
+        private bool Authenticate(string Username, string Password)
         {
 
-            connection();
+            Connection();
             SqlCommand cmd = new SqlCommand("SelectUser", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
             string encryp = GetHash(Password, "SHA1");
 
-            cmd.Parameters.AddWithValue("@Email",  Username);
+            cmd.Parameters.AddWithValue("@Email", Username);
             cmd.Parameters.AddWithValue("@Password", encryp);
             con.Open();
             int codereturn = (int)cmd.ExecuteScalar();
@@ -81,8 +79,10 @@ namespace ComunidadDePracticaMVC.Models
         }
     }
 
-    public class CookieHandler {
-        public static bool AuthorizeRole(HttpCookie authCookie, string rolesString) {
+    public class CookieHandler
+    {
+        public static bool AuthorizeRole(HttpCookie authCookie, string rolesString)
+        {
             FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
             CookieModel cookieInfo = JsonConvert.DeserializeObject<CookieModel>(authTicket.UserData);
             bool isInRole = false;
@@ -90,7 +90,8 @@ namespace ComunidadDePracticaMVC.Models
             string[] roles = rolesString.Split(',');
             foreach (string role in roles)
             {
-                if (cookieInfo.Categoria.Equals(role)) { 
+                if (cookieInfo.Categoria.Equals(role))
+                {
                     isInRole = true;
                 }
             }
@@ -98,6 +99,4 @@ namespace ComunidadDePracticaMVC.Models
             return isInRole;
         }
     }
-
-
 }

@@ -18,7 +18,7 @@ namespace ComunidadDePracticaMVC.Services
             con = new SqlConnection(constring);
         }
 
-        //Obtener todos los articulos que han sido enviados a revision
+        //Obtener todos los articulos que han sido enviados a revision, pero aun no tienen revisores asignados
         public RevisionesModel ObtenerArticulosEnRevision() {
             Connection();
             string consulta =
@@ -47,7 +47,7 @@ namespace ComunidadDePracticaMVC.Services
 
             return revisiones;
         }
-        
+        //Se obtienen potenciales calificadores de articulos
         public List<UsuarioModel> ObtenerMiembrosNucleo() {
             List<UsuarioModel> listaUsuarios = new List<UsuarioModel>();
             Connection();
@@ -71,7 +71,7 @@ namespace ComunidadDePracticaMVC.Services
             }
             return listaUsuarios;
         }
-
+        //Agregar a la BD una peticion de revisar el articulo del parametro al autor con correo pasado por parametro
         public bool ColaboracionDeUnMiembro(string correo,int articuloId) {
             bool exito;
             string operacion = "INSERT INTO Revisa (correoMiembroFK,articuloIdFK,estadoRevision,calificacion,comentario) VALUES(@correo,@articuloId,'Colaboracion',0,' ')";
@@ -86,7 +86,7 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
             return exito;
         }
-
+        //invoca ek metodo anterior para hacer un envio masivo de solicitudes
         public bool PedirColaboracionATodos(int articuloId) {
             bool exito = true;
             RevisionesModel revision = new RevisionesModel();
@@ -98,7 +98,7 @@ namespace ComunidadDePracticaMVC.Services
             return exito;
         }
 
-        //obtiene los articulos que fueron solicitados por el coordinador para un miembro del nucleo
+        //Para el autor con correo autorCorreo, recuperar todos los articulos para los cuales se el coordinador pidio colaborar
         public List<ArticuloModel> GetSolicitudesDeColaboracion(int pageNumber, int pageSize, string autorCorreo) //OK
         {
             Connection();
@@ -169,7 +169,7 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
             return exito;
         }
-
+        //Obtener datos de artículos que ya tienen asignados al menos un revisor
         public RevisionesModel ObtenerArticulosAsignadosRevisionAMiembro(string correoMiembro)
         {
             Connection();
@@ -203,7 +203,7 @@ namespace ComunidadDePracticaMVC.Services
             return revisiones;
         }
 
-        //Actualiza la colaboracion de la revision a aceptada
+        //Modifica los datos de un articulo en revision para el autor que ya ha revisado
         public bool AsignarCalificacion(int articuloId, string correoNucleo, int calificacion, FormularioModel model)
         {
             bool exito;
@@ -223,7 +223,7 @@ namespace ComunidadDePracticaMVC.Services
             con.Close();
             return exito;
         }
-
+        //Obtener datos de un articulo
         public RevisionesModel ObtenerArticulosRequierenRevisores()
         {
             Connection();
