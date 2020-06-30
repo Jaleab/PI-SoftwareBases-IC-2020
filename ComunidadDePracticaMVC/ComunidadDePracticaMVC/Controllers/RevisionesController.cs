@@ -30,6 +30,11 @@ namespace ComunidadDePracticaMVC.Controllers
                 ViewBag.categoria = datos[0];
                 ViewBag.revisiones = servicioRevisiones.ObtenerArticulosEnRevision();
             }
+            else
+            {
+                return RedirectToAction("~/AccessDenied");
+            }
+
             return View();
         }
 
@@ -44,13 +49,21 @@ namespace ComunidadDePracticaMVC.Controllers
                 if (TempData["Message"] != null)
                 {
                     ViewBag.Message = TempData["Message"].ToString();
+                    
                 }
+                ViewBag.Acceso = "Se pudo entrar";
                 ViewBag.exitoAutorizacion = true;
-                string correo = User.Identity.Name.ToString();
-                ViewBag.correo = User.Identity.Name.ToString();
+                var auth = Request.Cookies[FormsAuthentication.FormsCookieName];
+                string correo = FormsAuthentication.Decrypt(auth.Value).Name;
+                ViewBag.correo = correo;
                 ViewBag.revisiones = servicioRevisiones.ObtenerArticulosAsignadosRevisionAMiembro(correo);
 
             }
+            else
+            {
+                return RedirectToAction("~/AccessDenied");
+            }
+
             return View();
         }
 

@@ -55,11 +55,12 @@ namespace ComunidadDePracticaMVC.Controllers
         }
 
         // GET: Articulo/Create
+        [Authorize]
         public ActionResult Create()
         {
             ArticuloService servicioArt = new ArticuloService();
             ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
-            ViewBag.listaTopicos = servicioArt.ObtenerTopicos();                       
+            ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
             return View();
         }
 

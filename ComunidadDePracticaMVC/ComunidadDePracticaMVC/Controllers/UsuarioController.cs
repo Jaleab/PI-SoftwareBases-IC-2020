@@ -85,7 +85,9 @@ namespace ComunidadDePracticaMVC.Controllers
                 if (mensaje != "")
                 {
                     ViewBag.mensaje = mensaje;
+                    
                 }
+                ViewBag.Acceso = "Se pudo entrar";
                 return View(usuario.GetNombreUsuarios());
             }
             else {
