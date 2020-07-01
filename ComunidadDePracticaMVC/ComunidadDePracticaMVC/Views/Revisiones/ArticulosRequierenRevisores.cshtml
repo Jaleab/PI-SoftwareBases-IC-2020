@@ -70,9 +70,12 @@
 
                             <div class="col-md-2 mr-2">
                                 <div class="row">
-                                    <div class="row main-font article-h2"></div>
-                                    <br />
-                                    <a class="btn box-btn" href="@Url.Action("DecidirRevisores", "Revisiones", new { articuloId = articulo.ArticuloId})">Decidir revisores</a>
+                                    <a class="btn box-btn" style="margin-left:5px; margin-bottom: 5px; width: 130%; padding-left: -10px;" href="@Url.Action("ConsultarArticulos", "Articulo",new { id= articulo.ArticuloId},null)"> <i class="fa fa-eye"></i> Consultar </a>
+
+                                </div>
+                                <div class="row">
+
+                                    <a class="btn box-btn" style="margin-left:5px; margin-bottom: 5px; width: 130%; padding-left: -10px;"  href="@Url.Action("DecidirRevisores", "Revisiones", new { articuloId = articulo.ArticuloId})">Decidir revisores</a>
                                 </div>
                             </div>
 

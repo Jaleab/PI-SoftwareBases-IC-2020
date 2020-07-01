@@ -4,13 +4,36 @@
 <script type="text/javascript" src="~/Scripts/tinyMCEResumenConfig.js"></script>
 <script type="text/javascript" src="~/Scripts/tinyMCEContenidoConfig.js"></script>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+@*<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet" />*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
 
+<script src="https://davidstutz.de/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+@*<link href="https://davidstutz.de/bootstrap-multiselect/docs/css/bootstrap-3.3.2.min.css" rel="stylesheet" />*@
+<link href="https://davidstutz.de/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="https://davidstutz.de/bootstrap-multiselect/docs/js/bootstrap-3.3.2.min.js"></script>
 
 @{
+    string name = "Nombre Autor";
     List<SelectListItem> listaNombreCorreo = new List<SelectListItem>();
-    foreach (var item in ViewBag.listaAutoresCorreos)
+    if (User.Identity.IsAuthenticated)
     {
-        listaNombreCorreo.Add(new SelectListItem { Value = item[1], Text = item[0] });
+        // Retrieves the cookie that contains your custom FormsAuthenticationTicket.
+        HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+        // Decrypts the FormsAuthenticationTicket that is held in the cookie's .Value property.
+        FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+        name = (Json.Decode(authTicket.UserData))["Nombre"];
+
+
+        foreach (var item in ViewBag.listaAutoresCorreos)
+        {
+            if (!item[1].Equals(User.Identity.Name))
+            {
+                listaNombreCorreo.Add(new SelectListItem { Value = item[1], Text = item[0] });
+            }
+        }
+
+
     }
 
     List<SelectListItem> listaTopicos = new List<SelectListItem>();
@@ -21,12 +44,6 @@
 }
 
 <h2>Crear articulo corto</h2>
-@if (ViewBag.mensaje == "Artículo ha sido guardado")
-{
-    <div class="alert-success">
-        @ViewBag.mensaje
-    </div>
-}
 
 @if (ViewBag.mensaje == "Articulo no ha sido guardado por titulo duplicado")
 {
@@ -56,8 +73,10 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Autor)
-                        @Html.ListBoxFor(m => m.Correos, new MultiSelectList(listaNombreCorreo, "Value", "Text"), new { @class = "chosen-select form-control", multiple = "multiple", width = "100%" })
+
+                        <label for="Autor">Autores adicionales a @name</label>
+                        <br />
+                        @Html.ListBoxFor(m => m.Correos, new MultiSelectList(listaNombreCorreo, "Value", "Text"), new { @class = "form-control", multiple = "multiple", width = "100%" })
                         @Html.ValidationMessageFor(model => model.Correos, "", new { @class = "text-danger" })
                     </div>
 
@@ -87,27 +106,40 @@
 </div>
 
 <script type="text/javascript">
-    window.onmousedown = function (e) {
-        var el = e.target;
-        if (el.tagName.toLowerCase() == 'option' && el.parentNode.hasAttribute('multiple')) {
-            e.preventDefault();
 
-            var display = document.getElementById('Correos');
+    $(function () {
+        $('#Correos').multiselect({
+            includeSelectAllOption: true,
+            inheritClass: true,
+            nonSelectedText: 'Seleccione los autores',
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true
+        });
+    });
 
-            // toggle selection
-            if (el.hasAttribute('selected')) {
-                el.removeAttribute('selected');
-                var str = display.innerHTML;
-                str = str.replace(new RegExp(el.value + ",?"), '');
-                display.innerHTML = str;
-            }
-            else { el.setAttribute('selected', ''); display.innerHTML += el.value + ', '; }
+    //$("#Correos").multiselect();
 
-            // hack to correct buggy behavior
-            var select = el.parentNode.cloneNode(true);
-            el.parentNode.parentNode.replaceChild(select, el.parentNode);
+    //window.onmousedown = function (e) {
+    //    var el = e.target;
+    //    if (el.tagName.toLowerCase() == 'option' && el.parentNode.hasAttribute('multiple')) {
+    //        e.preventDefault();
+
+    //        var display = document.getElementById('Correos');
+
+    //        // toggle selection
+    //        if (el.hasAttribute('selected')) {
+    //            el.removeAttribute('selected');
+    //            var str = display.innerHTML;
+    //            str = str.replace(new RegExp(el.value + ",?"), '');
+    //            display.innerHTML = str;
+    //        }
+    //        else { el.setAttribute('selected', ''); display.innerHTML += el.value + ', '; }
+
+    //        // hack to correct buggy behavior
+    //        var select = el.parentNode.cloneNode(true);
+    //        el.parentNode.parentNode.replaceChild(select, el.parentNode);
 
 
-        }
-    }
+    //    }
+    //}
 </script>

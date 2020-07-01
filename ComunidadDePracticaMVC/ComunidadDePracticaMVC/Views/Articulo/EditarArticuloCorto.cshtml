@@ -6,20 +6,15 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 <h2>Editar Articulo corto</h2>
-<hr />
-@if (ViewBag.mensaje != null)
-{
-    <div class="alert-success">
-        @ViewBag.mensaje
-    </div>
-}
-
 @if (ViewBag.mensaje == "Articulo no ha sido guardado por titulo duplicado")
 {
     <div class="text-danger">
         @ViewBag.mensaje
     </div>
 }
+<hr />
+
+
 
 @{
     List<SelectListItem> listaNombreCorreo = new List<SelectListItem>();
@@ -35,7 +30,7 @@
     }
 }
 
-<div class ="shadow"style="padding: 25px; border-radius: 25px; background-color:white;">
+<div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
     <div class="row" style="margin-left: 0px;margin-right: 0px;">
         @using (Html.BeginForm("Editar", "Articulo", new { id = Model.ArticuloId, hilera = Model.Topico }, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
@@ -56,10 +51,10 @@
                     </div>
 
                     @*<div class="form-group">
-                        @Html.LabelFor(d => d.Autor)
-                        @Html.DropDownListFor(model => model.Autor, listaNombreCorreo, "Escoger autor", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(d => d.Autor, "", new { @class = "text-danger" })
-                    </div>*@
+                            @Html.LabelFor(d => d.Autor)
+                            @Html.DropDownListFor(model => model.Autor, listaNombreCorreo, "Escoger autor", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(d => d.Autor, "", new { @class = "text-danger" })
+                        </div>*@
 
                     <div class="form-group">
                         @Html.LabelFor(d => d.Resumen)

@@ -10,24 +10,13 @@
 <title>Editar Artículo Largo</title>
 
 <h1>Editar Artículo Largo</h1>
-
-<hr />
-
-
-@if (ViewBag.mensaje == "Artículo ha sido guardado")
-{
-    <div class="alert-success">
-        @ViewBag.mensaje
-    </div>
-}
-
 @if (ViewBag.mensaje == "Articulo no ha sido guardado por titulo duplicado")
 {
     <div class="text-danger">
         @ViewBag.mensaje
     </div>
 }
-
+<hr />
 
 
 @{
@@ -44,7 +33,7 @@
     }
 }
 
-<div class ="shadow"style="padding: 25px; border-radius: 25px; background-color:white;">
+<div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
     <div class="row" style="margin-left: 0px;margin-right: 0px;">
         @using (Html.BeginForm("Editar", "ArticuloLargo", new { id = Model.ArticuloId, hilera = Model.Topico }, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
@@ -65,10 +54,10 @@
                     </div>
 
                     @*<div class="form-group">
-            @Html.LabelFor(d => d.Autor)
-            @Html.DropDownListFor(model => model.Correo, listaNombreCorreo, "Escoger autor", new { @class = "form-control" })
-            @Html.ValidationMessageFor(d => d.Correo, "", new { @class = "text-danger" })
-        </div>*@
+                            @Html.LabelFor(d => d.Autor)
+                            @Html.DropDownListFor(model => model.Correo, listaNombreCorreo, "Escoger autor", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(d => d.Correo, "", new { @class = "text-danger" })
+                        </div>*@
 
                     <div class="form-group">
                         @Html.LabelFor(d => d.Resumen)

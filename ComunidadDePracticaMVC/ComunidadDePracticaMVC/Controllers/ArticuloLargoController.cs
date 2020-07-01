@@ -7,6 +7,7 @@ namespace ComunidadDePracticaMVC.Controllers
 {
     public class ArticuloLargoController : Controller
     {
+        [Authorize]
         public ActionResult Index()
         {
             ArticuloService servicioArticulo = new ArticuloService();
@@ -16,8 +17,11 @@ namespace ComunidadDePracticaMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Guardar(ArticuloLargoViewModel model)
         {
+            //añade al usuario por defecto
+            model.Correos.Add(User.Identity.Name);
 
             if (model.Titulo == null || model.Topico == null || model.Correos == null || model.Resumen == null || model.Archivo1 == null)
             {
@@ -32,19 +36,21 @@ namespace ComunidadDePracticaMVC.Controllers
                 bool exito = servicioArt.GuardarArticuloLargo(model);
                 if (exito)
                 {
-                    ViewBag.mensaje = "Artículo ha sido guardado";
+                    @TempData["Message"] = "Artículo ha sido guardado";
+                    return RedirectToAction("MisArticulos", "Usuario");
                 }
                 else
                 {
                     ViewBag.mensaje = "Articulo no ha sido guardado por titulo duplicado";
+                    ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
+                    ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
+                    return View("Index", model);
                 }
-                ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
-                ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
-                return View("Index", model);
+                
             }
 
         }
-
+        [Authorize]
         public ActionResult EditarArticuloLargo(int id, string mensaje)
         {
             if (TempData["Message"] != null)
@@ -66,17 +72,19 @@ namespace ComunidadDePracticaMVC.Controllers
         {
             ArticuloService servicioArticulo = new ArticuloService();
             bool exito = servicioArticulo.EditarArticuloLargo(id, model, hilera);
-            if (exito == true)
+            if (exito)
             {
-                ViewBag.mensaje = "Artículo ha sido guardado";
+                @TempData["Message"] = "Artículo ha sido guardado";
+                return RedirectToAction("MisArticulos", "Usuario");
             }
             else
             {
                 ViewBag.mensaje = "Articulo no ha sido guardado por titulo duplicado";
+                int articuloId = id;
+                return RedirectToAction("EditarArticuloLargo", "ArticuloLargo", new { id = articuloId, mensaje = ViewBag.mensaje });
             }
 
-            int articuloId = id;
-            return RedirectToAction("EditarArticuloLargo", "ArticuloLargo", new { id = articuloId, mensaje = ViewBag.mensaje });
+            
         }
 
     }

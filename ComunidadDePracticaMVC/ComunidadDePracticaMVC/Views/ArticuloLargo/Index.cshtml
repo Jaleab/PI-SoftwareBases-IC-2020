@@ -14,34 +14,40 @@
 <link href="https://davidstutz.de/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="https://davidstutz.de/bootstrap-multiselect/docs/js/bootstrap-3.3.2.min.js"></script>
 
-<title>Subir Artículo Largo</title>
+<title>Crear Artículo Largo</title>
 
-<h2>Subir Artículo Largo</h2>
+<h2>Crear Artículo Largo</h2>
+
+@if (ViewBag.mensaje == "Articulo no ha sido guardado por titulo duplicado")
+{
+    <div class="alert-danger">
+        @ViewBag.mensaje
+    </div>
+}
 
 <hr />
 
 
-@if (ViewBag.mensaje == "Artículo ha sido guardado")
-{
-    <div class="alert-success">
-        @ViewBag.mensaje
-    </div>
-}
-
-@if (ViewBag.mensaje == "Articulo no ha sido guardado por titulo duplicado")
-{
-    <div class="text-danger">
-        @ViewBag.mensaje
-    </div>
-}
-
-
 
 @{
+    string name = "Nombre Autor";
     List<SelectListItem> listaNombreCorreo = new List<SelectListItem>();
-    foreach (var item in ViewBag.listaAutoresCorreos)
-    {
-        listaNombreCorreo.Add(new SelectListItem { Value = item[1], Text = item[0]});
+    if (User.Identity.IsAuthenticated) {
+        // Retrieves the cookie that contains your custom FormsAuthenticationTicket.
+        HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+        // Decrypts the FormsAuthenticationTicket that is held in the cookie's .Value property.
+        FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+        name = (Json.Decode(authTicket.UserData))["Nombre"];
+
+
+        foreach (var item in ViewBag.listaAutoresCorreos)
+        {
+            if (!item[1].Equals(User.Identity.Name)) {
+                listaNombreCorreo.Add(new SelectListItem { Value = item[1], Text = item[0] });
+            }
+        }
+
+
     }
 
     List<SelectListItem> listaTopicos = new List<SelectListItem>();
@@ -51,7 +57,7 @@
     }
 }
 
-<div class ="shadow"style="padding: 25px; border-radius: 25px; background-color:white;">
+<div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
     <div class="row" style="margin-left: 0px;margin-right: 0px;">
         @using (Html.BeginForm("Guardar", "ArticuloLargo", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
@@ -72,7 +78,7 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Autor)
+                        <label for="Autor">Autores adicionales a @name</label>
                         <br />
                         @Html.ListBoxFor(m => m.Correos, new MultiSelectList(listaNombreCorreo, "Value", "Text"), new { @class = "form-control", multiple = "multiple", width = "100%" })
                         @Html.ValidationMessageFor(model => model.Correos, "", new { @class = "text-danger" })

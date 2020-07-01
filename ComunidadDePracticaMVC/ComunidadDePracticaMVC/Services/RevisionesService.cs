@@ -22,7 +22,14 @@ namespace ComunidadDePracticaMVC.Services
         public RevisionesModel ObtenerArticulosEnRevision() {
             Connection();
             string consulta =
-                "SELECT A.articuloId, A.titulo, A.fechaPublicacion FROM Articulo A WHERE A.estado='Revision' AND NOT EXISTS (SELECT * FROM Revisa R WHERE R.articuloIdFK=A.articuloID ) ORDER BY fechaPublicacion "
+                "SELECT A.articuloId, A.titulo, STRING_AGG(U.nombre + ' ' + U.apellido1, ', ') AS autores, A.fechaPublicacion " +
+                "FROM Articulo A " +
+                "JOIN Publica P ON P.articuloIdFK = A.articuloId " +
+                "JOIN Usuario U ON P.correoMiembroFK = U.correo " +
+                "GROUP BY A.articuloId, A.titulo, A.fechaPublicacion, A.estado " +
+                "HAVING A.estado='Revision' " +
+                "AND NOT EXISTS (SELECT * FROM Revisa R WHERE R.articuloIdFK=A.articuloID ) " +
+                "ORDER BY fechaPublicacion "
                 ;
             SqlCommand cmd = new SqlCommand(consulta, con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
@@ -40,7 +47,7 @@ namespace ComunidadDePracticaMVC.Services
                     new ArticuloModel
                     {
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
-                        Autor = "PONER AUTORES AQUI",
+                        Autor = Convert.ToString(dr["autores"]),
                         Titulo = Convert.ToString(dr["titulo"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
                     });
@@ -178,7 +185,7 @@ namespace ComunidadDePracticaMVC.Services
             string consulta =
                 "SELECT A.articuloId, A.titulo, STRING_AGG(U.nombre + ' ' + U.apellido1, ', ') AS autores, A.fechaPublicacion " +
                 "FROM Articulo A " +
-                "JOIN Publica P ON P.articuloIdFK = P.articuloIdFK " +
+                "JOIN Publica P ON P.articuloIdFK = A.articuloId " +
                 "JOIN Usuario U ON P.correoMiembroFK = U.correo " +
                 "GROUP BY A.articuloId, A.titulo, A.fechaPublicacion " +
                 "HAVING A.articuloId IN(SELECT R.articuloIdFK " +
@@ -240,7 +247,16 @@ namespace ComunidadDePracticaMVC.Services
         public RevisionesModel ObtenerArticulosRequierenRevisores()
         {
             Connection();
-            string consulta = "SELECT A.articuloId, A.titulo, A.fechaPublicacion FROM Articulo A WHERE A.estado = 'Revision' AND EXISTS(SELECT* FROM Revisa R WHERE R.articuloIdFK= A.articuloID AND A.estado = 'Revision') ORDER BY fechaPublicacion";
+            string consulta = "SELECT A.articuloId, A.titulo, A.fechaPublicacion, STRING_AGG(U.nombre + ' ' + U.apellido1, ', ') AS autores " +
+                                "FROM Articulo A " +
+                                "JOIN Publica P ON P.articuloIdFK = A.articuloId " +
+                                "JOIN Usuario U ON U.correo = P.correoMiembroFK " +
+                                "GROUP BY A.articuloId, A.titulo, A.fechaPublicacion, A.estado " +
+                                "HAVING A.estado = 'Revision' " +
+                                "AND EXISTS(SELECT* FROM Revisa R " +
+                                            "WHERE R.articuloIdFK= A.articuloID " +
+                                            "AND A.estado = 'Revision') " +
+                                "ORDER BY fechaPublicacion;";
             SqlCommand cmd = new SqlCommand(consulta, con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -258,7 +274,7 @@ namespace ComunidadDePracticaMVC.Services
                     new ArticuloModel
                     {
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
-                        Autor = "PONER AUTORES AQUI",
+                        Autor = Convert.ToString(dr["autores"]),
                         Titulo = Convert.ToString(dr["titulo"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
                     });
@@ -331,7 +347,19 @@ namespace ComunidadDePracticaMVC.Services
         public RevisionesModel ArticulosEnRevisionPorMiembros() {
             Connection();
             string consulta =
-            "SELECT A.articuloId, A.titulo, A.fechaPublicacion FROM Articulo A WHERE A.estado = 'Revision' AND EXISTS ( SELECT * FROM Revisa R WHERE R.articuloIdFK= A.articuloId AND ( R.estadoRevision= 'Pendiente revisar' OR R.estadoRevision= 'Aprobado' OR R.estadoRevision= 'Aceptado con modificaciones' OR R.estadoRevision= 'Rechazado' ) )";
+            "SELECT A.articuloId, A.titulo, A.fechaPublicacion, STRING_AGG(U.nombre + ' ' + U.apellido1, ', ') AS autores " +
+            "FROM Articulo A " +
+            "JOIN Publica P ON P.articuloIdFK = A.articuloId " +
+            "JOIN Usuario U ON U.correo = P.correoMiembroFK " +
+            "GROUP BY A.articuloId, A.titulo, A.fechaPublicacion, A.estado " +
+            "HAVING A.estado = 'Revision' " +
+            "AND EXISTS ( SELECT * " +
+                        "FROM Revisa R " +
+                        "WHERE R.articuloIdFK= A.articuloId " +
+                        "AND ( R.estadoRevision= 'Pendiente revisar' " +
+                            "OR R.estadoRevision= 'Aprobado' " +
+                            "OR R.estadoRevision= 'Aceptado con modificaciones' " +
+                            "OR R.estadoRevision= 'Rechazado' ) )";
             SqlCommand cmd = new SqlCommand(consulta, con);
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -349,7 +377,7 @@ namespace ComunidadDePracticaMVC.Services
                     new ArticuloModel
                     {
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
-                        Autor = "PONER AUTORES AQUI",
+                        Autor = Convert.ToString(dr["autores"]),
                         Titulo = Convert.ToString(dr["titulo"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
                     });

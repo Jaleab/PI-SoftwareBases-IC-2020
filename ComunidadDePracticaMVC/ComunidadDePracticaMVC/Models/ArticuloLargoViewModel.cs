@@ -30,7 +30,6 @@ namespace ComunidadDePracticaMVC.ViewModels
         [DisplayName("Correo")]
         public string Correo { get; set; }
 
-        [Required]
         [DisplayName("Correos")]
         public List<string> Correos { get; set; }
 

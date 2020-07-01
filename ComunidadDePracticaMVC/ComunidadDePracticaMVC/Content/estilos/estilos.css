@@ -1,17 +1,4 @@
-﻿span a {
-    text-decoration: none;
-    font-weight: 400;
-    font-size: 15px;
-    background-color: #1883ba;
-    border-radius: 6px;
-    border: 2px solid #0016b0;
-}
-
-span a:hover {
-    color: #1883ba;
-    background-color: #ffffff;
-}
-
+﻿
 
 
 .modal {
@@ -229,4 +216,9 @@ span a:hover {
 
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
+}
+
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:focus, .dropdown-menu > .active > a:hover  {
+    color: white;
+    background-color: white;
 }
