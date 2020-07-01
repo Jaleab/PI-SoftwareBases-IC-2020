@@ -20,15 +20,22 @@
         function mostrarContenido() {
             var contenido = document.getElementById("contenido");
             var formulario = document.getElementById("formulario");
-            contenido.style.display = "block";
+            contenido.style.display = "block";      
             formulario.style.display = "none";
+            //Activar y desactivar botones
+            $("#btn-contenido").addClass("box-btn-activated");
+            $("#btn-calificar").removeClass("box-btn-activated");
         }
 
         function mostrarFormulario() {
             var contenido = document.getElementById("contenido");
             var formulario = document.getElementById("formulario");
+            
             formulario.style.display = "block";
             contenido.style.display = "none";
+
+            $("#btn-calificar").addClass("box-btn-activated");
+            $("#btn-contenido").removeClass("box-btn-activated");
         }
 
         function verCalificacion() {
@@ -76,15 +83,15 @@
     <div class="row">
         <div class="col-md-12">
             <nav>
-                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarFormulario()"> <i class="fa fa-paint-brush"></i> Calificar</button>
-                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarContenido()"> <i class="fa fa-book"></i> Artículo </button>
+                <button id ="btn-calificar" class="btn pestania box-btn box-btn-activated" style=" width: 25%;  " onclick="mostrarFormulario()"> <i class="fa fa-paint-brush"></i> Calificar</button>
+                <button id ="btn-contenido" class="btn pestania box-btn" style=" width: 25%;" onclick="mostrarContenido()"> <i class="fa fa-book"></i> Artículo </button>
             </nav>
         </div>
     </div>
 
     <div id="formulario" style="display:block">
 
-        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+        <div class="shadow" style="padding: 25px; border-radius: 25px; border-top-left-radius:0px; background-color:white; ">
             <h4>Formulario de Revisión:</h4>
             <hr />
             @using (Html.BeginForm("EnviarRevision", "Revisiones", new { articuloId = ViewBag.Articulo.ArticuloId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -143,73 +150,76 @@
 
     </div>
     <div id="contenido" style="display:none">
+        <div class="shadow contenedor-blanco">
+            @if (ViewBag.Articulo.TipoArchivo != "corto")
+            {
 
-        @if (ViewBag.Articulo.TipoArchivo != "corto")
-        {
+                <h3> <strong>Título:</strong> </h3>
 
-            <h3> <strong>Título:</strong> </h3>
+                <h4>@ViewBag.Articulo.Titulo</h4>
 
-            <h4>@ViewBag.Articulo.Titulo</h4>
+                <h3> <strong>Autor:</strong> </h3>
 
-            <h3> <strong>Autor:</strong> </h3>
+                <h4>@ViewBag.Articulo.Autor</h4>
 
-            <h4>@ViewBag.Articulo.Autor</h4>
+                <h3> <strong>Tópicos: </strong> </h3>
+                <h4> @ViewBag.Articulo.Topico</h4>
 
-            <h3> <strong>Tópicos: </strong> </h3>
-            <h4> @ViewBag.Articulo.Topico</h4>
+                <hr />
+
+                <h3> <strong> Resumen del articulo </strong> </h3>
+                <br />
+                <div class="shadow contenedor-blanco">
+                    @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
+                </div>
+
+                <hr />
+
+
+                <a class="btn box-btn" href="/Articulo/AccederArticuloLargo?idArt=@ViewBag.Articulo.ArticuloId" target="_blank"> Ver archivo</a>
+            }
+            else
+            {
+
+                <h3> <strong>Título:</strong> </h3>
+
+                <h4>@ViewBag.Articulo.Titulo</h4>
+
+                <h3> <strong>Autor:</strong> </h3>
+
+                <h4>@ViewBag.Articulo.Autor</h4>
+
+                <h3> <strong>Tópicos: </strong> </h3>
+                <h4> @ViewBag.Articulo.Topico</h4>
+
+                <hr />
+
+                <h3> <strong> Resumen del articulo: </strong> </h3>
+                <br />
+                <div class="shadow contenedor-blanco" >
+                    @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
+                </div>
+                <hr />
+
+                <h3> <strong> Contenido: </strong></h3>
+                <br />
+                <div class="shadow contenedor-blanco" >
+                    @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Contenido))
+                </div>
+            }
 
             <hr />
 
-            <h3> <strong> Resumen del articulo </strong> </h3>
-            <br />
-            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
-            </div>
 
-            <hr />
+        </div>
+           
 
-
-            <a class="btn box-btn" href="/Articulo/AccederArticuloLargo?idArt=@ViewBag.Articulo.ArticuloId" target="_blank"> Ver archivo</a>
-        }
-        else
-        {
-
-            <h3> <strong>Título:</strong> </h3>
-
-            <h4>@ViewBag.Articulo.Titulo</h4>
-
-            <h3> <strong>Autor:</strong> </h3>
-
-            <h4>@ViewBag.Articulo.Autor</h4>
-
-            <h3> <strong>Tópicos: </strong> </h3>
-            <h4> @ViewBag.Articulo.Topico</h4>
-
-            <hr />
-
-            <h3> <strong> Resumen del articulo: </strong> </h3>
-            <br />
-            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
-            </div>
-            <hr />
-
-            <h3> <strong> Contenido: </strong></h3>
-            <br />
-            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Contenido))
-            </div>
-        }
-
-        <hr />
-
-            
     </div>
 
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
 
 </body>
 </html>

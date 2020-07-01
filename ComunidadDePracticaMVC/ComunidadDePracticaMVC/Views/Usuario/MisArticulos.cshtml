@@ -147,24 +147,27 @@
             <h2>Articulos de @ViewBag.correo</h2>
             <hr />
 
-            <div class="row">
-                <nav>
 
-                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulos", "Usuario", new { correo = User.Identity.Name } )"> <i class="fa fa-book"></i> Mis Artículos</a>
-                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulosRevision", "Revisiones")"> <i class="fa fa-paint-brush"></i> Revisión</a>
-                    <a class="btn box-btn" style=" width: 33%;" href="@Url.Action("MisArticulosColaboracion", "Revisiones")"> <i class="fa fa-user"></i> Colaboración</a>
-                </nav>
-
-            </div>
 
         </div>
+
         @*<div class="row main-font search-bar">
-            <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
-        </div>*@
-        
+                <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
+            </div>*@
+
+
+
     </div>
-    <div>
-        <div id="articleList">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <a class="btn pestania box-btn box-btn-activated" style=" width: 25%;" href="@Url.Action("MisArticulos", "Usuario", new { correo = User.Identity.Name } )"> <i class="fa fa-book"></i> Mis Artículos</a>
+            </nav>
+        </div>
+
+    </div>
+    <div class="shadow contenedor-blanco">
+        <div id="articleList" class="row" style="margin-left: 0px;margin-right: 0px;">
 
         </div>
     </div>
@@ -180,7 +183,7 @@
 
 <template>
 
-    <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
+    <div class="col-xl-12 col-md-12 mb-12 articulo-element" style="background-color:#f9f9f9">
 
         <div class="col-md-6 mr-2">
             <div class=" title_template row main-font article-h1">La Descomposición del Estudiante</div>

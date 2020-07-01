@@ -297,7 +297,7 @@
 .articulo-element {
     padding: 20px;
     padding-left: 30px;
-    border-radius: 25px;
+    border-radius: 15px;
     margin-top: 10px;
     margin-bottom: 10px;
     background-color: white;
@@ -334,9 +334,7 @@
 }
 
 .page-title {
-    padding: 10px;
     margin-top:15px;
-    margin-bottom:15px;
 }
 
 .search-bar {

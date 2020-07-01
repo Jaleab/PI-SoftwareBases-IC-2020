@@ -153,11 +153,32 @@ span a:hover {
     border: 1px solid #dadee2;
 }
 
+.box-btn-activated {
+    border-radius: 10px;
+    color: white;
+    font-size: 17px;
+    background-color: white;
+    color: #68a0ff;
+    border: 1px solid #dadee2;
+}
+
 .close:hover,
 .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.pestania {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.contenedor-blanco {
+    padding: 25px;
+    border-radius: 25px;
+    border-top-left-radius: 0px;
+    background-color: white;
 }
 
 
