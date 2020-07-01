@@ -139,58 +139,78 @@
         console.log(jsonString);
 
         var indice = 0;
-        for (var i = 0; i < etiquetasSize; ++i) {
-            let newGraph = {};
-            newGraph["ballonText"] = "[[title]] of [[category]]:[[value]]";
-            newGraph["fillAlphas"] = 1;
-            newGraph["id"] = "AmGraph-" + i;
-            if (i < @ViewBag.Pivotes[2]) {
-                newGraph["title"] = jsonString["0"]["etiquetas"][i + @ViewBag.Pivotes[1]];
-                console.log(jsonString["0"]["etiquetas"][i+ @ViewBag.Pivotes[1]], i);
-            }
-            else {
-                newGraph["title"] = jsonString["0"]["etiquetas"][indice];
-                console.log(jsonString["0"]["etiquetas"][indice], indice);
-                ++indice;
+        if (etiquetasSize > 0) {
+            for (var i = 0; i < etiquetasSize; ++i) {
+                let newGraph = {};
+                newGraph["ballonText"] = "[[title]] of [[category]]:[[value]]";
+                newGraph["fillAlphas"] = 1;
+                newGraph["id"] = "AmGraph-" + i;
+                if (i < @ViewBag.Pivotes[2]) {
+                    newGraph["title"] = jsonString["0"]["etiquetas"][i + @ViewBag.Pivotes[1]];
+                    console.log(jsonString["0"]["etiquetas"][i + @ViewBag.Pivotes[1]], i);
+                }
+                else {
+                    newGraph["title"] = jsonString["0"]["etiquetas"][indice];
+                    console.log(jsonString["0"]["etiquetas"][indice], indice);
+                    ++indice;
+                }
+
+                newGraph["type"] = "column";
+                newGraph["valueField"] = "column-" + i;
+                graphs.push(newGraph);
             }
 
-            newGraph["type"] = "column";
-            newGraph["valueField"] = "column-" + i;
-            graphs.push(newGraph);
+            for (var i = 0; i < categoriaSize; ++i) {
+                var contador = 0;
+                let newValue = {};
+                newValue["category"] = jsonString["0"]["categorias"][i];
+                if (@ViewBag.Pivotes[3]) {
+                    for (var j = 0; j < @ViewBag.Pivotes[3]; ++j) {
+                        //console.log(@ViewBag.Pivotes[1]* categoriaSize);
+                        var offset = (categoriaSize * j + i) + (@ViewBag.Pivotes[1]* categoriaSize) + (@ViewBag.Pivotes[2]* categoriaSize);
+                        newValue["column-" + contador] = jsonString["0"]["counts"][offset];
+                        console.log(offset, jsonString["0"]["counts"][offset]);
+                        contador += 1;
+                    }
+                }
+
+                if (@ViewBag.Pivotes[2]) {
+                    for (var j = 0; j < @ViewBag.Pivotes[2]; ++j) {
+                        //console.log(@ViewBag.Pivotes[1]* categoriaSize);
+                        var offset = (categoriaSize * j + i) + (@ViewBag.Pivotes[1]* categoriaSize);
+                        newValue["column-" + contador] = jsonString["0"]["counts"][offset];
+                        console.log(offset, jsonString["0"]["counts"][offset]);
+                        contador += 1;
+                    }
+                }
+                if (@ViewBag.Pivotes[1]) {
+                    for (var j = 0; j < @ViewBag.Pivotes[1]; ++j) {
+                        var offset = categoriaSize * j + i;
+                        newValue["column-" + contador] = jsonString["0"]["counts"][offset];
+                        console.log(offset, jsonString["0"]["categorias"][i], jsonString["0"]["counts"][offset]);
+                        contador += 1;
+                    }
+                }
+                dataProvider.push(newValue);
+            }
         }
+        else {
+            for (var j = 0; j < categoriaSize; ++j) {
+                let newGraph = {};
+                newGraph["ballonText"] = "[[title]] of [[category]]:[[value]]";
+                newGraph["fillAlphas"] = 1;
+                newGraph["id"] = "AmGraph-" + j;
+                newGraph["title"] = jsonString["0"]["etiquetas"][j];
+                newGraph["type"] = "column";
+                newGraph["valueField"] = "column-" + j;
+                graphs.push(newGraph);
 
-        for (var i = 0; i < categoriaSize; ++i) {
-            var contador = 0;
-            let newValue = {};
-            newValue["category"] = jsonString["0"]["categorias"][i];
-            if (@ViewBag.Pivotes[3]) {
-                for (var j = 0; j < @ViewBag.Pivotes[3]; ++j) {
-                    //console.log(@ViewBag.Pivotes[1]* categoriaSize);
-                    var offset = (categoriaSize * j + i) + (@ViewBag.Pivotes[1]* categoriaSize) + (@ViewBag.Pivotes[2]* categoriaSize);
-                    newValue["column-" + contador] = jsonString["0"]["counts"][offset];
-                    console.log(offset, jsonString["0"]["counts"][offset]);
-                    contador += 1;
-                }
-            }
-
-            if (@ViewBag.Pivotes[2]) {
-                for (var j = 0; j < @ViewBag.Pivotes[2]; ++j) {
-                    //console.log(@ViewBag.Pivotes[1]* categoriaSize);
-                    var offset = (categoriaSize * j + i) + (@ViewBag.Pivotes[1]* categoriaSize);
-                    newValue["column-" + contador] = jsonString["0"]["counts"][offset];
-                    console.log(offset, jsonString["0"]["counts"][offset]);
-                    contador += 1;
-                }
-            }
-            if (@ViewBag.Pivotes[1]) {
-                for (var j = 0; j < @ViewBag.Pivotes[1]; ++j) {
-                    var offset = categoriaSize * j + i;
-                    newValue["column-" + contador] = jsonString["0"]["counts"][offset];
-                    console.log(offset, jsonString["0"]["categorias"][i], jsonString["0"]["counts"][offset]);
-                    contador += 1;
-                }
-            }
-            dataProvider.push(newValue);
+                let newValue = {};
+                newValue["column-" + j] = jsonString["0"]["counts"][j];
+                newValue["category"] = jsonString["0"]["categorias"][j];
+                console.log(jsonString["0"]["categorias"][j], jsonString["0"]["counts"][j]);
+                dataProvider.push(newValue);
+            }                        
         }
         console.log(dataProvider);
        
