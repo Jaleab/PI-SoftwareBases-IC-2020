@@ -127,6 +127,7 @@
     <Compile Include="Controllers\CorreoController.cs" />
     <Compile Include="Controllers\ArticuloController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
+    <Compile Include="Controllers\FiltrarMiembroController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RevisionesController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -136,15 +137,20 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ArticuloLargoViewModel.cs" />
     <Compile Include="Models\ArticuloModel.cs" />
+    <Compile Include="Models\FiltroCategoriaMiembroModel.cs" />
     <Compile Include="Models\CorreoModel.cs" />
     <Compile Include="Models\FaqModel.cs" />
     <Compile Include="Models\RevisionesModel.cs" />
+    <Compile Include="Models\FiltroMiembroModel.cs" />
+    <Compile Include="Models\MiembroModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\FiltrarMiembroService.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\ArticuloService.cs" />
     <Compile Include="Services\FaqService.cs" />
     <Compile Include="Services\RevisionesService.cs" />
+    <Compile Include="Services\FiltroCategoriaMiembroController.cs" />
     <Compile Include="Services\UsuarioService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +164,7 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fontawesome.css" />
     <Content Include="Content\fontawesome.min.css" />
+    <Content Include="Scripts\charts\chartConfig.js" />
     <Content Include="Scripts\FuncionesBotones.js" />
     <Content Include="Content\site.min.css" />
     <Content Include="Content\estilos\style.css" />
@@ -384,10 +391,12 @@
     <Content Include="Views\Revisiones\DecidirRevisores.cshtml" />
     <Content Include="Views\Revisiones\ArticulosEnRevisionPorMiembros.cshtml" />
     <Content Include="Views\Revisiones\DecisionFinalArticulo.cshtml" />
+    <Content Include="Views\FiltrarMiembro\FiltrarMiembro.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Files\" />
+    <Folder Include="Views\FiltroCategoriaMiembro\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
