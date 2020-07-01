@@ -314,20 +314,6 @@ namespace ComunidadDePracticaMVC.Services
             {
                 return exito;
             }
-
-            connection();
-            cmd = new SqlCommand(
-                "UPDATE Topico" + " " +
-                "SET topico = @Hilera" + " " +
-                "WHERE topico = @TopicoAnterior" + " " +
-                "AND articuloIdFk = @ArticuloId", con);
-
-            cmd.Parameters.AddWithValue("@TopicoAnterior", articulo.Topico);
-            cmd.Parameters.AddWithValue("@Hilera", hilera);
-            cmd.Parameters.AddWithValue("@ArticuloId", articulo.ArticuloId);
-            con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close();
             return exito;
         }
 
@@ -361,20 +347,6 @@ namespace ComunidadDePracticaMVC.Services
             {
                 return exito;
             }
-
-            connection();
-            cmd = new SqlCommand(
-                "UPDATE Topico" + " " +
-                "SET topico = @Hilera" + " " +
-                "WHERE topico = @TopicoAnterior" + " " +
-                "AND articuloIdFk = @ArticuloId", con);
-
-            cmd.Parameters.AddWithValue("@TopicoAnterior", articulo.Topico);
-            cmd.Parameters.AddWithValue("@Hilera", hilera);
-            cmd.Parameters.AddWithValue("@ArticuloId", articulo.ArticuloId);
-            con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close();
             return exito;
         }
 
@@ -527,7 +499,7 @@ namespace ComunidadDePracticaMVC.Services
             connection();
             string consulta =
                 "SELECT DISTINCT topico " +
-                "FROM Articulo";
+                "FROM Topico";
             SqlCommand cmd = new SqlCommand(consulta, con);
 
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
