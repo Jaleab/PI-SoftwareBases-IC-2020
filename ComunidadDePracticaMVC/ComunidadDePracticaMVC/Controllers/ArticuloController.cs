@@ -60,7 +60,7 @@ namespace ComunidadDePracticaMVC.Controllers
         {
             ArticuloService servicioArt = new ArticuloService();
             ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
-            ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
+            ViewBag.listaCategorias = servicioArt.ObtenerTopicos();
             return View();
         }
 
@@ -71,7 +71,7 @@ namespace ComunidadDePracticaMVC.Controllers
             {
                 ArticuloService servicioArt = new ArticuloService();
                 ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
-                ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
+                ViewBag.listaCategorias = servicioArt.ObtenerTopicos();
                 return View();
             }
             else
@@ -86,7 +86,7 @@ namespace ComunidadDePracticaMVC.Controllers
                     ViewBag.mensaje = "Articulo no ha sido guardado por titulo duplicado";
                 }
                 ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
-                ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
+                ViewBag.listaCategorias = servicioArt.ObtenerTopicos();
                 return View();
             }
         }

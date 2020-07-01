@@ -26,10 +26,10 @@
         listaNombreCorreo.Add(new SelectListItem { Value = item[1], Text = item[0] });
     }
 
-    List<SelectListItem> listaTopicos = new List<SelectListItem>();
-    foreach (var item in ViewBag.listaTopicos)
+    List<SelectListItem> listaCategorias = new List<SelectListItem>();
+    foreach (var item in ViewBag.listaCategorias)
     {
-        listaTopicos.Add(new SelectListItem { Text = item });
+        listaCategorias.Add(new SelectListItem { Text = item });
     }
 }
 
@@ -51,7 +51,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(d => d.Topico)
-                @Html.DropDownListFor(d => d.Topico, listaTopicos, "Escoger topico", new { @class = "form-control" })
+                @Html.DropDownListFor(d => d.Topico, listaCategorias, "Escoger topico", new { @class = "form-control" })
                 @Html.ValidationMessageFor(d => d.Topico, "", new { @class = "text-danger" })
             </div>
 
