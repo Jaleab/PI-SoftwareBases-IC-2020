@@ -51,12 +51,12 @@ namespace ComunidadDePracticaMVC.Services
                 usuario.Apellido2 = Convert.ToString(dr["apellido2"]);
                 usuario.Ciudad = Convert.ToString(dr["ciudad"]);
                 usuario.Pais = Convert.ToString(dr["pais"]);
-                usuario.Idioma = Convert.ToString(dr["idiomaUsuario"]);
+                usuario.Idioma = Convert.ToString(dr["idiomasUsuario"]);
                 usuario.Merito = Convert.ToString(dr["merito"]);
                 usuario.Peso = Convert.ToString(dr["peso"]);
                 usuario.Categoria = Convert.ToString(dr["categoriaMiembro"]);
-                usuario.Habilidad = Convert.ToString(dr["habilidadUsuario"]);
-                usuario.Hobbie = Convert.ToString(dr["hobbieUsuario"]);
+                usuario.Habilidad = Convert.ToString(dr["habilidadesUsuario"]);
+                usuario.Hobbie = Convert.ToString(dr["hobbiesUsuario"]);
 
 
             }
@@ -86,78 +86,70 @@ namespace ComunidadDePracticaMVC.Services
             con.Open();
             cmd.ExecuteNonQuery();
 
-            //Ve si hay entradas de idioma si no agrega una nueva entrada
-            string queryIdiomaCount = "SELECT COUNT(*) FROM Idioma WHERE correoUsuarioFK=@correo;";
-            SqlCommand commandIdiomaCount = new SqlCommand(queryIdiomaCount, con);
-            commandIdiomaCount.Parameters.AddWithValue("@Correo", usuario.Correo);
+            //Borra habilidades
+            string deleteHabilidades = "DELETE FROM Habilidad WHERE correoUsuarioFK = @correo;";
+            SqlCommand deleteHabilidadesCmd = new SqlCommand(deleteHabilidades, con);
+            deleteHabilidadesCmd.Parameters.AddWithValue("@correo", usuario.Correo);
+            deleteHabilidadesCmd.ExecuteNonQuery();
+            if (usuario.Habilidad != null) {
+                //Divide cada habilidad 
+                String[] habilidades = usuario.Habilidad.Split(',');
+                //Setea cada habilidad
+                foreach (String habilidad in habilidades)
+                {
 
-            Int32 countIdioma = (Int32)commandIdiomaCount.ExecuteScalar();
-            if (countIdioma > 0)
-            {
-                string queryIdiomaUpdate = "UPDATE Idioma SET idiomaUsuario = @Idioma WHERE correoUsuarioFK=@correo;";
-                SqlCommand commandIdiomaUpdate = new SqlCommand(queryIdiomaUpdate, con);
-                commandIdiomaUpdate.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandIdiomaUpdate.Parameters.AddWithValue("@Idioma", usuario.Idioma);
-                commandIdiomaUpdate.ExecuteNonQuery();
-            }
-            else {
-                string queryIdiomaInsert = "INSERT INTO Idioma (correoUsuarioFK, idiomaUsuario) VALUES(@Correo, @Idioma); ";
-                SqlCommand commandIdiomaInsert = new SqlCommand(queryIdiomaInsert, con);
-                commandIdiomaInsert.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandIdiomaInsert.Parameters.AddWithValue("@Idioma", usuario.Idioma);
-                commandIdiomaInsert.ExecuteNonQuery();
-
-            }
-
-
-            //Ve si hay entradas de HABILIDAD si no agrega una nueva entrada
-            string queryHabilidadCount = "SELECT COUNT(*) FROM Habilidad WHERE correoUsuarioFK=@correo;";
-            SqlCommand commandHabilidadCount = new SqlCommand(queryHabilidadCount, con);
-            commandHabilidadCount.Parameters.AddWithValue("@Correo", usuario.Correo);
-
-            Int32 countHabilidad = (Int32)commandHabilidadCount.ExecuteScalar();
-            if (countHabilidad > 0)
-            {
-                string queryHabilidadUpdate = "UPDATE Habilidad SET habilidadUsuario = @Habilidad WHERE correoUsuarioFK=@correo;";
-                SqlCommand commandHabilidadUpdate = new SqlCommand(queryHabilidadUpdate, con);
-                commandHabilidadUpdate.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandHabilidadUpdate.Parameters.AddWithValue("@Habilidad", usuario.Habilidad);
-                commandHabilidadUpdate.ExecuteNonQuery();
-            }
-            else
-            {
-                string queryHabilidadInsert = "INSERT INTO Habilidad (correoUsuarioFK, habilidadUsuario) VALUES(@Correo, @Habilidad); ";
-                SqlCommand commandHabilidadInsert = new SqlCommand(queryHabilidadInsert, con);
-                commandHabilidadInsert.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandHabilidadInsert.Parameters.AddWithValue("@Habilidad", usuario.Habilidad);
-                commandHabilidadInsert.ExecuteNonQuery();
-
-            }
-
+                    string setHabilidades = "INSERT INTO Habilidad ( correoUsuarioFK, habilidadUsuario) VALUES (@correo, @habilidad)";
+                    SqlCommand setHabilidadesCmd = new SqlCommand(setHabilidades, con);
+                    setHabilidadesCmd.Parameters.AddWithValue("@correo", usuario.Correo);
+                    setHabilidadesCmd.Parameters.AddWithValue("@habilidad", habilidad.Trim(' '));
+                    setHabilidadesCmd.ExecuteNonQuery();
+                }
+            } 
             
-            //Ve si hay entradas de Hobbie si no agrega una nueva entrada de lo contrario updatea
-            string queryHobbieCount = "SELECT COUNT(*) FROM Hobbie WHERE correoUsuarioFK=@correo;";
-            SqlCommand commandHobbieCount = new SqlCommand(queryHobbieCount, con);
-            commandHobbieCount.Parameters.AddWithValue("@Correo", usuario.Correo);
 
-            Int32 countHobbie = (Int32)commandHobbieCount.ExecuteScalar();
-            if (countHobbie > 0)
-            {
-                string queryHobbieUpdate = "UPDATE Hobbie SET hobbieUsuario = @Hobbie WHERE correoUsuarioFK=@correo;";
-                SqlCommand commandHobbieUpdate = new SqlCommand(queryHobbieUpdate, con);
-                commandHobbieUpdate.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandHobbieUpdate.Parameters.AddWithValue("@Hobbie", usuario.Hobbie);
-                commandHobbieUpdate.ExecuteNonQuery();
-            }
-            else
-            {
-                string queryHobbieInsert = "INSERT INTO Hobbie (correoUsuarioFK, hobbieUsuario) VALUES(@Correo, @Hobbie); ";
-                SqlCommand commandHobbieInsert = new SqlCommand(queryHobbieInsert, con);
-                commandHobbieInsert.Parameters.AddWithValue("@Correo", usuario.Correo);
-                commandHobbieInsert.Parameters.AddWithValue("@Hobbie", usuario.Hobbie);
-                commandHobbieInsert.ExecuteNonQuery();
+            //Borra idiomas
+            string deleteIdiomas = "DELETE FROM Idioma WHERE correoUsuarioFK = @correo;";
+            SqlCommand deleteIdiomasCmd = new SqlCommand(deleteIdiomas, con);
+            deleteIdiomasCmd.Parameters.AddWithValue("@correo", usuario.Correo);
+            deleteIdiomasCmd.ExecuteNonQuery();
+            
+            if (usuario.Idioma != null) {
+                //Divide cada idioma
+                String[] idiomas = usuario.Idioma.Split(',');
+                //Setea cada idioma
+                foreach (String idioma in idiomas)
+                {
+                    string setIdiomas = "INSERT INTO Idioma ( correoUsuarioFK, idiomaUsuario) VALUES (@correo, @idioma)";
+                    SqlCommand setIdiomasCmd = new SqlCommand(setIdiomas, con);
+                    setIdiomasCmd.Parameters.AddWithValue("@correo", usuario.Correo);
+                    setIdiomasCmd.Parameters.AddWithValue("@idioma", idioma.Trim(' '));
+                    setIdiomasCmd.ExecuteNonQuery();
+                }
 
             }
+            
+
+            //Borra hobbies
+            string deleteHobbies = "DELETE FROM Hobbie WHERE correoUsuarioFK = @correo;";
+            SqlCommand deleteHobbiesCmd = new SqlCommand(deleteHobbies, con);
+            deleteHobbiesCmd.Parameters.AddWithValue("@correo", usuario.Correo);
+            deleteHobbiesCmd.ExecuteNonQuery();
+
+            if (usuario.Hobbie != null) {
+                //divide cada hobbie
+                String[] hobbies = usuario.Hobbie.Split(',');
+                //Setea cada hobbie
+                foreach (String hobbie in hobbies)
+                {
+                    string setHobbies = "INSERT INTO Hobbie ( correoUsuarioFK, hobbieUsuario) VALUES (@correo, @hobbie)";
+                    SqlCommand setHobbiesCmd = new SqlCommand(setHobbies, con);
+                    setHobbiesCmd.Parameters.AddWithValue("@correo", usuario.Correo);
+                    setHobbiesCmd.Parameters.AddWithValue("@hobbie", hobbie.Trim(' '));
+                    setHobbiesCmd.ExecuteNonQuery();
+                }
+            }
+            
+
 
             con.Close();
         }

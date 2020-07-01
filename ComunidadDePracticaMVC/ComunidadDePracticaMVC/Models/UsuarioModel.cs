@@ -32,7 +32,6 @@ namespace ComunidadDePracticaMVC.Models
         [Display(Name = "País")]
         public string Pais { get; set; }
 
-        [Required(ErrorMessage = "Un idioma es requerido.")]
         [Display(Name = "Idiomas")]
         public string Idioma { get; set; }
 
@@ -45,11 +44,9 @@ namespace ComunidadDePracticaMVC.Models
         [Display(Name = "Categoría")]
         public string Categoria { get; set; }
 
-        [Required(ErrorMessage = "Una habilidad es requerida.")]
         [Display(Name = "Habilidades")]
         public string Habilidad { get; set; }
 
-        [Required(ErrorMessage = "Un hobbie es requerido.")]
         [Display(Name = "Hobbies")]
         public string Hobbie { get; set; }
 
