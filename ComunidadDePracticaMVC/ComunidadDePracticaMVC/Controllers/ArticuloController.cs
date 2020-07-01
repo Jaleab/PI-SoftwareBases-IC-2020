@@ -131,6 +131,7 @@ namespace ComunidadDePracticaMVC.Controllers
             ArticuloService servicioArticulo = new ArticuloService();
             ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
             ViewBag.listaTopicos = servicioArticulo.ObtenerTopicos();
+
             return View(servicioArticulo.GetInfoArticulo(id));
         }
 
@@ -146,7 +147,7 @@ namespace ComunidadDePracticaMVC.Controllers
             }
             else
             {
-                ViewBag.mensaje = "Articulo no ha sido guardado por titulo duplicado";
+                ViewBag.mensaje = "Artículo no completo, por favor llene todos los campos.";
                 int articuloId = id;
                 //return View(new { id = articuloId });
                 return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloId, mensaje = ViewBag.mensaje });

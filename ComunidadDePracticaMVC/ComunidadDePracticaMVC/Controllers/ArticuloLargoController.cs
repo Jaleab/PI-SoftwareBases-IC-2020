@@ -47,7 +47,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 }
                 else
                 {
-                    ViewBag.mensaje = "Articulo no ha sido guardado por titulo duplicado";
+                    ViewBag.mensaje = "Artículo no completo, por favor llene todos los campos.";
                     ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
                     ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
                     return View("Index", model);
