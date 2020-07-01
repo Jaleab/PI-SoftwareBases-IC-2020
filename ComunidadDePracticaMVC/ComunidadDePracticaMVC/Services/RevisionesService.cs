@@ -282,6 +282,21 @@ namespace ComunidadDePracticaMVC.Services
             return posiblesRevisores;
         }
 
+        public string RespuestaColaboracion(string correoMiembro, int articuloId) {
+            Connection();
+            string consulta = "SELECT estadoRevision FROM Revisa R WHERE correoMiembroFK=@correo AND R.articuloIdFK = @articuloId AND (R.estadoRevision = 'Acepta colaborar' OR R.estadoRevision = 'Rechaza colaborar' OR R.estadoRevision = 'Colaboracion') AND (R.estadoRevision != 'Pendiente revisar' OR R.estadoRevision != 'No asignado')";
+            SqlCommand cmd = new SqlCommand(consulta, con);
+            cmd.Parameters.AddWithValue("@articuloId", articuloId);
+            cmd.Parameters.AddWithValue("@correo", correoMiembro);
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            con.Open();
+            sd.Fill(dt);
+            con.Close();
+            DataRow dr = dt.Rows[0];
+            return Convert.ToString(dr["estadoRevision"]);
+        }
+
         public bool AceptarRevisor(int articuloId, string correoRevisor)
         {
             Connection();

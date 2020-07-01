@@ -264,6 +264,7 @@ namespace ComunidadDePracticaMVC.Controllers
                 ViewBag.categoria = datos[0];
             }
             ViewBag.articuloId = articuloId;
+            ViewBag.servicioRev = servicioRevisiones;
             return View(servicioRevisiones.ObtenerPosiblesRevisores(articuloId));
         }
 
