@@ -1,5 +1,6 @@
 ﻿@model ComunidadDePracticaMVC.Models.FiltroMiembroModel
 
+@using System.Web.Script.Serialization;
 <head>
     <script type="text/javascript" src="~/Scripts/tinymce/tinymce.min.js"></script>
     <script type="text/javascript" src="~/Scripts/tinyMCEResumenConfig.js"></script>
@@ -22,6 +23,8 @@
 </head>
 
 @{
+    JavaScriptSerializer jss = new JavaScriptSerializer();
+
     List<SelectListItem> listaPaises = new List<SelectListItem>();
     foreach (var item in ViewBag.listaPaises)
     {
@@ -57,7 +60,29 @@
             listaHobbies.Add(new SelectListItem { Text = item, Value = item });
         }
     }
-    
+
+    int length = -1;
+    List<List<string>> listaEtiquetas = ViewBag.etiquetas;
+    List<int> listaCounts = ViewBag.counts;
+    if (ViewBag.etiquetas != null && ViewBag.graficado == 1)
+    {
+        if (ViewBag.etiquetas.Count > 0)
+        {
+            length = (ViewBag.etiquetas)[0].Count;
+
+        }
+    }
+
+
+
+
+    //if (ViewBag.graficado = 1) {
+    //    List
+    //    foreach (var category in ViewBag.etiquetas[0]) {
+    //        Li
+    //    }
+    //    dataProvider = jss.Serialize(listaHobbies);
+    //}
 }
 
 <style>
@@ -97,15 +122,47 @@
 <br />
 <div id="graficoFiltros" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
 
-
+<input id="hiddenControl" type="hidden" runat="server" />
 
 <!-- amCharts javascript code -->
-<script type="text/javascript">
-    var graficado = @ViewBag.graficado;
-    if (graficado == 1) {
-        var count = (@ViewBag.counts)[0];
+@if (ViewBag.graficado == 1)
+{
+    <script type="text/javascript">
+        let dataProvider = [];
+        let graphs = [];
+        let jsonString = @Html.Raw(ViewBag.jsonString);
+        var categoriaSize = Object.keys(jsonString["0"]["categorias"]).length;
+        var countsSize = Object.keys(jsonString["0"]["counts"]).length;
+        var etiquetasSize = Object.keys(jsonString["0"]["etiquetas"]).length;
+        var r = countsSize / categoriaSize;
+        console.log(jsonString);
 
-        AmCharts.makeChart("graficoFiltros",
+        for (var i = 0; i < r; ++i) {
+            var contador = 0;
+            let newGraph = {};
+            newGraph["ballonText"] = "[[title]] of [[category]]:[[value]]";
+            newGraph["fillAlphas"] = 1;
+            newGraph["id"] = "AmGraph-" + i;
+            newGraph["title"] = jsonString["0"]["etiquetas"][i];
+            newGraph["type"] = "column";
+            newGraph["valueField"] = "column-" + i;
+            graphs.push(newGraph);
+
+
+            let newValue = {};
+            newValue["category"] = jsonString["0"]["categorias"][i];
+
+            var offset = i * r;
+            for (var j = offset; j < offset+ r; ++j) {
+                newValue["column-" + contador] = jsonString["0"]["counts"][j];
+                contador += 1;
+            }
+            dataProvider.push(newValue);
+            console.log(dataProvider);
+        }
+       
+        var chartData = [];
+        var chart = AmCharts.makeChart("graficoFiltros",
             {
                 "type": "serial",
                 "categoryField": "category",
@@ -114,21 +171,12 @@
                     "gridPosition": "start"
                 },
                 "trendLines": [],
-                "graphs": [
-                    {
-                        "balloonText": "[[title]] of [[category]]:[[value]]",
-                        "fillAlphas": 1,
-                        "id": "AmGraph-1",
-                        "title": "graph 1",
-                        "type": "column",
-                        "valueField": "column-1"
-                    }
-                ],
+                "graphs": graphs,
                 "guides": [],
                 "valueAxes": [
                     {
                         "id": "ValueAxis-1",
-                        "title": "Axis title"
+                        "title": "Cantidad de miembros"
                     }
                 ],
                 "allLabels": [],
@@ -144,16 +192,12 @@
                         "text": "Chart Title"
                     }
                 ],
-                "dataProvider": [
-                    { 
-                        "category": "category 1",
-                        "column-1": count;
-                    }
-                ]
+                "dataProvider": dataProvider
             }
+            
         );
-    }
-</script>
+    </script>
+}
 
 <script type="text/javascript">
     $(function () {

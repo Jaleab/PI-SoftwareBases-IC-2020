@@ -30,4 +30,14 @@ namespace ComunidadDePracticaMVC.Models
 
     }
 
+    public class DataModel
+    {
+        string titulo;
+        List<int> datos;
+        List<string> nombres;
+
+        public List<string> categorias { get; set; }
+        public List<string> etiquetas { get; set; }
+        public List<int> counts { get; set; }
+    }
 }

@@ -12,7 +12,7 @@ namespace ComunidadDePracticaMVC.Models
         List<string> nombres;
 
         List<string> titulos;
-        List<string> etiquetas;
+        List<List<string>> etiquetas;
         List<int> counts;
     }
 }

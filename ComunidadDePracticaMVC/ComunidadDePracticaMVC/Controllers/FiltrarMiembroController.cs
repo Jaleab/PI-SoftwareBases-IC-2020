@@ -12,7 +12,8 @@ namespace ComunidadDePracticaMVC.Controllers
     public class FiltrarMiembroController : Controller
     {
         // GET: FiltrarMiembro
-        public ActionResult FiltrarMiembro(FiltroMiembroModel filtro, int? graficado, List<List<string>> etiquetas, List<int> counts )
+        //, List<List<string>> etiquetas, List<int> counts )
+        public ActionResult FiltrarMiembro(FiltroMiembroModel filtro, int? graficado)
         {
             FiltrarMiembroService filtrarServicio = new FiltrarMiembroService();
             ViewBag.listaPaises = filtrarServicio.getPaises();
@@ -23,8 +24,19 @@ namespace ComunidadDePracticaMVC.Controllers
             ViewBag.graficado = graficado;
             if (graficado == 1)
             {
-                ViewBag.etiquetas = etiquetas;
-                ViewBag.counts = counts;
+                ViewBag.etiquetas = TempData["etiquetas"];
+                ViewBag.counts = TempData["counts"];
+                List<DataModel> modeloDatos = new List<DataModel>();
+                List<string> categorias = ViewBag.etiquetas[0];
+                List<int> counts = ViewBag.counts;
+                List<string> etiquetas = new List<string>();
+                for (var i = 1; i < ViewBag.etiquetas.Count; ++i) {
+                    foreach (var columna in ViewBag.etiquetas[i]) {
+                        etiquetas.Add(columna);
+                    }
+                }
+                modeloDatos.Add(new DataModel { categorias = categorias, etiquetas = etiquetas, counts = counts});
+                ViewBag.jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(modeloDatos);
             }
             return View(filtro);
         }
@@ -120,7 +132,9 @@ namespace ComunidadDePracticaMVC.Controllers
             }
             else
             {
-                return RedirectToAction("FiltrarMiembro", "FiltrarMiembro", new {graficado = 1, etiquetas = etiquetasData, counts = dataCounts});
+                @TempData["etiquetas"] = etiquetasData;
+                @TempData["counts"] = dataCounts;
+                return RedirectToAction("FiltrarMiembro", "FiltrarMiembro", new { graficado = 1});
             }
 
 
