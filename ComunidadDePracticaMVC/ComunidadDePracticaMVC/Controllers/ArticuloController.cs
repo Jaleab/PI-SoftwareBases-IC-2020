@@ -65,8 +65,11 @@ namespace ComunidadDePracticaMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Create(ArticuloModel model)
         {
+            //añade al usuario por defecto
+            model.Correos.Add(User.Identity.Name);
             if (model.Titulo == null || model.Topico == null || model.Correos == null || model.Resumen == null || model.Contenido == null)
             {
                 ArticuloService servicioArt = new ArticuloService();
@@ -80,14 +83,16 @@ namespace ComunidadDePracticaMVC.Controllers
                 bool exito = servicioArt.CrearArticulo(model);
                 if (exito)
                 {
-                    ViewBag.mensaje = "Artículo ha sido guardado";
+                    @TempData["Message"] = "Artículo ha sido guardado";
+                    return RedirectToAction("MisArticulos", "Usuario");
                 }
                 else {
                     ViewBag.mensaje = "Articulo no ha sido guardado por titulo duplicado";
+                    ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
+                    ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
+                    return View();
                 }
-                ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
-                ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
-                return View();
+                
             }
         }
 
@@ -131,16 +136,18 @@ namespace ComunidadDePracticaMVC.Controllers
             bool exito = servicioArticulo.EditarArticuloCorto(id, model, hilera);
             if (exito == true)
             {
-                ViewBag.mensaje = "Artículo ha sido guardado";
+                @TempData["Message"] = "Artículo ha sido guardado";
+                return RedirectToAction("MisArticulos", "Usuario");
             }
             else
             {
                 ViewBag.mensaje = "Articulo no ha sido guardado por titulo duplicado";
+                int articuloId = id;
+                //return View(new { id = articuloId });
+                return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloId, mensaje = ViewBag.mensaje });
             }
 
-            int articuloId = id;
-            //return View(new { id = articuloId });
-            return RedirectToAction("EditarArticuloCorto", "Articulo", new { id = articuloId, mensaje = ViewBag.mensaje});
+            
         }
 
         // GET: Articulo/Busqueda/1

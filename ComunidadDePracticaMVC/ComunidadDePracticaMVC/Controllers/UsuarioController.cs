@@ -142,11 +142,13 @@ namespace ComunidadDePracticaMVC.Controllers
             }                
             return RedirectToAction("UsuariosComunidad", "Usuario", new { mensaje = mensajeEvento });
         }
-
         
-
-        public ActionResult MisArticulos(string correo) {
-            ViewBag.correo = correo;
+        [Authorize]
+        public ActionResult MisArticulos() {
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
             return View();
         }
        

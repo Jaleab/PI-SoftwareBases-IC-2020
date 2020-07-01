@@ -17,7 +17,6 @@ namespace ComunidadDePracticaMVC.Models
         [Required(ErrorMessage = "Un autor es requerido.")]
         public string Autor { get; set; }
 
-        [Required(ErrorMessage = "Un autor es requerido.")]
         public List<string> Correos { get; set; }
 
         [Required(ErrorMessage = "Ingrese el contenido del articulo.")]

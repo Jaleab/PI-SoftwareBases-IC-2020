@@ -46,16 +46,13 @@
                         //url para ver
                         var lookUrl = '@Url.Action("ConsultarArticulos", "Articulo",new { id= "VAL"},null)';
                         lookUrl = lookUrl.replace("VAL", idS);
-                        //url para editar
-                        var editUrl = '@Url.Action("EditarArticulos", "Articulo",new { id= "VAL"},null)';
-                        editUrl = editUrl.replace("VAL", idS);
                         //url para borrar
                         @*var deleteUrl = '@Url.Action("BorrarArticulo", "Articulo",new { id= "VAL"},null)';
                         deleteUrl = deleteUrl.replace("VAL", idS);*@
 
                         var articleInstance = document.importNode(artTemp, true);
 
-                        var title, author, info, lookLink, editLink;
+                        var title, author, info, lookLink;
 
                         //get the DIV element from the template Instance:
                         like = articleInstance.querySelector(".likes_template");
@@ -64,7 +61,6 @@
                         title = articleInstance.querySelector(".title_template");
                         author = articleInstance.querySelector(".author_template");
                         lookLink = articleInstance.querySelector(".look-template");
-                        editLink = articleInstance.querySelector(".edit-template");
 
                         title.textContent = articulo.Titulo;
                         like.textContent = like.textContent + articulo.Likes;
@@ -72,16 +68,10 @@
                         fecha.textContent = fecha.textContent + (articulo.FechaPublicacion).split(' ')[0];
                         author.textContent = articulo.Autor;
                         lookLink.href = lookUrl;
-                        editLink.href = editUrl;
 
                         articleList.append(articleInstance);
 
-                        /*
-                        actionLink = actionLink.replace("VAL", idS);
-                        tblExample.append('<tr> <td>' + articulo.ArticuloId + '</td> <td>'
-                            + articulo.Autor + '</td><td>' + articulo.Titulo + '</td><td>'
-                            + '<span>' + actionLink + '</span>' + '</td></tr>');
-                        */
+
                     });
                 },
                 error: function (err) {
@@ -98,15 +88,18 @@
 
     <div class="col-xl-12 col-md-12 mb-12">
         <div class="row page-title main-font ">
-            <h2>Artículos publicados</h2>
+            <h2>Artículos publicados por la comunidad</h2>
             <hr />
         </div>
         @*<div class="row main-font search-bar">
-            <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
-        </div>*@
+                <input id="tableSearch" class="search-text" type="text" placeholder="Busque aqui.">
+            </div>*@
     </div>
-    <div>
-        <div id="articleList">
+    <div class="row">
+
+    </div>
+    <div class="shadow contenedor-blanco" style="border-top-left-radius: 25px; ">
+        <div id="articleList" class="row" style="margin-left: 0px;margin-right: 0px;">
 
         </div>
     </div>
@@ -117,7 +110,7 @@
 
 <template>
 
-    <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
+    <div class="col-xl-12 col-md-12 mb-12 articulo-element" style="background-color:#f9f9f9">
 
         <div class="col-md-6 mr-2">
             <div class=" title_template row main-font article-h1">La Descomposición del Estudiante</div>
@@ -135,11 +128,9 @@
         <div class="box-vertical-divider col-md-1   "></div>
 
         <div class="col-md-2 mr-2">
+            
             <div class="row">
-                <a class="look-template row btn box-btn" style ="margin-left:15px; margin-bottom: 15px; padding-right: 30px;" href=""> <i class="fa fa-eye"></i> ver  </a>
-            </div>
-            <div class="row"> 
-                <a class="edit-template row btn box-btn" style ="margin-left:15px" href=""><i class="fa fa-edit"></i> editar</a>
+                <a class="look-template row btn box-btn" style="margin-top: 30px;margin-left:5px; margin-bottom: 5px; width: 130%; padding-left: -10px;" href=""> <i class="fa fa-eye"></i> Consultar  </a>
             </div>
             
         </div>

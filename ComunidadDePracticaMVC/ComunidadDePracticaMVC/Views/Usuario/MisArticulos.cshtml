@@ -35,11 +35,13 @@
                 data: {},
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: { pageNumber: currentPageNumber, pageSize: 5, correo: '@ViewBag.correo' },
+                data: { pageNumber: currentPageNumber, pageSize: 1000, correo: '@User.Identity.Name' },
                 success: function (response) {
                     //get the template element:
                     var artTemp = document.getElementsByTagName("template")[0].content;
-                    var articleList = $('#articleList');
+                    var articleListNoPublicados = $('#articleList-no-publicados');
+                    var articleListEnRevision = $('#articleList-en-revision');
+                    var articleListPublicados = $('#articleList-publicados');
 
                     // Looping over emloyee list and display it
                     $.each(response, function (index, articulo) {
@@ -83,24 +85,27 @@
                         revision.id = articulo.ArticuloId;
                         if (articulo.Estado == "Revision") {
 
+                            articleListEnRevision.append(articleInstance);
                             revision.setAttribute("disabled", "disabled");
                             revision.textContent = "En Revisión";
-                        }
-                        else {
-                            revision.textContent = "A Revisar";
-                            revision.title= "Enviar artículo a revisar.";
+                            revision.style.visibility = 'hidden';
 
+                        } else if (articulo.Estado == "Publicado") {
+                            articleListPublicados.append(articleInstance)
+                            revision.setAttribute("disabled", "disabled");
+                            revision.textContent = "Publicado";
+                            revision.title = "Enviar artículo a revisar.";
+                            revision.style.visibility = 'hidden';
+
+                        } else {
+                            articleListNoPublicados.append(articleInstance);
+                            revision.textContent = "A Revisar";
+                            revision.title = "Enviar artículo a revisar.";
                         }
 
                         //deleteLink.href = deleteUrl;
 
-                        articleList.append(articleInstance);
-                        /*
-                        actionLink = actionLink.replace("VAL", idS);
-                        tblExample.append('<tr> <td>' + articulo.ArticuloId + '</td> <td>'
-                            + articulo.Autor + '</td><td>' + articulo.Titulo + '</td><td>'
-                            + '<span>' + actionLink + '</span>' + '</td></tr>');
-                        */
+
                     });
                 },
                 error: function (err) {
@@ -136,6 +141,45 @@
 
         }
 
+        function mostrarNoPublicados() {
+            var noPublicado = document.getElementById("articleList-no-publicados");
+            var enRevision = document.getElementById("articleList-en-revision");
+            var publicado = document.getElementById("articleList-publicados");
+            noPublicado.style.display = "block";
+            enRevision.style.display = "none";
+            publicado.style.display = "none";
+
+            $("#btn-no-publicados").addClass("box-btn-activated");
+            $("#btn-publicados").removeClass("box-btn-activated");
+            $("#btn-en-revision").removeClass("box-btn-activated");
+        }
+
+        function mostrarEnRevision() {
+            var noPublicado = document.getElementById("articleList-no-publicados");
+            var enRevision = document.getElementById("articleList-en-revision");
+            var publicado = document.getElementById("articleList-publicados");
+            noPublicado.style.display = "none";
+            enRevision.style.display = "block";
+            publicado.style.display = "none";
+
+            $("#btn-no-publicados").removeClass("box-btn-activated");
+            $("#btn-publicados").removeClass("box-btn-activated");
+            $("#btn-en-revision").addClass("box-btn-activated");
+        }
+
+        function mostrarPublicados() {
+            var noPublicado = document.getElementById("articleList-no-publicados");
+            var enRevision = document.getElementById("articleList-en-revision");
+            var publicado = document.getElementById("articleList-publicados");
+            noPublicado.style.display = "none";
+            enRevision.style.display = "none";
+            publicado.style.display = "block";
+
+            $("#btn-no-publicados").removeClass("box-btn-activated");
+            $("#btn-publicados").addClass("box-btn-activated");
+            $("#btn-en-revision").removeClass("box-btn-activated");
+        }
+
     </script>
 
 </head>
@@ -144,10 +188,15 @@
 
     <div class="col-xl-12 col-md-12 mb-12">
         <div class="row page-title main-font ">
-            <h2>Articulos de @ViewBag.correo</h2>
+            <h2>Articulos de @User.Identity.Name</h2>
+            @if (ViewBag.Message == "Artículo ha sido guardado")
+            {
+                <div class="alert-success">
+                    @ViewBag.Message 
+                </div>
+            }
             <hr />
-
-
+            
 
         </div>
 
@@ -161,14 +210,21 @@
     <div class="row">
         <div class="col-md-12">
             <nav>
-                <a class="btn pestania box-btn box-btn-activated" style=" width: 25%;" href="@Url.Action("MisArticulos", "Usuario", new { correo = User.Identity.Name } )"> <i class="fa fa-book"></i> Mis Artículos</a>
+                <button id="btn-no-publicados" class="btn pestania box-btn box-btn-activated" style=" width: 25%;" onclick="mostrarNoPublicados()"> <i class="fa fa-book"></i> No publicados</button>
+                <button id="btn-en-revision" class="btn pestania box-btn" style=" width: 25%;" onclick="mostrarEnRevision()"> <i class="fa fa-book"></i> En revisión </button>
+                <button id="btn-publicados" class="btn pestania box-btn" style=" width: 25%;" onclick="mostrarPublicados()"> <i class="fa fa-book"></i> Publicados</button>
+
             </nav>
         </div>
 
     </div>
-    <div class="shadow contenedor-blanco">
-        <div id="articleList" class="row" style="margin-left: 0px;margin-right: 0px;">
 
+    <div class="shadow contenedor-blanco">
+        <div id="articleList-no-publicados" class="row" style="margin-left: 0px;margin-right: 0px; display:block;">
+        </div>
+        <div id="articleList-en-revision" class="row" style="margin-left: 0px;margin-right: 0px; display: none;">
+        </div>
+        <div id="articleList-publicados" class="row" style="margin-left: 0px;margin-right: 0px; display: none;">
         </div>
     </div>
 
@@ -202,10 +258,10 @@
 
         <div class="col-md-2 mr-2">
             <div class="row">
-                <a class="look-template row btn box-btn" style="margin-left:15px; margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""> <i class="fa fa-eye"></i> ver  </a>
+                <a class="look-template row btn box-btn" style="margin-left:15px; margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""> <i class="fa fa-eye"></i> Consultar  </a>
             </div>
             <div class="row">
-                <a class="edit-template row btn box-btn" style="margin-left:15px ;margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""><i class="fa fa-edit"></i> editar</a>
+                <a class="edit-template row btn box-btn" style="margin-left:15px ;margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""><i class="fa fa-edit"></i> Editar</a>
             </div>
             <div class="row">
                 <a class="revision-template row btn box-btn" style="margin-left:15px; width: 100%; padding-left: -15px;" href="" onclick="enviarRevision (this)">asd</a>

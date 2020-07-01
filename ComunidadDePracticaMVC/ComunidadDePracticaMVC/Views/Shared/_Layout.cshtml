@@ -83,6 +83,7 @@
                             </script>
 
                         </li>
+
                         <li class="sidebar-divider"></li>
 
                         <li class="dropdown">
@@ -97,9 +98,13 @@
                                 <li><a href="@Url.Action("Busqueda", "Articulo", new { hilera ="Medicina"})">Medicina</a></li>
                             </ul>
                         </li>
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="sidebar-divider"></li>
+                            <li>@Html.ActionLink("Filtrar miembros", "FiltrarMiembro", "FiltrarMiembro", new { correo = User.Identity.Name, graficado = 0 }, htmlAttributes: new { title = "Filtrar" })</li>
+                        }
                         <li class="sidebar-divider"></li>
                         <li>@Html.ActionLink("Página Principal", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Devolverse a la página principal" })</li>
-                        @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
                         <li>@Html.ActionLink("FAQ", "FAQ", "faq", routeValues: null, htmlAttributes: new { title = "Preguntas frecuentes" })</li>
                     </ul>
 

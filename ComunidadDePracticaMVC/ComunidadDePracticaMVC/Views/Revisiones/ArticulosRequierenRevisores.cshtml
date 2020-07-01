@@ -7,61 +7,82 @@
 
 <body>
 
-    <hr />
     <div>
 
         @if (ViewBag.categoria == "Coordinador")
         {
 
-            <h2>Artículos que requieren revisores.</h2>
 
-            if (ViewBag.Message != null && ViewBag.Message == "Se ha enviado la solicitud")
-            {
-                <div class="alert-success">
-                    @ViewBag.Message
-                </div>
-            }
-            else if (ViewBag.Message == "Falló la operación, intente más tarde")
-            {
-                <div class="alert-danger">
-                    @ViewBag.Message
-                </div>
-            }
-
-            <hr />
-
-
-            foreach (var articulo in ViewBag.revisiones.ArticulosEnRevision)
-            {
-                <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
-
-                    <div class="col-md-6 mr-2">
-                        <div class="row main-font article-h1"> Titulo </div>
-                        <div class="row main-font article-h2"> @articulo.Titulo </div>
-
-                    </div>
-
-                    <div class="box-vertical-divider col-md-1   "></div>
-
-                    <div class="col-md-3 mr-2">
-
-                        <div class="row main-font article-h2">Fecha de publicación</div>
-                        <div class="row main-font article-h2">&#128197 @articulo.FechaPublicacion</div>
-
-                    </div>
-
-                    <div class="box-vertical-divider col-md-1   "></div>
-
-                    <div class="col-md-2 mr-2">
-                        <div class="row">
-                            <div class="row main-font article-h2"></div>
-                            <br />
-                            <a class="btn box-btn" href="@Url.Action("DecidirRevisores", "Revisiones", new { articuloId = articulo.ArticuloId})">Decidir revisores</a>
+            <div class="col-xl-12 col-md-12 mb-12">
+                <div class="row page-title main-font ">
+                    <h2>Artículos que requieren revisores</h2>
+                    @if (ViewBag.Message != null && ViewBag.Message == "Se ha enviado la solicitud")
+                    {
+                        <div class="alert-success">
+                            @ViewBag.Message
                         </div>
-                    </div>
+                    }
+                    else if (ViewBag.Message == "Falló la operación, intente más tarde")
+                    {
+                        <div class="alert-danger">
+                            @ViewBag.Message
+                        </div>
+                    }
+                    <hr />
+
+
 
                 </div>
-            }
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <nav>
+                        <a class="btn pestania box-btn" style=" width: 27%;" href="@Url.Action("ArticulosRequierenRevision", "Revisiones")"> <i class="fa fa-paint-brush"></i> Solicitar Colaboración</a>
+                        <a class="btn pestania box-btn box-btn-activated" style=" width: 27%;" href="@Url.Action("ArticulosRequierenRevisores", "Revisiones")"> <i class="fa fa-book"></i> Decidir Revisores </a>
+                        <a class="btn pestania box-btn" style=" width: 27%;" href="@Url.Action("ArticulosEnRevisionPorMiembros", "Revisiones")"> <i class="fa fa-paint-brush"></i> Decisión Final</a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="shadow contenedor-blanco">
+                <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                    @foreach (var articulo in ViewBag.revisiones.ArticulosEnRevision)
+                    {
+                        <div class="col-xl-12 col-md-12 mb-12 articulo-element" style="background-color:#f9f9f9;">
+
+                            <div class="col-md-6 mr-2">
+                                <div class="row main-font article-h1"> @articulo.Titulo </div>
+                                <div class="row main-font article-h2"> @articulo.Autor </div>
+
+                            </div>
+
+                            <div class="box-vertical-divider col-md-1   "></div>
+
+                            <div class="col-md-3 mr-2">
+
+                                <div class="row main-font article-h2">Fecha de publicación</div>
+                                <div class="row main-font article-h2">&#128197 @articulo.FechaPublicacion</div>
+
+                            </div>
+
+                            <div class="box-vertical-divider col-md-1   "></div>
+
+                            <div class="col-md-2 mr-2">
+                                <div class="row">
+                                    <a class="btn box-btn" style="margin-left:5px; margin-bottom: 5px; width: 130%; padding-left: -10px;" href="@Url.Action("ConsultarArticulos", "Articulo",new { id= articulo.ArticuloId},null)"> <i class="fa fa-eye"></i> Consultar </a>
+
+                                </div>
+                                <div class="row">
+
+                                    <a class="btn box-btn" style="margin-left:5px; margin-bottom: 5px; width: 130%; padding-left: -10px;"  href="@Url.Action("DecidirRevisores", "Revisiones", new { articuloId = articulo.ArticuloId})">Decidir revisores</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
 
         }
         else

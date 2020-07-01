@@ -14,35 +14,40 @@
 <link href="https://davidstutz.de/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="https://davidstutz.de/bootstrap-multiselect/docs/js/bootstrap-3.3.2.min.js"></script>
 
-<title>Subir Artículo Largo</title>
+<title>Crear Artículo Largo</title>
 
-<h2>Subir Artículo Largo</h2>
-
-<hr />
-<br />
-
-
-@if (ViewBag.mensaje == "Artículo ha sido guardado")
-{
-    <div class="alert-success">
-        @ViewBag.mensaje
-    </div>
-}
+<h2>Crear Artículo Largo</h2>
 
 @if (ViewBag.mensaje == "Articulo no ha sido guardado por titulo duplicado")
 {
-    <div class="text-danger">
+    <div class="alert-danger">
         @ViewBag.mensaje
     </div>
 }
+
+<hr />
 
 
 
 @{
+    string name = "Nombre Autor";
     List<SelectListItem> listaNombreCorreo = new List<SelectListItem>();
-    foreach (var item in ViewBag.listaAutoresCorreos)
-    {
-        listaNombreCorreo.Add(new SelectListItem { Value = item[1], Text = item[0]});
+    if (User.Identity.IsAuthenticated) {
+        // Retrieves the cookie that contains your custom FormsAuthenticationTicket.
+        HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+        // Decrypts the FormsAuthenticationTicket that is held in the cookie's .Value property.
+        FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+        name = (Json.Decode(authTicket.UserData))["Nombre"];
+
+
+        foreach (var item in ViewBag.listaAutoresCorreos)
+        {
+            if (!item[1].Equals(User.Identity.Name)) {
+                listaNombreCorreo.Add(new SelectListItem { Value = item[1], Text = item[0] });
+            }
+        }
+
+
     }
 
     List<SelectListItem> listaTopicos = new List<SelectListItem>();
@@ -52,59 +57,54 @@
     }
 }
 
+<div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+    <div class="row" style="margin-left: 0px;margin-right: 0px;">
+        @using (Html.BeginForm("Guardar", "ArticuloLargo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
 
-@using (Html.BeginForm("Guardar", "ArticuloLargo", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col-md-12 ">
+                    <div class="form-group">
+                        @Html.LabelFor(d => d.Titulo)
+                        @Html.TextBoxFor(d => d.Titulo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(d => d.Titulo, "", new { @class = "text-danger" })
+                    </div>
 
-    <div class="row">
-        <div class="col-md-12 ">
-            <div class="form-group">
-                @Html.LabelFor(d => d.Titulo)
-                @Html.TextBoxFor(d => d.Titulo, new { @class = "form-control" })
-                @Html.ValidationMessageFor(d => d.Titulo, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(d => d.Topico)
+                        @Html.DropDownListFor(d => d.Topico, listaTopicos, "Escoger topico", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(d => d.Topico, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Autor">Autores adicionales a @name</label>
+                        <br />
+                        @Html.ListBoxFor(m => m.Correos, new MultiSelectList(listaNombreCorreo, "Value", "Text"), new { @class = "form-control", multiple = "multiple", width = "100%" })
+                        @Html.ValidationMessageFor(model => model.Correos, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(d => d.Resumen)
+                        @Html.TextAreaFor(d => d.Resumen, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(d => d.Resumen, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(d => d.Archivo1)
+                        @Html.TextBoxFor(d => d.Archivo1, new { type = "file", @class = "btn btn-default" })
+                        @Html.ValidationMessageFor(d => d.Archivo1, "", new { @class = "text-danger" })
+                    </div>
+
+                    <input type="submit" value="Guardar" class="btn btn-success" />
+                    @Html.ActionLink("Cancelar", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Cancelar", @class = "btn btn-danger" })
+
+                    <br />
+                </div>
             </div>
-
-            <div class="form-group">
-                @Html.LabelFor(d => d.Topico)
-                @Html.DropDownListFor(d => d.Topico, listaTopicos, "Escoger topico", new { @class = "form-control" })
-                @Html.ValidationMessageFor(d => d.Topico, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Autor)
-                <br />
-                @Html.ListBoxFor(m => m.Correos, new MultiSelectList(listaNombreCorreo, "Value", "Text"), new { @class = "form-control", multiple = "multiple", width = "100%"})
-                @Html.ValidationMessageFor(model => model.Correos, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(d => d.Resumen)
-                @Html.TextAreaFor(d => d.Resumen, new { @class = "form-control" })
-                @Html.ValidationMessageFor(d => d.Resumen, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(d => d.Archivo1)
-                @Html.TextBoxFor(d => d.Archivo1, new { type = "file", @class = "btn btn-default" })
-                @Html.ValidationMessageFor(d => d.Archivo1, "", new { @class = "text-danger" })
-            </div>
-
-            <input type="submit" value="Guardar" class="btn btn-success" />
-            @Html.ActionLink("Cancelar", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Cancelar", @class = "btn btn-danger" })
-
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-        </div>
+        }
     </div>
-}
-
-
-
-
+</div>
 
 <script type="text/javascript">
 

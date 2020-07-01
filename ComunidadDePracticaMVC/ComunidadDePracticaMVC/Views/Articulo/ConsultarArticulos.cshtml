@@ -13,6 +13,23 @@
     //string voto = "2"; // debe ser un parametro
     string idArtStr = "\'" + articuloId.ToString() + "\'";
 
+
+    // Retrieves the cookie that contains your custom FormsAuthenticationTicket.
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+    // Decrypts the FormsAuthenticationTicket that is held in the cookie's .Value property.
+    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+    string nombreUsuario = (Json.Decode(authTicket.UserData))["Nombre"];
+
+    var autores = (Model.Autor).Split(',');
+    bool shouldVote = true;
+    foreach (string i in autores)
+    {
+        if (i.Equals(nombreUsuario))
+        {
+            shouldVote = false;
+        }
+    }
+
 }
 
 
@@ -22,85 +39,92 @@
 
     <div>
         <h2>@ViewBag.Title </h2>
+        <br />
+        <h4>Usted está consultando un artículo </h4>
+        <hr />
     </div>
 
+    <div class ="shadow"style="padding: 25px; border-radius: 25px; background-color:white;">
+        <div class="row" style="margin-left: 0px;margin-right: 0px;">
+            @if (tipoArchivo != "corto")
+            {
 
-    @if (tipoArchivo != "corto")
-    {
-        <h4>Usted está visitando un artículo largo</h4>
+                <h3> <strong>Título:</strong> </h3>
 
-        <hr />
-        <h3> <strong>Título:</strong> </h3>
+                <h4>@titulo</h4>
 
-        <h4>@titulo</h4>
+                <h3> <strong>Autor:</strong> </h3>
 
-        <h3> <strong>Autor:</strong> </h3>
+                <h4>@autor</h4>
 
-        <h4>@autor</h4>
+                <h3> <strong>Tópicos: </strong> </h3>
+                <h4> @topico</h4>
 
-        <h3> <strong>Tópicos: </strong> </h3>
-        <h4> @topico</h4>
+                <hr />
 
-        <hr />
+                <h3> <strong> Resumen del articulo: </strong> </h3>
+                <br />
+                <div style="padding: 25px; border-radius: 25px; background-color:#f6f6f6;">
+                    @Html.Raw(HttpUtility.HtmlDecode(resumen))
+                </div>
 
-        <h3> <strong> Resumen del articulo: </strong> </h3>
-        <br />
-        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-            @Html.Raw(HttpUtility.HtmlDecode(resumen))
+                <hr />
+
+
+                <a class="btn box-btn" href="/Articulo/AccederArticuloLargo?idArt=@articuloId" target="_blank"> Ver archivo</a>
+            }
+            else
+            {
+
+                <h3> <strong>Título:</strong> </h3>
+
+                <h4>@titulo</h4>
+
+                <h3> <strong>Autor:</strong> </h3>
+
+                <h4>@autor</h4>
+
+                <h3> <strong>Tópicos: </strong> </h3>
+                <h4> @topico</h4>
+
+                <hr />
+
+                <h3> <strong> Resumen del articulo: </strong> </h3>
+                <br />
+                <div style="padding: 25px; border-radius: 25px; background-color:#f6f6f6;">
+                    @Html.Raw(HttpUtility.HtmlDecode(resumen))
+                </div>
+                <hr />
+
+                <h3> <strong> Contenido: </strong></h3>
+                <br />
+                <div style="padding: 25px; border-radius: 25px; background-color:#f6f6f6;">
+                    @Html.Raw(HttpUtility.HtmlDecode(contenido))
+                </div>
+            }
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                
+                string correo = "\"" + User.Identity.Name.ToString() + "\"";
+                if (shouldVote)
+                {
+                    <hr />
+                    <div class="seccion_Votar">
+                        <h4> Brinde su opinión respecto a este artículo</h4>
+                        <br />
+                        <button value="1" id="b0" class="btn box-btn" onclick="activarOtros(@idArtStr,1,@correo,@ViewBag.Reaccion)"><i class="fa fa-thumbs-up"></i> Me gusta </button>
+                        <button value="0" id="b1" class="btn box-btn" onclick="activarOtros(@idArtStr,0,@correo,@ViewBag.Reaccion)"> Neutral </button>
+                        <button value="-1" id="b2" class="btn box-btn" onclick="activarOtros(@idArtStr,-1,@correo,@ViewBag.Reaccion)"><i class="fa fa-thumbs-down"></i> No me gusta </button> <br />
+                        <p id="ArtID" value="@articuloId"></p>
+                    </div>
+                }
+
+            }
+
         </div>
-
-        <hr />
-
-
-        <a class="btn box-btn" href="/Articulo/AccederArticuloLargo?idArt=@articuloId" target="_blank"> Ver archivo</a>
-    }
-    else
-    {
-        <h4>Usted está visitando un artículo corto</h4>
-
-        <hr />
-
-        <h3> <strong>Título:</strong> </h3>
-
-        <h4>@titulo</h4>
-
-        <h3> <strong>Autor:</strong> </h3>
-
-        <h4>@autor</h4>
-
-        <h3> <strong>Tópicos: </strong> </h3>
-        <h4> @topico</h4>
-
-        <hr />
-
-        <h3> <strong> Resumen del articulo: </strong> </h3>
-        <br />
-        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-            @Html.Raw(HttpUtility.HtmlDecode(resumen))
-        </div>
-        <hr />
-
-        <h3> <strong> Contenido: </strong></h3>
-        <br />
-        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-            @Html.Raw(HttpUtility.HtmlDecode(contenido))
-        </div>
-    }
-
-    @if (User.Identity.IsAuthenticated)
-    {
-        string correo = "\"" + User.Identity.Name.ToString() + "\"";
-        <hr />
-        <div class="seccion_Votar">
-            <h4> Brinde su opinión respecto a este artículo</h4>
-            <br />
-            <button value="1" id="b0" class="btn box-btn" onclick="activarOtros(@idArtStr,1,@correo,@ViewBag.Reaccion)"><i class="fa fa-thumbs-up"></i> Me gusta </button>
-            <button value="0" id="b1" class="btn box-btn" onclick="activarOtros(@idArtStr,0,@correo,@ViewBag.Reaccion)"> Neutral </button>
-            <button value="-1" id="b2" class="btn box-btn" onclick="activarOtros(@idArtStr,-1,@correo,@ViewBag.Reaccion)"><i class="fa fa-thumbs-down"></i> No me gusta </button> <br />
-            <p id="ArtID" value="@articuloId"></p>
-        </div>
-    }
-
+    </div>
+    
     <hr />
 
     <div>
