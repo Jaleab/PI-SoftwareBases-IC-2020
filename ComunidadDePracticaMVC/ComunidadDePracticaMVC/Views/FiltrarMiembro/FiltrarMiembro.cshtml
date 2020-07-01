@@ -120,12 +120,13 @@
 <br />
 <br />
 <br />
-<div id="graficoFiltros" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+<div id="graficoFiltros" style="width: 
+    100%; height: 400px; background-color: #FFFFFF;"></div>
 
 <input id="hiddenControl" type="hidden" runat="server" />
 
 <!-- amCharts javascript code -->
-@if (ViewBag.graficado == 1)
+@if (ViewBag.graficado == 1 && ViewBag.pivotes != null)
 {
     <script type="text/javascript">
         let dataProvider = [];
@@ -137,29 +138,61 @@
         var r = countsSize / categoriaSize;
         console.log(jsonString);
 
-        for (var i = 0; i < r; ++i) {
-            var contador = 0;
+        var indice = 0;
+        for (var i = 0; i < etiquetasSize; ++i) {
             let newGraph = {};
             newGraph["ballonText"] = "[[title]] of [[category]]:[[value]]";
             newGraph["fillAlphas"] = 1;
             newGraph["id"] = "AmGraph-" + i;
-            newGraph["title"] = jsonString["0"]["etiquetas"][i];
+            if (i < @ViewBag.Pivotes[2]) {
+                newGraph["title"] = jsonString["0"]["etiquetas"][i + @ViewBag.Pivotes[1]];
+                console.log(jsonString["0"]["etiquetas"][i+ @ViewBag.Pivotes[1]], i);
+            }
+            else {
+                newGraph["title"] = jsonString["0"]["etiquetas"][indice];
+                console.log(jsonString["0"]["etiquetas"][indice], indice);
+                ++indice;
+            }
+
             newGraph["type"] = "column";
             newGraph["valueField"] = "column-" + i;
             graphs.push(newGraph);
+        }
 
-
+        for (var i = 0; i < categoriaSize; ++i) {
+            var contador = 0;
             let newValue = {};
             newValue["category"] = jsonString["0"]["categorias"][i];
+            if (@ViewBag.Pivotes[3]) {
+                for (var j = 0; j < @ViewBag.Pivotes[3]; ++j) {
+                    //console.log(@ViewBag.Pivotes[1]* categoriaSize);
+                    var offset = (categoriaSize * j + i) + (@ViewBag.Pivotes[1]* categoriaSize) + (@ViewBag.Pivotes[2]* categoriaSize);
+                    newValue["column-" + contador] = jsonString["0"]["counts"][offset];
+                    console.log(offset, jsonString["0"]["counts"][offset]);
+                    contador += 1;
+                }
+            }
 
-            var offset = i * r;
-            for (var j = offset; j < offset+ r; ++j) {
-                newValue["column-" + contador] = jsonString["0"]["counts"][j];
-                contador += 1;
+            if (@ViewBag.Pivotes[2]) {
+                for (var j = 0; j < @ViewBag.Pivotes[2]; ++j) {
+                    //console.log(@ViewBag.Pivotes[1]* categoriaSize);
+                    var offset = (categoriaSize * j + i) + (@ViewBag.Pivotes[1]* categoriaSize);
+                    newValue["column-" + contador] = jsonString["0"]["counts"][offset];
+                    console.log(offset, jsonString["0"]["counts"][offset]);
+                    contador += 1;
+                }
+            }
+            if (@ViewBag.Pivotes[1]) {
+                for (var j = 0; j < @ViewBag.Pivotes[1]; ++j) {
+                    var offset = categoriaSize * j + i;
+                    newValue["column-" + contador] = jsonString["0"]["counts"][offset];
+                    console.log(offset, jsonString["0"]["categorias"][i], jsonString["0"]["counts"][offset]);
+                    contador += 1;
+                }
             }
             dataProvider.push(newValue);
-            console.log(dataProvider);
         }
+        console.log(dataProvider);
        
         var chartData = [];
         var chart = AmCharts.makeChart("graficoFiltros",
