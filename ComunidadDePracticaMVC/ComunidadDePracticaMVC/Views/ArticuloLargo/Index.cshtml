@@ -80,6 +80,7 @@
                     <div class="form-group">
                         <label for="Autor">Autores adicionales a @name</label>
                         <br />
+
                         @Html.ListBoxFor(m => m.Correos, new MultiSelectList(listaNombreCorreo, "Value", "Text"), new { @class = "form-control", multiple = "multiple", width = "100%" })
                         @Html.ValidationMessageFor(model => model.Correos, "", new { @class = "text-danger" })
                     </div>

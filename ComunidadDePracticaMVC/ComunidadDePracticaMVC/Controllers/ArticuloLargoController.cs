@@ -20,10 +20,7 @@ namespace ComunidadDePracticaMVC.Controllers
         [Authorize]
         public ActionResult Guardar(ArticuloLargoViewModel model)
         {
-            //añade al usuario por defecto
-            model.Correos.Add(User.Identity.Name);
-
-            if (model.Titulo == null || model.Topico == null || model.Correos == null || model.Resumen == null || model.Archivo1 == null)
+            if (model.Titulo == null || model.Topico == null || model.Resumen == null || model.Archivo1 == null)
             {
                 ArticuloService servicioArticulo = new ArticuloService();
                 ViewBag.listaAutoresCorreos = servicioArticulo.ObtenerAutoresCorreos();
@@ -32,6 +29,8 @@ namespace ComunidadDePracticaMVC.Controllers
             }
             else
             {
+                //añade al usuario por defecto
+                model.Correos.Add(User.Identity.Name);
                 ArticuloService servicioArt = new ArticuloService();
                 bool exito = servicioArt.GuardarArticuloLargo(model);
                 if (exito)
