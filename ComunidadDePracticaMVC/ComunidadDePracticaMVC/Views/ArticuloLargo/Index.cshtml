@@ -32,7 +32,8 @@
 @{
     string name = "Nombre Autor";
     List<SelectListItem> listaNombreCorreo = new List<SelectListItem>();
-    if (User.Identity.IsAuthenticated) {
+    if (User.Identity.IsAuthenticated)
+    {
         // Retrieves the cookie that contains your custom FormsAuthenticationTicket.
         HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
         // Decrypts the FormsAuthenticationTicket that is held in the cookie's .Value property.
@@ -42,7 +43,8 @@
 
         foreach (var item in ViewBag.listaAutoresCorreos)
         {
-            if (!item[1].Equals(User.Identity.Name)) {
+            if (!item[1].Equals(User.Identity.Name))
+            {
                 listaNombreCorreo.Add(new SelectListItem { Value = item[1], Text = item[0] });
             }
         }
@@ -144,4 +146,9 @@
     //    }
     //}
 </script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
 

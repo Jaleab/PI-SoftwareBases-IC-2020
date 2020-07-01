@@ -68,10 +68,10 @@ namespace ComunidadDePracticaMVC.Controllers
         [Authorize]
         public ActionResult Create(ArticuloModel model)
         {
-            //añade al usuario por defecto
-            model.Correos.Add(User.Identity.Name);
-            if (model.Titulo == null || model.Topico == null || model.Correos == null || model.Resumen == null || model.Contenido == null)
+            
+            if (model.Titulo == null || model.Topico == null || model.Resumen == null || model.Contenido == null)
             {
+
                 ArticuloService servicioArt = new ArticuloService();
                 ViewBag.listaAutoresCorreos = servicioArt.ObtenerAutoresCorreos();
                 ViewBag.listaTopicos = servicioArt.ObtenerTopicos();
@@ -79,6 +79,11 @@ namespace ComunidadDePracticaMVC.Controllers
             }
             else
             {
+                if (model.Correos == null) {
+                    model.Correos = new List<string>();
+                }
+                //añade al usuario por defecto
+                model.Correos.Add(User.Identity.Name);
                 ArticuloService servicioArt = new ArticuloService();
                 bool exito = servicioArt.CrearArticulo(model);
                 if (exito)
