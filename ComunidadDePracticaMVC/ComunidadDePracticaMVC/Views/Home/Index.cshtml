@@ -1,24 +1,7 @@
-﻿<!--
-@{
-    ViewBag.Title = "Index";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+﻿<head>
+    <title>Página de inicio: Comunidades de práctica</title>
+</head>
 
-
-
-
-
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
--->
-@{
-
-}
-<title>Página de inicio: Comunidades de práctica</title>
 <body>
 
     @*esto es para articulos pendientes de revisión que solo puede ver el coordinador, falta acomodar d1 que se vea lindo..*@
@@ -35,51 +18,57 @@
     }
 
     <div class="row " style="height:100%;">
-        <div class="col-md-6">
-            <div class="box-container-generic shadow">
-                <div class="box-header row">
-                    <div class="box-header-title">Artículos publicados</div>
-                </div>
-                <div class="box-content" style="padding: 20px;">
-                    <p>
-                        Aquí puede acceder a la lista de artículos publicados por nuestros autores en la plataforma
-                    </p>
-                </div>
-                <div class="box-footer">
-                    <p><a class="btn box-btn" href="https://localhost:44392/Articulo/InicioArticulos">Ver artículos &raquo;</a></p>
-                </div>
+        <div class="col-md-6" style="height:100%;">
 
+            <div class="box-container-generic"style="height:45%;">
+                <div class="shadow" style="height:100%;">
+                    <div class="box-header row">
+                        <div class="box-header-title">Artículos publicados</div>
+                    </div>
+                    <div class="box-content" style="padding: 20px; height:72%;">
+                        <p>
+                            Aquí puede acceder a la lista de artículos publicados por nuestros autores en la plataforma
+                        </p>
+                    </div>
+                    <div class="box-footer">
+                        <p><a class="btn box-btn" href="https://localhost:44392/Articulo/InicioArticulos">Ver artículos &raquo;</a></p>
+                    </div>
+                </div>
 
             </div>
 
-            <div class="box-container-generic shadow">
-                <div class="box-header row">
-                    <div class="box-header-title">Preguntas frecuentes</div>
+            <div class="box-container-generic" style="height:50%;">
+                <div class="shadow" style="height:100%;">
+                    <div class="box-header row">
+                        <div class="box-header-title">Preguntas frecuentes</div>
+                    </div>
+                    <div class="box-content" style="padding: 20px; height:75%;">
+                        <p>
+                            Si tiene alguna pregunta busque en nuestro FAQ.
+                        </p>
+                    </div>
+                    <div class="box-footer">
+                        <p><a class="btn box-btn" href="https://localhost:44392/faq/FAQ">FAQ &raquo;</a></p>
+                    </div>
                 </div>
-                <div class="box-content" style="padding: 20px;">
-                    <p>
-                        Si tiene alguna pregunta busque en nuestro FAQ.
-                    </p>
-                </div>
-                <div class="box-footer">
-                    <p><a class="btn box-btn" href="https://localhost:44392/faq/FAQ">FAQ &raquo;</a></p>
-                </div>
-
 
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" style="height:100%;">
 
-            <div class="box-container-generic shadow">
-                <div class="box-header row">
-                    <div class="box-header-title">Anuncios</div>
-                </div>
-                <div class="box-content" style="padding: 20px;">
-                    Aqui se notifcaran eventos nuevos.
-                </div>
-                <div class="box-footer">
+            <div class="box-container-generic" style="height:97%;">
+                <div class="shadow" style="height:100%;">
+                    <div class="box-header row">
+                        <div class="box-header-title">Anuncios</div>
+                    </div>
+                    <div class="box-content" style="padding: 20px; height:93%;">
+                        Aqui se notifcaran eventos nuevos.
+                    </div>
+                    <div class="box-footer">
 
+                    </div>
                 </div>
+                
 
 
             </div>

@@ -23,6 +23,10 @@
             contenido.style.display = "block";
             revisiones.style.display = "none";
             formulario.style.display = "none";
+
+            $("#btn-contenido").addClass("box-btn-activated");
+            $("#btn-calificaciones").removeClass("box-btn-activated");
+            $("#btn-decision").removeClass("box-btn-activated");
         }
 
         function mostrarFormulario() {
@@ -32,6 +36,10 @@
             formulario.style.display = "block";
             contenido.style.display = "none";
             revisiones.style.display = "none";
+
+            $("#btn-contenido").removeClass("box-btn-activated");
+            $("#btn-calificaciones").removeClass("box-btn-activated");
+            $("#btn-decision").addClass("box-btn-activated");
         }
 
         function mostrarRevisiones() {
@@ -41,6 +49,10 @@
             revisiones.style.display = "block";
             formulario.style.display = "none";
             contenido.style.display = "none";
+
+            $("#btn-contenido").removeClass("box-btn-activated");
+            $("#btn-calificaciones").addClass("box-btn-activated");
+            $("#btn-decision").removeClass("box-btn-activated");
         }
 
     </script>
@@ -68,47 +80,51 @@ List<SelectListItem> listaEstados = new List<SelectListItem>();
     <div class="row">
         <div class="col-md-12">
             <nav>
-                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarFormulario()"> <i class="fa fa-paint-brush"></i> Decisión Final</button>
-                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarRevisiones()"> <i class="fa fa-paint-brush"></i> Calificaciónes</button>
-                <button class="btn box-btn" style=" width: 25%;" onclick="mostrarContenido()"> <i class="fa fa-book"></i> Artículo </button>
+                <button id="btn-decision" class="btn pestania box-btn box-btn-activated" style=" width: 25%;" onclick="mostrarFormulario()"> <i class="fa fa-paint-brush"></i> Formulario final</button>
+                <button id="btn-calificaciones" class="btn pestania box-btn" style=" width: 25%;" onclick="mostrarRevisiones()"> <i class="fa fa-paint-brush"></i> Calificaciónes</button>
+                <button id="btn-contenido" class="btn pestania box-btn" style=" width: 25%;" onclick="mostrarContenido()"> <i class="fa fa-book"></i> Artículo </button>
             </nav>
         </div>
     </div>
     <div id="revisiones" style="display:none">
-        @{
-            if (ViewBag.Calificaciones.Count != 0)
-            {
-                foreach (var revisiones in ViewBag.Calificaciones)
-                {
+        <div class="shadow contenedor-blanco">
+            <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                @{
+                    if (ViewBag.Calificaciones.Count != 0)
+                    {
+                        foreach (var revisiones in ViewBag.Calificaciones)
+                        {
 
-                    <div class="col-xl-12 col-md-10 mb-12 articulo-element shadow">
-                        <h3>Revisión de @revisiones.Revisor </h3>
-                        <hr />
-                        <div class="article-h2"> <strong>Estado: </strong> @revisiones.Estado  </div>
-                        <div class="article-h2"> <strong>Calificación: </strong> @revisiones.Calificacion </div>
-                        <br />
-                        <div class="article-h2"> <strong> Comentario: </strong></div>
-                        <hr style="margin-top: 0px; margin-bottom: 5px" />
-                        <div class="main-font article-h2">@revisiones.Comentario</div>
-                        <br />
-                    </div>
+                            <div class="col-xl-12 col-md-12 mb-12 articulo-element" style="background-color:#f9f9f9">
+                                <h3>Revisión de @revisiones.Revisor </h3>
+                                <hr />
+                                <div class="article-h2"> <strong>Estado: </strong> @revisiones.Estado  </div>
+                                <div class="article-h2"> <strong>Calificación: </strong> @revisiones.Calificacion </div>
+                                <br />
+                                <div class="article-h2"> <strong> Comentario: </strong></div>
+                                <hr style="margin-top: 0px; margin-bottom: 5px" />
+                                <div class="main-font article-h2">@revisiones.Comentario</div>
+                                <br />
+                            </div>
+                        }
+
+                    }
+                    else
+                    {
+                        <h4> Por ahora no se puede calificar debido a la falta de calificaciones.</h4>
+
+                    }
+
                 }
-            }
-            else
-            {
-                <div class="col-xl-12 col-md-10 mb-12 articulo-element shadow">
-                    <h4> Por ahora no hay calificaciones.</h4>
-                </div>
-
-            }
-
-        }
+            </div>
+        </div>
+        
 
     </div>
 
     <div id="formulario" style="display:block">
-
-        <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
+            
+        <div class="shadow contenedor-blanco">
             <h4>Formulario de Revisión:</h4>
             <hr />
             @using (Html.BeginForm("DecisionFinalArticulo", "Revisiones",  new { articuloId = ViewBag.Articulo.ArticuloId, notaPonderada = ViewBag.Ponderado }, FormMethod.Post ,  new { enctype = "multipart/form-data" }))
@@ -153,63 +169,68 @@ List<SelectListItem> listaEstados = new List<SelectListItem>();
     </div>
 
     <div id="contenido" style="display:none">
+        <div class="shadow contenedor-blanco">
+            <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                @if (ViewBag.Articulo.TipoArchivo != "corto")
+                {
 
-        @if (ViewBag.Articulo.TipoArchivo != "corto")
-        {
+                    <h3> <strong>Título:</strong> </h3>
 
-            <h3> <strong>Título:</strong> </h3>
+                    <h4>@ViewBag.Articulo.Titulo</h4>
 
-            <h4>@ViewBag.Articulo.Titulo</h4>
+                    <h3> <strong>Autor:</strong> </h3>
 
-            <h3> <strong>Autor:</strong> </h3>
+                    <h4>@ViewBag.Articulo.Autor</h4>
 
-            <h4>@ViewBag.Articulo.Autor</h4>
+                    <h3> <strong>Tópicos: </strong> </h3>
+                    <h4> @ViewBag.Articulo.Topico</h4>
 
-            <h3> <strong>Tópicos: </strong> </h3>
-            <h4> @ViewBag.Articulo.Topico</h4>
+                    <hr />
 
-            <hr />
+                    <h3> <strong> Resumen del articulo </strong> </h3>
+                    <br />
+                    <div style="padding: 25px; border-radius: 25px; background-color:white; background-color:#f9f9f9;">
+                        @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
+                    </div>
 
-            <h3> <strong> Resumen del articulo </strong> </h3>
-            <br />
-            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
+                    <hr />
+
+
+                    <a class="btn box-btn" href="/Articulo/AccederArticuloLargo?idArt=@ViewBag.Articulo.ArticuloId" target="_blank"> Ver archivo</a>
+                }
+                else
+                {
+
+                    <h3> <strong>Título:</strong> </h3>
+
+                    <h4>@ViewBag.Articulo.Titulo</h4>
+
+                    <h3> <strong>Autor:</strong> </h3>
+
+                    <h4>@ViewBag.Articulo.Autor</h4>
+
+                    <h3> <strong>Tópicos: </strong> </h3>
+                    <h4> @ViewBag.Articulo.Topico</h4>
+
+                    <hr />
+
+                    <h3> <strong> Resumen del articulo: </strong> </h3>
+                    <br />
+                    <div style="padding: 25px; border-radius: 25px; background-color:white; background-color:#f9f9f9;">
+                        @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
+                    </div>
+                    <hr />
+
+                    <h3> <strong> Contenido: </strong></h3>
+                    <br />
+                    <div style="padding: 25px; border-radius: 25px; background-color:white; background-color:#f9f9f9;">
+                        @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Contenido))
+                    </div>
+                }
+
             </div>
-
-            <hr />
-
-
-            <a class="btn box-btn" href="/Articulo/AccederArticuloLargo?idArt=@ViewBag.Articulo.ArticuloId" target="_blank"> Ver archivo</a>
-        }
-        else
-        {
-
-            <h3> <strong>Título:</strong> </h3>
-
-            <h4>@ViewBag.Articulo.Titulo</h4>
-
-            <h3> <strong>Autor:</strong> </h3>
-
-            <h4>@ViewBag.Articulo.Autor</h4>
-
-            <h3> <strong>Tópicos: </strong> </h3>
-            <h4> @ViewBag.Articulo.Topico</h4>
-
-            <hr />
-
-            <h3> <strong> Resumen del articulo: </strong> </h3>
-            <br />
-            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Resumen))
-            </div>
-            <hr />
-
-            <h3> <strong> Contenido: </strong></h3>
-            <br />
-            <div class="shadow" style="padding: 25px; border-radius: 25px; background-color:white;">
-                @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Articulo.Contenido))
-            </div>
-        }
+        </div>
+        
 
         <hr />
 

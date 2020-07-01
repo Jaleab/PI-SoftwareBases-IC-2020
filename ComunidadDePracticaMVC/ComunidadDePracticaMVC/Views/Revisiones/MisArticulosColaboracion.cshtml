@@ -59,9 +59,6 @@
                         var title, author, info, aceptarLink, rechazarLink;
 
                         //get the DIV element from the template Instance:
-                        like = articleInstance.querySelector(".likes_template");
-                        dislike = articleInstance.querySelector(".dislikes_template");
-                        fecha = articleInstance.querySelector(".fecha_template");
                         title = articleInstance.querySelector(".title_template");
                         author = articleInstance.querySelector(".author_template");
                         //info = articleInstance.querySelector("#info");
@@ -70,11 +67,7 @@
                         //deleteLink = articleInstance.querySelector(".delete-template");
 
                         title.textContent = articulo.Titulo;
-                        like.textContent = like.textContent + articulo.Likes;
-                        dislike.textContent = dislike.textContent + articulo.Dislikes;
-                        fecha.textContent = fecha.textContent + (articulo.FechaPublicacion).split(' ')[0];
                         author.textContent = articulo.Autor;
-                        //info.textContent = articulo.Autor;
 
                         aceptarLink.href = aceptarUrl;
                         rechazarLink.href = rechazarUrl;
@@ -152,29 +145,23 @@
 
     <div class="col-xl-12 col-md-12 mb-12 articulo-element" style="background-color:#f9f9f9">
 
-        <div class="col-md-6 mr-2">
+        <div class="col-md-9 mr-2">
             <div class=" title_template row main-font article-h1">La Descomposición del Estudiante</div>
             <div class=" author_template row main-font article-h2">Edwin Brenes</div>
 
         </div>
-        <div class="box-vertical-divider col-md-1   "></div>
-        <div class="col-md-3 mr-2">
-
-            <div title="Publicación" class=" fecha_template row main-font article-h2">&#128197 </div>
-            <div title="Likes" class=" likes_template row main-font article-h2">&#128077 </div>
-            <div title="Dislikes " class=" dislikes_template row main-font article-h2">&#128078 </div>
-
-        </div>
-        <div class="box-vertical-divider col-md-1   "></div>
+        <div class="box-vertical-divider col-md-1"></div>
 
         <div class="col-md-2 mr-2">
             <div class="row">
-                <a class="aceptar-template row btn btn-success" style="margin-left:15px; margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""> <i class="fa fa-check"></i></a>
+                <a class="look-template row btn box-btn" style="margin-left:15px; margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""> <i class="fa fa-eye"></i> ver  </a>
             </div>
             <div class="row">
-                <a class="rechazar-template row btn btn-danger" style="margin-left:15px ;margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""><i class="fa fa-remove"></i></a>
+                <a class="aceptar-template row btn btn-success box-btn-font" style="border-radius: 10px; margin-left:15px; margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""> <i class="fa fa-check"></i> Aceptar  </a>
             </div>
-
+            <div class="row">
+                <a class="rechazar-template row btn btn-danger box-btn-font" style="border-radius: 10px; margin-left:15px ;margin-bottom: 5px; width: 100%; padding-left: -10px;" href=""><i class="fa fa-remove"></i> Rechazar</a>
+            </div>
         </div>
 
     </div>

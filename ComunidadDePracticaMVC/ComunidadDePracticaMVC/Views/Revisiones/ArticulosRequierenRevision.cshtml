@@ -1,82 +1,91 @@
 ﻿
 <html>
 
-    <head>
-        <title> Solicitar colaboradores para revisión </title>
-    </head>
+<head>
+    <title> Solicitar colaboradores para revisión </title>
+</head>
 
-    <body>
+<body>
+    <div>
 
-        <hr />
-        <div>
+        @if (ViewBag.categoria == "Coordinador")
+        {
 
-            @if (ViewBag.categoria == "Coordinador")
-            {
-
-                <h2> Solicite a los miembros de núcleo colaboración </h2>
-
-                if (ViewBag.Message != null && ViewBag.Message == "Se ha enviado la solicitud")
-                {
-                    <div class="alert-success">
-                        @ViewBag.Message
-                    </div>
-                }
-                else if (ViewBag.Message == "Falló la operación, intente más tarde")
-                {
-                    <div class="alert-danger">
-                        @ViewBag.Message
-                    </div>
-                }
-
-                <hr />
-
-
-                foreach (var articulo in ViewBag.revisiones.ArticulosEnRevision)
-                {
-                    <div class="col-xl-12 col-md-12 mb-12 articulo-element shadow">
-
-                        <div class="col-md-6 mr-2">
-                            <div class="row main-font article-h2"> Titulo </div>
-                            <div class="row main-font article-h1"> @articulo.Titulo </div>
-
+            <div class="col-xl-12 col-md-12 mb-12">
+                <div class="row page-title main-font ">
+                    <h2> Solicite a los miembros de núcleo colaboración </h2>
+                    @if (ViewBag.Message != null && ViewBag.Message == "Se ha enviado la solicitud")
+                    {
+                        <div class="alert-success">
+                            @ViewBag.Message
                         </div>
-
-                        <div class="box-vertical-divider col-md-1   "></div>
-
-                        <div class="col-md-3 mr-2">
-
-                            <div class="row main-font article-h2">Fecha de publicación</div>
-                            <div class="row main-font article-h2">&#128197 @articulo.FechaPublicacion</div>
-
+                    }
+                    else if (ViewBag.Message == "Falló la operación, intente más tarde")
+                    {
+                        <div class="alert-danger">
+                            @ViewBag.Message
                         </div>
+                    }
+                    <hr />
 
-                        <div class="box-vertical-divider col-md-1   "></div>
+                </div>
 
-                        <div class="col-md-2 mr-2">
-                            <div class="row">
-                                <div class="row main-font article-h2"></div>
-                                <a class="btn box-btn" href="/Revisiones/SolicitarColaboracion?articuloId=@articulo.ArticuloId"> Pedir colaboración</a>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <nav>
+                        <a class="btn pestania box-btn box-btn-activated" style=" width: 27%;" href="@Url.Action("ArticulosRequierenRevision", "Revisiones")"> <i class="fa fa-paint-brush"></i> Solicitar Colaboración</a>
+                        <a class="btn pestania box-btn" style=" width: 27%;" href="@Url.Action("ArticulosRequierenRevisores", "Revisiones")"> <i class="fa fa-book"></i> Decidir Revisores </a>
+                        <a class="btn pestania box-btn" style=" width: 27%;" href="@Url.Action("ArticulosEnRevisionPorMiembros", "Revisiones")"> <i class="fa fa-paint-brush"></i> Decisión Final</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="shadow contenedor-blanco">
+                <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                    @foreach (var articulo in ViewBag.revisiones.ArticulosEnRevision)
+                    {
+                        <div class="col-xl-12 col-md-12 mb-12 articulo-element" style="background-color:#f9f9f9;">
+
+                            <div class="col-md-6 mr-2">
+
+                                <div class="row main-font article-h1"> @articulo.Titulo </div>
+                                <div class="row main-font article-h2"> @articulo.Autor </div>
+
                             </div>
+
+                            <div class="box-vertical-divider col-md-1   "></div>
+
+                            <div class="col-md-3 mr-2">
+
+                                <div class="row main-font article-h2">Fecha de publicación</div>
+                                <div class="row main-font article-h2">&#128197 @articulo.FechaPublicacion</div>
+
+                            </div>
+
+                            <div class="box-vertical-divider col-md-1   "></div>
+
+                            <div class="col-md-2 mr-2">
+                                <div class="row">
+                                    <div class="row main-font article-h2"></div>
+                                    <a class="btn box-btn" href="/Revisiones/SolicitarColaboracion?articuloId=@articulo.ArticuloId"> Pedir colaboración</a>
+                                </div>
+                            </div>
+
                         </div>
+                    }
+                </div>
+            </div>
 
-                    </div>
-                }
+        }
+        else
+        {
 
-            }
-            else
-            {
+            <h2>Lo sentimos, usted no puede interacturar en esta sección</h2>
 
-                <h2>Lo sentimos, usted no puede interacturar en esta sección</h2>
-
-            }
-        </div>
-
-        
-        <div class="row">
-            <a class="btn box-btn" href="/Home/Index"> Volver a página principal</a>
-        </div>
+        }
+    </div>
 
 
-    </body>
+</body>
 </html>
 

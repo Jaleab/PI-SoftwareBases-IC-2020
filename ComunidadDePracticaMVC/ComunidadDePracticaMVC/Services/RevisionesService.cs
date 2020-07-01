@@ -40,6 +40,7 @@ namespace ComunidadDePracticaMVC.Services
                     new ArticuloModel
                     {
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Autor = "PONER AUTORES AQUI",
                         Titulo = Convert.ToString(dr["titulo"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
                     });
@@ -195,7 +196,7 @@ namespace ComunidadDePracticaMVC.Services
                     new ArticuloModel
                     {
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
-                        Autor= Convert.ToString(dr["titulo"]),
+                        Autor= /*Convert.ToString(dr["titulo"])*/ "INSERTAR AUTORES AQUI",
                         Titulo = Convert.ToString(dr["titulo"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
                     });
@@ -246,6 +247,7 @@ namespace ComunidadDePracticaMVC.Services
                     new ArticuloModel
                     {
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Autor = "PONER AUTORES AQUI",
                         Titulo = Convert.ToString(dr["titulo"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
                     });
@@ -336,6 +338,7 @@ namespace ComunidadDePracticaMVC.Services
                     new ArticuloModel
                     {
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
+                        Autor = "PONER AUTORES AQUI",
                         Titulo = Convert.ToString(dr["titulo"]),
                         FechaPublicacion = Convert.ToString(dr["fechaPublicacion"])
                     });
