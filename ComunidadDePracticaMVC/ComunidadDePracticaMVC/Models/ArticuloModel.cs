@@ -20,18 +20,18 @@ namespace ComunidadDePracticaMVC.Models
         public List<string> Correos { get; set; }
 
         [AllowHtml]
-        [StringLength(30000, MinimumLength = 3000, ErrorMessage = "El contenido debe ser de al menos 3000 caracteres, pero menor a 30000 caracteres")]
+        [StringLength(30000, MinimumLength = 3000, ErrorMessage = "Debe ser de al menos 3000 caracteres, pero menor a 30000 caracteres")]
         [Required(ErrorMessage = "El contenido es requerido.")]
         [Display(Name = "Contenido")]
         public string Contenido { get; set; }
 
         [AllowHtml]
-        [StringLength(1500, MinimumLength = 500, ErrorMessage = "El contenido debe ser de al menos 500 caracteres, pero menor a 1500 caracteres")]
+        [StringLength(1500, MinimumLength = 500, ErrorMessage = "Debe ser de al menos 500 caracteres, pero menor a 1500 caracteres")]
         [Required(ErrorMessage = "El resumen es requerido.")]
         [Display(Name = "Resumen")]
         public string Resumen { get; set; }
 
-        [StringLength(300, MinimumLength = 50, ErrorMessage = "El contenido debe ser de al menos 50 caracteres, pero menor a 300 caracteres")]
+        [StringLength(300, MinimumLength = 5, ErrorMessage = "Debe ser de al menos 50 caracteres, pero menor a 300 caracteres")]
         [Required(ErrorMessage = "El título es requerido.")]
         [Display(Name = "Titulo")]
         public string Titulo { get; set; }

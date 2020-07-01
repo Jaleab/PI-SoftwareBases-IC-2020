@@ -14,7 +14,7 @@ namespace ComunidadDePracticaMVC.ViewModels
         [DisplayName("Artículo en fórmato editable")]
         public HttpPostedFileBase Archivo1 {get; set;}
 
-        [StringLength(300, MinimumLength = 50, ErrorMessage = "El contenido debe ser de al menos 50 caracteres, pero menor a 300 caracteres")]
+        [StringLength(300, MinimumLength = 5, ErrorMessage = "Debe ser de al menos 50 caracteres, pero menor a 300 caracteres")]
         [Required(ErrorMessage = "El título es requerido.")]
         [Display(Name = "Titulo")]
         public string Titulo { get; set; }
