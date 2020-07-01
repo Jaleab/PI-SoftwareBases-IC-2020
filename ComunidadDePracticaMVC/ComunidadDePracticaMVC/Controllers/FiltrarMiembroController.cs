@@ -41,12 +41,12 @@ namespace ComunidadDePracticaMVC.Controllers
                     }
                     modeloDatos.Add(new DataModel { categorias = categorias, etiquetas = etiquetas, counts = counts });
                     ViewBag.jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(modeloDatos);
-                    return View(filtro);
                 }
             }
             else {
                 return View(filtro);
             }
+            return View(filtro);
         }
 
         [HttpPost]
@@ -54,29 +54,6 @@ namespace ComunidadDePracticaMVC.Controllers
         {
             FiltrarMiembroService filtrarServicio = new FiltrarMiembroService();
             List<MiembroModel> usuarios = filtrarServicio.getUsuarios();
-
-            //int n = 0;
-            //int r = 0;
-            //// operadores ternarios intente, pero no me salio como en c++ con el +=
-            //if (filtro.paisesseleccionados.count > 0) {
-            //    n += 1;
-            //    r += filtro.paisesseleccionados.count;
-            //}
-            //if (filtro.idiomasseleccionados.count > 0)
-            //{
-            //    n += 1;
-            //    r += filtro.idiomasseleccionados.count;
-            //}
-            //if (filtro.hobbiesseleccionados.count > 0)
-            //{
-            //    n += 1;
-            //    r += filtro.hobbiesseleccionados.count;
-            //}
-            //if (filtro.habilidadesseleccionados.count > 0)
-            //{
-            //    n += 1;
-            //    r += filtro.habilidadesseleccionados.count;
-            //}
             List<List<MiembroModel>> resultadosFiltros = new List<List<MiembroModel>>();
             List<int> dataCounts = new List<int>();
             List<List<string>> etiquetasData = new List<List<string>>();

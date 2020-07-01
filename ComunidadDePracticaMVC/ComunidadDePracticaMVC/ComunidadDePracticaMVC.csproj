@@ -139,6 +139,7 @@
     <Compile Include="Models\ArticuloLargoViewModel.cs" />
     <Compile Include="Models\ArticuloModel.cs" />
     <Compile Include="Models\ChartDataModel.cs" />
+    <Compile Include="Models\FiltroCategoriaMiembroModel.cs" />
     <Compile Include="Models\CorreoModel.cs" />
     <Compile Include="Models\faqModel.cs" />
     <Compile Include="Models\FiltroMiembroModel.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Services\FiltrarMiembroService.cs" />
     <Compile Include="Services\ArticuloService.cs" />
     <Compile Include="Services\ChartService.cs" />
+    <Compile Include="Services\FiltroCategoriaMiembroController.cs" />
     <Compile Include="Services\UsuarioService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -391,6 +393,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Files\" />
+    <Folder Include="Views\FiltroCategoriaMiembro\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
