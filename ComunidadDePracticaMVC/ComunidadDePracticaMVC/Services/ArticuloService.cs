@@ -190,7 +190,7 @@ namespace ComunidadDePracticaMVC.Services
             ArticuloModel articulo = new ArticuloModel();
 
             articulo.ArticuloId = Convert.ToInt32(dr["articuloId"]);
-            articulo.Autor = Convert.ToString(dr["autor"]);
+            articulo.Autor = Convert.ToString(dr["autores"]);
             articulo.Contenido = Convert.ToString(dr["contenido"]);
             articulo.Resumen = Convert.ToString(dr["resumen"]);
             articulo.Titulo = Convert.ToString(dr["titulo"]);
@@ -229,7 +229,7 @@ namespace ComunidadDePracticaMVC.Services
                     new ArticuloModel
                     {
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
-                        Autor = Convert.ToString(dr["autor"]),
+                        Autor = Convert.ToString(dr["autores"]),
                         Titulo = Convert.ToString(dr["titulo"]),
                         Topico = Convert.ToString(dr["topico"]),
                         NotaRevision = Convert.ToInt32(dr["notaRevision"]),
@@ -275,7 +275,7 @@ namespace ComunidadDePracticaMVC.Services
                     new ArticuloModel
                     {
                         ArticuloId = Convert.ToInt32(dr["articuloId"]),
-                        Autor = Convert.ToString(dr["autor"]),
+                        Autor = Convert.ToString(dr["autores"]),
                         Titulo = Convert.ToString(dr["titulo"]),
                         Topico = Convert.ToString(dr["topico"]),
                         NotaRevision = Convert.ToInt32(dr["notaRevision"]),
