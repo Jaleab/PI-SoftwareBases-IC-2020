@@ -19,18 +19,24 @@ namespace ComunidadDePracticaMVC.Models
 
         public List<string> Correos { get; set; }
 
-        [Required(ErrorMessage = "Ingrese el contenido del articulo.")]
         [AllowHtml]
+        [StringLength(30000, MinimumLength = 3000, ErrorMessage = "El contenido debe ser de al menos 3000 caracteres, pero menor a 30000 caracteres")]
+        [Required(ErrorMessage = "El contenido es requerido.")]
+        [Display(Name = "Contenido")]
         public string Contenido { get; set; }
 
-        [Required(ErrorMessage = "Ingrese el resumen del articulo.")]
         [AllowHtml]
+        [StringLength(1500, MinimumLength = 500, ErrorMessage = "El contenido debe ser de al menos 500 caracteres, pero menor a 1500 caracteres")]
+        [Required(ErrorMessage = "El resumen es requerido.")]
+        [Display(Name = "Resumen")]
         public string Resumen { get; set; }
 
-        [Required(ErrorMessage = "Un titulo es requerido.")]
+        [StringLength(300, MinimumLength = 50, ErrorMessage = "El contenido debe ser de al menos 50 caracteres, pero menor a 300 caracteres")]
+        [Required(ErrorMessage = "El título es requerido.")]
+        [Display(Name = "Titulo")]
         public string Titulo { get; set; }
 
-        [Required(ErrorMessage = "Un topico es requerido.")]
+        [Required(ErrorMessage = "El topico es requerido.")]
         public string Topico { get; set; }
 
         [Required(ErrorMessage = "Un correo es requerido.")]
@@ -46,8 +52,8 @@ namespace ComunidadDePracticaMVC.Models
 
         public string TipoArchivo { get; set; }
 
-        [Required]
-        [DisplayName("Artículo con fórmato PDF")]
+        [Required(ErrorMessage = "El archivo del artículo en formato PDF es requerido.")]
+        [Display(Name = "Archivo del artículo en formato PDF")]
         public HttpPostedFileBase Archivo { get; set; }
 
         public int Likes { get; set; }
