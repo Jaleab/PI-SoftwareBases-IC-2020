@@ -19,6 +19,7 @@
         {
             <li>@Html.ActionLink("Publicación de Artículos", "ArticulosRequierenRevision", "Revisiones", null, htmlAttributes: new { title = "" })</li>
         }
+        <li>@Html.ActionLink("Filtrar miembros", "FiltrarMiembro", "FiltrarMiembro", new { correo = User.Identity.Name, graficado = 0 }, htmlAttributes: new { title = "Filtrar" })</li>
     }
     <li class="sidebar-divider"></li>
     <li> @Html.ActionLink("Mis Articulos", "MisArticulos", "Usuario", null, htmlAttributes: new { title = "Mis artículos" })</li>
@@ -27,12 +28,11 @@
     <li class="sidebar-divider"></li>
     if (categoria == "Coordinador")
     {
-        
+
         <li> @Html.ActionLink("Ver Miembros", "UsuariosComunidad", "Usuario") </li>
         <li> @Html.ActionLink("Asignar Meritos", "ArticulosCalificados", "Articulo") </li>
 
     }
-    <li>@Html.ActionLink("Filtrar miembros", "FiltrarMiembro", "FiltrarMiembro", new { correo = User.Identity.Name, graficado = 0 }, htmlAttributes: new { title = "Filtrar" })</li>
     <li class="sidebar-divider"></li>
 }
 

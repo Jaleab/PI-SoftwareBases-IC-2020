@@ -10,8 +10,8 @@ namespace ComunidadDePracticaMVC.ViewModels
 {
     public class ArticuloLargoViewModel
     {
-        [Required]
-        [DisplayName("Artículo en fórmato editable")]
+        [Required(ErrorMessage = "Archivo en formato PDF es requerido.")]
+        [DisplayName("Artículo en fórmato PDF")]
         public HttpPostedFileBase Archivo1 {get; set;}
 
         [StringLength(300, MinimumLength = 5, ErrorMessage = "Debe ser de al menos 50 caracteres, pero menor a 300 caracteres")]
